@@ -1,11 +1,77 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <title>ucoin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+    <!-- <script src="js/respond.js"></script> -->
+    
+    <div class="navbar" style="background-color: white; margin-top: 10px;">
+      <div class="container">
+        <a href="#" class="navbar-brand">ucoin</a>
+        <ul class="nav navbar-nav nav-pills">
+          <li class="active">
+            <a href="/" class="glyphicon glyphicon-home">&nbsp;&nbsp;Home</a>
+          </li>
+          <li class="disabled"><a href="/pks" class="glyphicon glyphicon-user">&nbsp;&nbsp;PKS</a></li>
+          <li class="disabled"><a href="/peers" class="glyphicon glyphicon-globe">&nbsp;&nbsp;Peers</a></li>
+          <li class="disabled"><a href="/amendments" class="glyphicon glyphicon-list-alt">&nbsp;&nbsp;Amendments</a></li>
+          <li class="disabled"><a href="/transactions" class="glyphicon glyphicon-retweet">&nbsp;&nbsp;Transactions</a></li>
+        </ul>
+        <form action="#" class="navbar-form pull-right">
+          <select disabled name="node" id="node" class="form-control" style="width: 150px;">
+            <option value="localhost">localhost:8081</option>
+          </select>
+          <button type="submit" class="disabled btn btn-default">New</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="nav list-group" style="background-color: #f7f5fa;">
+            <a href="#" class="list-group-item active glyphicon glyphicon-signal">&nbsp;&nbsp;Statistics</a>
+            <a href="#" class="list-group-item glyphicon glyphicon-ok-sign">&nbsp;&nbsp;Capabilities</a>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <h1>Currency statistics</h1>
+          <table class="table">
+            <tr>
+              <th>Field</th>
+              <th>Value</th>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td><%= currency %></td>
+            </tr>
+            <tr>
+              <td>Community</td>
+              <td><span class="badge"><%= membersCount %></span> members</td>
+            </tr>
+            <tr>
+              <td>Amendments</td>
+              <td><span class="badge"><%= amendmentsCount %></span> promoted</td>
+            </tr>
+            <tr>
+              <td>Transactions</td>
+              <td><span class="badge"><%= transactionsCount %></span> recorded</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
