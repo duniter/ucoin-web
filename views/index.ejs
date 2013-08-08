@@ -27,6 +27,11 @@
           <li class="disabled"><a href="#" class="glyphicon glyphicon-list-alt">&nbsp;&nbsp;Amendments</a></li>
           <li class="disabled"><a href="#" class="glyphicon glyphicon-retweet">&nbsp;&nbsp;Transactions</a></li>
         </ul>
+        <% if(auth){ %>
+          <h3 class="pull-right"><span class="label label-success">signed responses (secure mode)</span></h3>
+        <% } else { %>
+          <h3 class="pull-right"><span class="label label-warning">unsigned responses (fast mode)</span></h3>
+        <% } %>
       </div>
     </div>
 

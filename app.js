@@ -32,8 +32,8 @@ vucoin(host, port, auth, function (err, node) {
     app.use(express.errorHandler());
   }
 
-  var routes = require('./routes/index')(node);
-  var pks    = require('./routes/pks')(node);
+  var routes = require('./routes/index')(node, auth);
+  var pks    = require('./routes/pks')(node, auth);
 
   app.get('/', routes.index);
   app.get('/pks', pks.lookup);

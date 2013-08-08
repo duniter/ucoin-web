@@ -1,6 +1,6 @@
 var async = require('async');
 
-module.exports = function (node) {
+module.exports = function (node, auth) {
   
   this.lookup = function(req, res){
     node.pks.lookup('', function (err, json) {
@@ -10,7 +10,8 @@ module.exports = function (node) {
       }
 
       res.render('pks', {
-        keys: json.keys
+        keys: json.keys,
+        auth: auth
       });
     });
   };
