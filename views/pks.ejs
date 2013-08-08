@@ -21,8 +21,8 @@
       <div class="container">
         <a href="#" class="navbar-brand">ucoin</a>
         <ul class="nav navbar-nav nav-pills">
-          <li class="active"><a href="/" class="glyphicon glyphicon-home">&nbsp;&nbsp;Home</a></li>
-          <li><a href="/pks" class="glyphicon glyphicon-user">&nbsp;&nbsp;PKS</a></li>
+          <li><a href="/" class="glyphicon glyphicon-home">&nbsp;&nbsp;Home</a></li>
+          <li class="active"><a href="/pks" class="glyphicon glyphicon-user">&nbsp;&nbsp;PKS</a></li>
           <li class="disabled"><a href="#" class="glyphicon glyphicon-globe">&nbsp;&nbsp;Peers</a></li>
           <li class="disabled"><a href="#" class="glyphicon glyphicon-list-alt">&nbsp;&nbsp;Amendments</a></li>
           <li class="disabled"><a href="#" class="glyphicon glyphicon-retweet">&nbsp;&nbsp;Transactions</a></li>
@@ -34,33 +34,25 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="nav list-group" style="background-color: #f7f5fa;">
-            <a href="#" class="list-group-item active glyphicon glyphicon-signal">&nbsp;&nbsp;Statistics</a>
-            <a href="#" class="list-group-item glyphicon glyphicon-ok-sign">&nbsp;&nbsp;Capabilities</a>
+            <a href="#" class="list-group-item active glyphicon glyphicon-search">&nbsp;&nbsp;Lookup</a>
+            <a href="#" class="list-group-item glyphicon glyphicon-plus">&nbsp;&nbsp;Add</a>
           </div>
         </div>
         <div class="col-lg-9">
-          <h1>Currency statistics</h1>
+          <h1>Public keys</h1>
           <table class="table">
             <tr>
-              <th>Field</th>
-              <th>Value</th>
+              <th>Name</th>
+              <th>Comment</th>
+              <th>Email</th>
             </tr>
+            <% for(var i = 0; i < keys.length; i++){ %>
             <tr>
-              <td>Name</td>
-              <td><%= currency %></td>
+              <td><%= keys[i].name %></td>
+              <td><%= keys[i].comment %></td>
+              <td><%= keys[i].email %></td>
             </tr>
-            <tr>
-              <td>Community</td>
-              <td><span class="badge"><%= membersCount %></span> members</td>
-            </tr>
-            <tr>
-              <td>Amendments</td>
-              <td><span class="badge"><%= amendmentsCount %></span> promoted</td>
-            </tr>
-            <tr>
-              <td>Transactions</td>
-              <td><span class="badge"><%= transactionsCount %></span> recorded</td>
-            </tr>
+            <% } %>
           </table>
         </div>
       </div>
