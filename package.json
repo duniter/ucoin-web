@@ -27,7 +27,7 @@
   "dependencies": {
     "express": "3.2.4",
     "ejs": "*",
-    "vucoin": ">=0.0.5",
+    "vucoin": ">=0.0.6",
     "underscore": "*",
     "async": "*"
   },

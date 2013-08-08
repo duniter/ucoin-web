@@ -1,5 +1,6 @@
 
 module.exports = {
-  host: "localhost",
-  port: 8081
+  host: "nuke",
+  port: 9101,
+  auth: false
 }
