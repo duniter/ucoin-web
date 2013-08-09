@@ -75,7 +75,7 @@ module.exports = function (node, auth) {
           {
           title: 'Peering',
             values: [
-              {cap: "Authenticate responses before interpreting them", level: NOTHING},
+              {cap: "Authenticate responses before interpreting them", level: STARTED},
               {cap: "Retrieve PGP keys from another node", level: NOTHING},
               {cap: "Retrieve promoted Amendments from another node", level: NOTHING},
               {cap: "Retrieve registrations of an Amendment from another node", level: NOTHING},
