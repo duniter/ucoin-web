@@ -4,12 +4,11 @@ module.exports = function (node, auth) {
   
   this.index = function(req, res){
     node.ucg.peering(proxy(res, function (json) {
+      console.log(json);
       res.render('index', {
         currency: json.currency,
-        ipv4: json.ipv4,
-        ipv6: json.ipv6,
-        port: json.port,
-        dns: json.dns,
+        remotehost: json.remote.host,
+        remoteport: json.remote.port,
         peers: json.peers,
         fingerprint: json.key,
         membersCount: 0,
