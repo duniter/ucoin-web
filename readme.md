@@ -55,7 +55,7 @@ For example:
 $ node app.js -h 127.0.0.7 -p 4444 --uchost localhost --ucport 8081 -a
 ```
 
-Will launch the web interface on `http://127.0.0.7:4444/`, whose underlying uCoin server is `localhost:8081`.
+Will launch the web interface on `http://127.0.0.7:4444/`, whose underlying uCoin server is `localhost:8081` with authenticated requests to uCoin server.
 
 #### Configuration file
 
