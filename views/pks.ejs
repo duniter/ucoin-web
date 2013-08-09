@@ -47,14 +47,16 @@
           <h1>Public keys</h1>
           <table class="table">
             <tr>
-              <th>Name</th>
-              <th>Comment</th>
-              <th>Email</th>
+              <th style="width: 20%;">Name</th>
+              <th style="width: 50%;">Comment</th>
+              <th style="width: 10%;">Fingerprint</th>
+              <th style="width: 20%;">Email</th>
             </tr>
             <% for(var i = 0; i < keys.length; i++){ %>
             <tr>
               <td><%= keys[i].name %></td>
               <td><%= keys[i].comment %></td>
+              <td>0x<%= keys[i].fingerprint.substring(32) %></td>
               <td><%= keys[i].email %></td>
             </tr>
             <% } %>
