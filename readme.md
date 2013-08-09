@@ -22,12 +22,13 @@ And then, just install ucoin-web:
 
 ```bash
 $ git clone git@github.com:c-geek/ucoin-web.git
+$ cd ucoin-web && npm install
 ```
 
 And launch it:
 
 ```bash
-$ cd ucoin-web && node app.js
+$ node app.js
 ```
 
 ### Configuration
