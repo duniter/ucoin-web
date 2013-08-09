@@ -39,57 +39,40 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="nav list-group" style="background-color: #f7f5fa;">
-            <a href="" class="list-group-item active glyphicon glyphicon-signal">&nbsp;&nbsp;Statistics</a>
-            <a href="cap" class="list-group-item glyphicon glyphicon-ok-sign">&nbsp;&nbsp;Capabilities</a>
+            <a href="/" class="list-group-item glyphicon glyphicon-signal">&nbsp;&nbsp;Statistics</a>
+            <a href="" class="list-group-item active glyphicon glyphicon-ok-sign">&nbsp;&nbsp;Capabilities</a>
           </div>
         </div>
         <div class="col-lg-9">
-          <h1>Currency</h1>
-          <table class="table">
-            <tr>
-              <th style="width: 30%;">Field</th>
-              <th style="width: 70%;">Value</th>
-            </tr>
-            <tr>
-              <td>Name</td>
-              <td><span class="text-info"><strong><%= currency %></strong></span></td>
-            </tr>
-            <tr>
-              <td>Community</td>
-              <td><span class="badge"><%= membersCount %></span><span class="text-muted"> members</span></td>
-            </tr>
-            <tr>
-              <td>Amendments</td>
-              <td><span class="badge"><%= amendmentsCount %></span> <span class="text-muted">promoted</span></td>
-            </tr>
-            <tr>
-              <td>Transactions</td>
-              <td><span class="badge"><%= transactionsCount %></span> <span class="text-muted">recorded</span></td>
-            </tr>
-          </table>
-          <h1>Host</h1>
-          <table class="table">
-            <tr>
-              <th style="width: 30%;">Field</th>
-              <th style="width: 70%;">Value</th>
-            </tr>
-            <tr>
-              <td>Remote host</td>
-              <td><%= remotehost ? remotehost : 'None' %></td>
-            </tr>
-            <tr>
-              <td>Remote port</td>
-              <td><%= remoteport ? remoteport : 'None' %></td>
-            </tr>
-            <tr>
-              <td>Key fingerprint</td>
-              <td><%= fingerprint ? fingerprint : 'None' %></td>
-            </tr>
-            <tr>
-              <td>Peers number</td>
-              <td><span class="badge"><%= peers ? peers.length : '0' %></span></td>
-            </tr>
-          </table>
+          <h1>Capabilities</h1>
+          <% var count = 0; %>
+          <% for(var i = 0; i < caps.length; i++){ %>
+            <% var cap = caps[i]; %>
+            <h3><%= cap.title %></h3>
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <th style="width: 10%;">#</th>
+                  <th style="width: 60%;">Capability</th>
+                  <th style="width: 20%;">Status</th>
+                  <th style="width: 10%;"></th>
+                </tr>
+                <% for(var j = 0; j < cap.values.length; j++){ %>
+                <% var count = count + 1; %>
+                <% var val = cap.values[j]; %>
+                <% var trClass = val.level == 2 ? 'success' : (val.level == 1 ?  'warning' : ''); %>
+                <% var sign = val.level == 2 ? 'ok-sign' : (val.level == 1 ?  'plus-sign' : 'minus-sign'); %>
+                <% var status = val.level == 2 ? 'Done' : 'Under construction'; %>
+                <tr class="<%= trClass %>">
+                  <td><%= count %></td>
+                  <td><%= val.cap %></td>
+                  <td><%= status %></td>
+                  <td><span class="glyphicon glyphicon-<%= sign %>"></span></td>
+                </tr>
+              <% } %>
+              </tbody>
+            </table>
+          <% } %>
         </div>
       </div>
     </div>
