@@ -29,7 +29,8 @@
     "ejs": "*",
     "vucoin": ">=0.0.7",
     "underscore": "*",
-    "async": "*"
+    "async": "*",
+    "commander": "*"
   },
   "devDependencies": {
     "mocha": "",

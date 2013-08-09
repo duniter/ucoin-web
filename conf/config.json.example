@@ -1,0 +1,7 @@
+{
+  "uchost": "localhost",
+  "ucport": 8081,
+  "host": "localhost",
+  "port": 80,
+  "auth": false
+}

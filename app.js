@@ -1,14 +1,26 @@
 var express = require('express');
-var config  = require('./conf/config');
 var http    = require('http');
 var path    = require('path');
+var fs      = require('fs');
 var vucoin  = require('vucoin');
+var program = require('commander');
 
-console.log(config);
+program
+  .option('-p, --port <port>', 'Local port to listen', parseInt)
+  .option('-h, --host <host>', 'Local interface to listen')
+  .option('-H, --uchost <host>', 'Host of ucoin server')
+  .option('-P, --ucport <port>', 'Port of ucoin server')
+  .option('-a, --auth', 'Enables authenticated mode')
+  .parse(process.argv);
 
-var host = config.host || 'localhost';
-var port = config.port || 8081;
-var auth = config.auth || false;
+var confFile = 'conf/config.json';
+var config = fs.existsSync(confFile) ? JSON.parse(fs.readFileSync(confFile, 'utf8')) : {};
+
+var host     = program.uchost || config.uchost || 'localhost';
+var port     = program.ucport || config.ucport || 8081;
+var app_port = program.port || config.port || 3081;
+var app_host = program.host || config.host || 'localhost';
+var auth     = program.auth || config.auth || false;
 
 host = host.match(/:/) ? '[' + host + ']' : host;
 
@@ -38,8 +50,8 @@ vucoin(host, port, auth, function (err, node) {
   app.get('/', routes.index);
   app.get('/pks', pks.lookup);
 
-  http.createServer(app).listen(app.get('port'), function(){
-    console.log('Express server listening on port ' + app.get('port'));
+  http.createServer(app).listen(app_port, app_host, function(){
+    console.log('Express server listening interface ' + app_host + ' on port ' + app_port);
   });
 
 });
