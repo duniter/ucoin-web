@@ -13,7 +13,7 @@ program
   .option('-a, --auth', 'Enables authenticated mode')
   .parse(process.argv);
 
-var confFile = 'conf/config.json';
+var confFile = __dirname + '/conf/config.json';
 var config = fs.existsSync(confFile) ? JSON.parse(fs.readFileSync(confFile, 'utf8')) : {};
 
 var host     = program.uchost || config.uchost || 'localhost';
@@ -52,6 +52,10 @@ vucoin(host, port, auth, function (err, node) {
 
   http.createServer(app).listen(app_port, app_host, function(){
     console.log('Express server listening interface ' + app_host + ' on port ' + app_port);
+    console.log('vuCoin listening interface ' + host + ' on port ' + port);
+    if(auth){
+      console.log('Running secure mode');
+    }
   });
 
 });
