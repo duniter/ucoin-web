@@ -24,7 +24,7 @@
           <li class="active"><a href="/" class="glyphicon glyphicon-home">&nbsp;&nbsp;Home</a></li>
           <li><a href="/pks" class="glyphicon glyphicon-user">&nbsp;&nbsp;PKS</a></li>
           <li class="disabled"><a href="#" class="glyphicon glyphicon-globe">&nbsp;&nbsp;Peers</a></li>
-          <li class="disabled"><a href="#" class="glyphicon glyphicon-list-alt">&nbsp;&nbsp;Amendments</a></li>
+          <li class="disabled"><a href="#" class="glyphicon glyphicon-list-alt">&nbsp;&nbsp;Contract</a></li>
           <li class="disabled"><a href="#" class="glyphicon glyphicon-retweet">&nbsp;&nbsp;Transactions</a></li>
         </ul>
         <% if(auth){ %>
@@ -56,15 +56,23 @@
             </tr>
             <tr>
               <td>Community</td>
-              <td><span class="badge"><%= membersCount %></span><span class="text-muted"> members</span></td>
+              <td>
+                <span class="label label-info" style="font-size: 14px;"><%= membersCount %> members</span>
+                <span class="label label-warning" style="font-size: 14px;"><%= membersCount %> pending</span>
+              </td>
             </tr>
             <tr>
-              <td>Amendments</td>
-              <td><span class="badge"><%= amendmentsCount %></span> <span class="text-muted">promoted</span></td>
+              <td>Contract</td>
+              <td>
+                <span class="label label-info" style="font-size: 14px;"><%= amendmentsCount %> amendments</span>
+                <span class="label label-warning" style="font-size: 14px;"><%= amendmentsCount %> pending</span>
+              </td>
             </tr>
             <tr>
               <td>Transactions</td>
-              <td><span class="badge"><%= transactionsCount %></span> <span class="text-muted">recorded</span></td>
+              <td>
+                <span class="label label-info" style="font-size: 14px;"><%= transactionsCount %> recorded</span>
+              </td>
             </tr>
           </table>
           <h1>Host</h1>
@@ -86,8 +94,8 @@
               <td><%= fingerprint ? fingerprint : 'None' %></td>
             </tr>
             <tr>
-              <td>Peers number</td>
-              <td><span class="badge"><%= peers ? peers.length : '0' %></span></td>
+              <td>Peers</td>
+              <td><span class="label label-info" style="font-size: 14px;"><%= peers ? peers.length : '0' %> connected</span></td>
             </tr>
           </table>
         </div>

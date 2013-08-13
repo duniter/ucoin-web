@@ -35,12 +35,12 @@ module.exports = function (node, auth) {
           {
             title: 'Community',
             values: [
-              {cap: "Register - ask for joining the Community", level: NOTHING},
+              {cap: "Register - ask for joining the Community", level: DONE},
               {cap: "Actualize - update his living status", level: NOTHING},
               {cap: "Leave - ask for leaving the Community", level: NOTHING},
               {cap: "Implement a strategy for status's changes acception", level: NOTHING},
               {cap: "View Community changes (status, people) of a promoted Amendment", level: NOTHING},
-              {cap: "View Community changes (status, people) for next Amendment", level: NOTHING}
+              {cap: "View Community changes (status, people) for next Amendment", level: STARTED}
             ]
           },
           {
