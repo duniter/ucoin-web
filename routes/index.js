@@ -39,23 +39,23 @@ module.exports = function (node, auth) {
               {cap: "Actualize - update his living status", level: NOTHING},
               {cap: "Leave - ask for leaving the Community", level: NOTHING},
               {cap: "Implement a strategy for status's changes acception", level: NOTHING},
-              {cap: "View Community changes (status, people) of a promoted Amendment", level: NOTHING},
-              {cap: "View Community changes (status, people) for next Amendment", level: STARTED}
+              {cap: "View Community changes (status, people) of a promoted Amendment", level: STARTED},
+              {cap: "View Community changes (status, people) for next Amendment", level: DONE}
             ]
           },
           {
             title: 'Amendments',
             values: [
-              {cap: "Receive votes for an Amendment", level: NOTHING},
-              {cap: "Record a voted Amendment", level: NOTHING},
-              {cap: "Have an overview of received votes/amendments", level: NOTHING},
-              {cap: "View current votes of a pending Amendment", level: NOTHING},
-              {cap: "Implement strategy for promoting Amendments", level: NOTHING},
-              {cap: "Promote a pending Amendment", level: NOTHING},
-              {cap: "View currently promoted Amendment", level: NOTHING},
-              {cap: "View previously promoted Amendment", level: NOTHING},
-              {cap: "View registrations of a promoted Amendment", level: NOTHING},
-              {cap: "View signatures (votes) of a promoted Amendment", level: NOTHING}
+              {cap: "Receive votes for an Amendment", level: STARTED},
+              {cap: "Record a voted Amendment", level: STARTED},
+              {cap: "Have an overview of received votes/amendments", level: STARTED},
+              {cap: "View current votes of a pending Amendment", level: STARTED},
+              {cap: "Implement strategy for promoting Amendments", level: STARTED},
+              {cap: "Promote a pending Amendment", level: STARTED},
+              {cap: "View currently promoted Amendment", level: STARTED},
+              {cap: "View previously promoted Amendments", level: STARTED},
+              {cap: "View registrations of a promoted Amendment", level: STARTED},
+              {cap: "View signatures (votes) of a promoted Amendment", level: STARTED}
             ]
           },
           {
