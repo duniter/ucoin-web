@@ -28,8 +28,8 @@ module.exports = function (node, auth) {
           {
             title: 'PKS',
             values: [
-              {cap: "Submit a Public Key - self signed", level: DONE},
-              {cap: "Search for one or more keys in submitted keys", level: DONE}
+              {cap: "Submit a Public Key - self signed", level: STARTED},
+              {cap: "Search for one or more keys in submitted keys", level: STARTED}
             ]
           },
           {
