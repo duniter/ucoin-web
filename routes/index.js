@@ -1,21 +1,66 @@
 var async = require('async');
+var _     = require('underscore');
 
 module.exports = function (node, auth) {
   
   this.index = function(req, res){
-    node.ucg.peering(proxy(res, function (json) {
-      res.render('home/index', {
-        currency: json.currency,
-        remotehost: json.remote.host,
-        remoteport: json.remote.port,
-        peers: json.peers,
-        fingerprint: json.key,
-        membersCount: 0,
-        amendmentsCount: 0,
-        transactionsCount: 0,
+    var data = {
+      transactionsCount: 0,
         auth: auth
-      });
-    }));
+    };
+    async.waterfall([
+      function (next){
+        node.ucg.peering(next);
+      },
+      function (json, next){
+        data["currency"] = json.currency;
+        data["remotehost"] = json.remote.host;
+        data["remoteport"] = json.remote.port;
+        data["peers"] = json.peers;
+        data["fingerprint"] = json.key;
+        next();
+      },
+      function (next){
+        node.hdc.amendments.current(function (err, json) {
+          if(err){
+            next(null, { number: -1, membersCount:0 });
+            return;
+          }
+          next(null, json);
+        });
+      },
+      function (json, next){
+        data["amendmentsCount"] = json.number + 1;
+        data["membersCount"] = json.membersCount;
+        data["amendmentsPending"] = 0;
+        data["membersPending"] = 0;
+        next();
+      },
+      function (next){
+        node.hdc.amendments.votes.get(next);
+      },
+      function (json, next){
+        _(json.amendments).each(function (value, number) {
+          if(number > data["amendmentsCount"] - 1){
+            data["amendmentsPending"] += _(value).size();
+          }
+        });
+        next();
+      },
+      function (next){
+        node.hdc.community.memberships(next);
+      },
+      function (json, next){
+        data["membersPending"] = json.merkle.leavesCount ? json.merkle.leavesCount : 0;
+        next();
+      },
+    ], function (err, result) {
+      if(err){
+        res.send(500, err);
+        return;
+      }
+      res.render('home/index', data);
+    });
   };
   
   this.capabilities = function(req, res){
@@ -103,3 +148,4 @@ function proxy(res, callback) {
     else callback(json);
   }
 }
+

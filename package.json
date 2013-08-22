@@ -28,7 +28,7 @@
     "express": "3.2.4",
     "ejs": "*",
     "ejs-locals": "*",
-    "vucoin": ">=0.0.9",
+    "vucoin": ">=0.1.0",
     "underscore": "*",
     "async": "*",
     "commander": "*"
