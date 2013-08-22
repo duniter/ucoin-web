@@ -9,7 +9,7 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('pks', {
+      res.render('pks/pks', {
         keys: json.keys,
         auth: auth
       });

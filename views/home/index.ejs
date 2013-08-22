@@ -1,0 +1,68 @@
+<% layout('../model.ejs') -%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="nav list-group" style="background-color: #f7f5fa;">
+        <a href="" class="list-group-item active glyphicon glyphicon-signal">&nbsp;&nbsp;Statistics</a>
+        <a href="cap" class="list-group-item glyphicon glyphicon-ok-sign">&nbsp;&nbsp;Capabilities</a>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <h1>Currency</h1>
+      <table class="table">
+        <tr>
+          <th style="width: 30%;">Field</th>
+          <th style="width: 70%;">Value</th>
+        </tr>
+        <tr>
+          <td>Name</td>
+          <td><span class="text-info"><strong><%= currency %></strong></span></td>
+        </tr>
+        <tr>
+          <td>Community</td>
+          <td>
+            <span class="label label-info" style="font-size: 14px;"><%= membersCount %> members</span>
+            <span class="label label-warning" style="font-size: 14px;"><%= membersCount %> pending</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Contract</td>
+          <td>
+            <span class="label label-info" style="font-size: 14px;"><%= amendmentsCount %> amendments</span>
+            <span class="label label-warning" style="font-size: 14px;"><%= amendmentsCount %> pending</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Transactions</td>
+          <td>
+            <span class="label label-info" style="font-size: 14px;"><%= transactionsCount %> recorded</span>
+          </td>
+        </tr>
+      </table>
+      <h1>Host</h1>
+      <table class="table">
+        <tr>
+          <th style="width: 30%;">Field</th>
+          <th style="width: 70%;">Value</th>
+        </tr>
+        <tr>
+          <td>Remote host</td>
+          <td><%= remotehost ? remotehost : 'None' %></td>
+        </tr>
+        <tr>
+          <td>Remote port</td>
+          <td><%= remoteport ? remoteport : 'None' %></td>
+        </tr>
+        <tr>
+          <td>Key fingerprint</td>
+          <td><%= fingerprint ? fingerprint : 'None' %></td>
+        </tr>
+        <tr>
+          <td>Peers</td>
+          <td><span class="label label-info" style="font-size: 14px;"><%= peers ? peers.length : '0' %> connected</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,7 @@ module.exports = function (node, auth) {
   
   this.index = function(req, res){
     node.ucg.peering(proxy(res, function (json) {
-      res.render('index', {
+      res.render('home/index', {
         currency: json.currency,
         remotehost: json.remote.host,
         remoteport: json.remote.port,
@@ -23,7 +23,7 @@ module.exports = function (node, auth) {
       var DONE = 2;
       var STARTED = 1;
       var NOTHING = 0;
-      res.render('capabilities', {
+      res.render('home/capabilities', {
         caps: [
           {
             title: 'PKS',

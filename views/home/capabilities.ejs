@@ -1,0 +1,43 @@
+<% layout('../model.ejs') -%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="nav list-group" style="background-color: #f7f5fa;">
+        <a href="/" class="list-group-item glyphicon glyphicon-signal">&nbsp;&nbsp;Statistics</a>
+        <a href="" class="list-group-item active glyphicon glyphicon-ok-sign">&nbsp;&nbsp;Capabilities</a>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <h1>Capabilities</h1>
+      <% var count = 0; %>
+      <% for(var i = 0; i < caps.length; i++){ %>
+        <% var cap = caps[i]; %>
+        <h3><%= cap.title %></h3>
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <th style="width: 10%;">#</th>
+              <th style="width: 60%;">Capability</th>
+              <th style="width: 20%;">Status</th>
+              <th style="width: 10%;"></th>
+            </tr>
+            <% for(var j = 0; j < cap.values.length; j++){ %>
+            <% var count = count + 1; %>
+            <% var val = cap.values[j]; %>
+            <% var trClass = val.level == 2 ? 'success' : (val.level == 1 ?  'warning' : ''); %>
+            <% var sign = val.level == 2 ? 'ok-sign' : (val.level == 1 ?  'plus-sign' : 'minus-sign'); %>
+            <% var status = val.level == 2 ? 'Done' : 'Under construction'; %>
+            <tr class="<%= trClass %>">
+              <td><%= count %></td>
+              <td><%= val.cap %></td>
+              <td><%= status %></td>
+              <td><span class="glyphicon glyphicon-<%= sign %>"></span></td>
+            </tr>
+          <% } %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+  </div>
+</div>

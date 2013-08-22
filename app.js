@@ -4,6 +4,7 @@ var path    = require('path');
 var fs      = require('fs');
 var vucoin  = require('vucoin');
 var program = require('commander');
+var engine  = require('ejs-locals');
 
 program
   .option('-p, --port <port>', 'Local port to listen', parseInt)
@@ -27,6 +28,8 @@ host = host.match(/:/) ? '[' + host + ']' : host;
 vucoin(host, port, auth, function (err, node) {
 
   var app = express();
+
+  app.engine('ejs', engine);
 
   // all environments
   app.set('port', process.env.PORT || 3000);
