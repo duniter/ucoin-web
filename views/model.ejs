@@ -5,24 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+    <style>
+      body{
+        overflow-y: scroll;
+      }
+    </style>
   </head>
   <body>
     
-    <div class="navbar" style="background-color: white; margin-top: 10px;">
+    <div class="navbar navbar-default navbar-static-top">
       <div class="container">
         <a href="#" class="navbar-brand">ucoin</a>
-        <ul class="nav navbar-nav nav-pills">
-          <li id="menu-1"><a href="/" class="glyphicon glyphicon-home">&nbsp;&nbsp;Home</a></li>
-          <li id="menu-2"><a href="/pks" class="glyphicon glyphicon-user">&nbsp;&nbsp;PKS</a></li>
-          <li id="menu-3" class="disabled"><a href="#" class="glyphicon glyphicon-globe">&nbsp;&nbsp;Peers</a></li>
-          <li id="menu-4" class="disabled"><a href="#" class="glyphicon glyphicon-list-alt">&nbsp;&nbsp;Contract</a></li>
-          <li id="menu-5" class="disabled"><a href="#" class="glyphicon glyphicon-retweet">&nbsp;&nbsp;Transactions</a></li>
+        <ul class="nav navbar-nav">
+          <li id="menu-1"><a href="/"><span class="glyphicon glyphicon-home">&nbsp;</span>Home</a></li>
+          <li id="menu-2"><a href="/pks"><span class="glyphicon glyphicon-user">&nbsp;</span>PKS</a></li>
+          <li id="menu-3" class="disabled"><a href="#"><span class="glyphicon glyphicon-globe">&nbsp;</span>Peers</a></li>
+          <li id="menu-4" class="disabled"><a href="#"><span class="glyphicon glyphicon-list-alt">&nbsp;</span>Contract</a></li>
+          <li id="menu-5" class="disabled"><a href="#"><span class="glyphicon glyphicon-transfer">&nbsp;</span>Transactions</a></li>
         </ul>
         <% if(auth){ %>
-          <h3 class="pull-right"><span class="label label-success">signed responses (secure mode)</span></h3>
+          <h4 class="navbar-text pull-right"><span class="label label-success">signed responses (secure mode)</span></h4>
         <% } else { %>
-          <h3 class="pull-right"><span class="label label-warning">unsigned responses (fast mode)</span></h3>
+          <h4 class="navbar-text pull-right"><span class="label label-warning">unsigned responses (fast mode)</span></h4>
         <% } %>
       </div>
     </div>
@@ -47,8 +52,27 @@
           '/contract': 'menu-4',
           '/tx': 'menu-5'
         };
+        var urlHome = {
+          '/': 'submenu-1',
+          '/cap': 'submenu-2'
+        };
+        var urlPKS = {
+          '/pks': 'submenu-1',
+          '/pks/add': 'submenu-2'
+        };
         var matches = window.location.pathname.match(/^(\/[^\/]*)/g);
         $('#' + (urlMenu[matches[0]] ? urlMenu[matches[0]] : urlMenu['/'])).addClass('active');
+
+        // Home menu
+        if(matches[0] == "/" || !urlMenu[matches[0]]){
+          $('#' + urlHome[matches[0]]).addClass('active');
+        }
+
+        // PKS menu
+        if(matches[0] == "/pks"){
+          var matchesPKS = window.location.pathname.match(/^(\/[^?]*)/g);
+          $('#' + urlPKS[matchesPKS[0]]).addClass('active');
+        }
       });
     </script>
   </body>

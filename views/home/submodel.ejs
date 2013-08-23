@@ -1,0 +1,15 @@
+<% layout('../model.ejs') -%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="list-group" style="background-color: #f7f5fa;">
+        <a id="submenu-1" href="/" class="list-group-item"><span class="glyphicon glyphicon-signal">&nbsp;</span>&nbsp;Statistics</a>
+        <a id="submenu-2"  href="/cap" class="list-group-item"><span class="glyphicon glyphicon-check">&nbsp;</span>&nbsp;Capabilities</a>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <%- body %>
+    </div>
+  </div>
+</div>
