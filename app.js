@@ -53,6 +53,8 @@ vucoin(host, port, auth, function (err, node) {
   app.get('/', routes.index);
   app.get('/cap', routes.capabilities);
   app.get('/pks', pks.lookup);
+  app.get('/pks/add', pks.add.get);
+  app.post('/pks/add', pks.add.post);
 
   http.createServer(app).listen(app_port, app_host, function(){
     console.log('Express server listening interface ' + app_host + ' on port ' + app_port);

@@ -1,0 +1,40 @@
+<% layout('submodel.ejs') -%>
+
+<h1>Update a public key</h1>
+<% if(success){ %>
+  <div class="alert alert-success">
+    <strong>Success!</strong> <%= success %>
+  </div>
+<% } %>
+<% if(error){ %>
+  <div class="alert alert-danger">
+    <strong>Error!</strong> <%= error %>
+  </div>
+<% } %>
+<div class="panel panel-default">
+  <div class="panel-heading">Update your key using files</div>
+  <br>
+  <div class="panel-body">
+    <form action="" method="POST" role="form" class="form-horizontal" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="keyfile" class="col-lg-2 control-label">Public key</label>
+        <div class="col-lg-10">
+          <input type="file" id="keyfile" name="keyfile">
+          <p class="help-block">Public key in ASCII armored format</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="sigfile" class="col-lg-2 control-label">Signature</label>
+        <div class="col-lg-10">
+          <input type="file" id="sigfile" name="sigfile">
+          <p class="help-block"><strong>Not mandatory :</strong>may be contained in public key file</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
