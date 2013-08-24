@@ -1,6 +1,6 @@
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
-// Copyright (c) 2012 Michele Bini
+// Copyright (c) 2012, 2013 Michele Bini
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the version 3 of the GNU General Public License
@@ -84,6 +84,14 @@ function resetform() {
        alert("An error occurred: " + err.message);
        return false;
    }
+}
+
+// Convert number to fixed point with at least 2 decimal places
+// Keep any extra precision, useful to verify the location with a map
+function fixCoord(x) {
+  return parseFloat(x)
+    .toFixed(8)
+    .match(/^[+-]?[0-9]*[.][0-9][0-9]([0-9]*[1-9])?/)[0];
 }
 
 function normalizeSign(n) {
@@ -176,7 +184,7 @@ function setgeonameslist(l) {
   var t = l[i];
   var o = document.createElement("option");
   o.text = fullgeoname(t);
-  o.value = t.geonameId + " " + t.lat + " " + t.lng;
+  o.value = t.geonameId + " " + fixCoord(t.lat) + " " + fixCoord(t.lng);
   if (first == null) first = o.value;
   addoption(sel, o);
     }
@@ -538,8 +546,8 @@ function generateudid2() {
       } else if (g.length == 1) {
           setMessageAfterElement("place", "Location found");
           var t = g[0];
-          var lat = t.lat;
-          var lon = t.lng;
+          var lat = fixCoord(t.lat);
+          var lon = fixCoord(t.lng);
           documentElement("place").value = fullgeoname(t);
           documentElement("lat").value = lat;
           documentElement("lon").value = lon;
