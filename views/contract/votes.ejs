@@ -1,0 +1,19 @@
+<% layout('submodel.ejs') -%>
+
+<h1>Votes</h1>
+<table class="table table-striped table-condensed">
+  <% for(var i = 0; i < numbers.length; i++){ %>
+  <% var num = numbers[i]; %>
+  <tr>
+    <th width="50%">Hash</th>
+    <th width="50%">Votes count</th>
+  </tr>
+    <% for(var j = 0; j < num.hashes.length; j++){ %>
+    <% var obj = num.hashes[j] %>
+    <tr>
+      <td><span style="font-family:fixed,courier">#<%= num.index %>-<%= obj.hash %></span></td>
+      <td><%= obj.count %></td>
+    </tr>
+    <% } %>
+  <% } %>
+</table>

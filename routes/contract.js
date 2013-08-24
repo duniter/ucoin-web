@@ -1,6 +1,7 @@
 var async = require('async');
 var sha1  = require('sha1');
 var fs    = require('fs');
+var _     = require('underscore');
 
 module.exports = function (node, auth) {
   
@@ -47,6 +48,35 @@ module.exports = function (node, auth) {
       }
 
       res.render('contract/pending', {
+        auth: auth
+      });
+    });
+  };
+  
+  this.votes = function(req, res){
+    node.hdc.amendments.votes.get(function (err, json) {
+      if(err){
+        res.send(500, err);
+        return;
+      }
+
+      var numbers = [];
+      _(json.amendments).each(function (hashes, num) {
+        numbers.push({
+          index: num,
+          hashes: []
+        });
+        _(hashes).each(function (count, hash) {
+          numbers[numbers.length-1].hashes.push({
+            hash: hash,
+            count: count
+          });
+        });
+      });
+
+      numbers.reverse();
+      res.render('contract/votes', {
+        numbers: numbers,
         auth: auth
       });
     });

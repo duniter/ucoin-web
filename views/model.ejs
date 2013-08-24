@@ -63,7 +63,8 @@
         };
         var urlContract = {
           '/contract/current': 'submenu-1',
-          '/contract/pending': 'submenu-2'
+          '/contract/pending': 'submenu-2',
+          '/contract/votes': 'submenu-3'
         };
         var matches = window.location.pathname.match(/^(\/[^\/]*)/g);
         $('#' + (urlMenu[matches[0]] ? urlMenu[matches[0]] : urlMenu['/'])).addClass('active');

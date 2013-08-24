@@ -59,6 +59,7 @@ vucoin(host, port, auth, function (err, node) {
   app.get('/pks/udid2', pks.udid2);
   app.get('/contract/current', contract.current);
   app.get('/contract/pending', contract.pending);
+  app.get('/contract/votes', contract.votes);
 
   http.createServer(app).listen(app_port, app_host, function(){
     console.log('Express server listening interface ' + app_host + ' on port ' + app_port);
