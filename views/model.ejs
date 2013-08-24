@@ -58,7 +58,8 @@
         };
         var urlPKS = {
           '/pks': 'submenu-1',
-          '/pks/add': 'submenu-2'
+          '/pks/add': 'submenu-2',
+          '/pks/udid2': 'submenu-3'
         };
         var matches = window.location.pathname.match(/^(\/[^\/]*)/g);
         $('#' + (urlMenu[matches[0]] ? urlMenu[matches[0]] : urlMenu['/'])).addClass('active');
@@ -75,5 +76,6 @@
         }
       });
     </script>
+    <%- scripts %>
   </body>
 </html>

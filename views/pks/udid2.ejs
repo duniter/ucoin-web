@@ -1,0 +1,172 @@
+<% layout('submodel.ejs') -%>
+<% script('/js/sha1.js') -%>
+<% script('/js/utf8.js') -%>
+<% script('/js/udid2.js') -%>
+
+<h1>Generate udid2</h1>
+<form role="form" class="form-horizontal" action="#" method="post">
+  <div class="form-group">
+    <label for="firstname" class="col-lg-2 control-label">Given name</label>
+    <div class="col-lg-7">
+      <input type="text" class="form-control" id="firstname" placeholder="A.k.a first name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastname" class="col-lg-2 control-label">Last name</label>
+    <div class="col-lg-7">
+      <input type="text" class="form-control" id="lastname" placeholder="A.k.a family name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="" class="col-lg-2 control-label">Birth date</label>
+    <div class="col-lg-2">
+      <select title="The day of the month in which you were born (1-31)"
+        id="day" name="day" class="form-control">
+        <option value="">Day</option>
+        <option value="01">1</option>
+        <option value="02">2</option>
+        <option value="03">3</option>
+        <option value="04">4</option>
+        <option value="05">5</option>
+        <option value="06">6</option>
+        <option value="07">7</option>
+        <option value="08">8</option>
+        <option value="09">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <select title="The month in which you were born"
+        id="month" name="month" class="form-control">
+        <option value="">Month</option>
+        <option value="01">January</option>
+        <option value="02">February</option>
+        <option value="03">March</option>
+        <option value="04">April</option>
+        <option value="05">May</option>
+        <option value="06">June</option>
+        <option value="07">July</option>
+        <option value="08">August</option>
+        <option value="09">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+       <input type="text" class="form-control" id="year" name="year" size="4" placeholder="Year">
+    </div>
+  </div>
+  <div id="placecell">
+    <div class="form-group">
+      <label for="place" class="col-lg-2 control-label">Birth place</label>
+      <div class="col-lg-7">
+        <input type="text" class="form-control" id="place" onChange="birthplacechanged()" placeholder="Town">
+      </div>
+    </div>
+  </div>
+  <div class="hidden" id="coordmethodcell">
+    <div class="form-group">
+      <label for="place" class="col-lg-2 control-label"></label>
+      <div class="col-lg-7">
+        <select class="secondary form-control" id="coordmethod" name="coordmethod" onChange="coordmethodselect()">
+          <option value="geonamesorg">Find earth coordinates via geonames.org</option>
+          <option value="latlon">Specify latitude/longitude</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="hidden" id="geonameslistcell">
+    <div class="form-group">
+      <label for="place" class="col-lg-2 control-label"></label>
+      <div class="col-lg-7">
+        <select style="width:19em" id="geonameslist" name="geonameslist" onChange="geonameselect()" onMouseDown="geonamesclearmsg()" class="form-control">
+          <option></option>
+        </select>
+        <p class="help-block"></p>
+      </div>
+    </div>
+  </div>
+  <div class="hidden" id="locationcell">
+    <div class="form-group">
+      <label for="place" class="col-lg-2 control-label"></label>
+      <div class="input-group col-lg-3">
+        <span title="Latitude of your birth location, in decimal form" class="input-group-addon">lat</span>
+        <input id="lat" style="text-align:center;" size="6" type="text" class="form-control">
+      </div>
+      <div class="input-group col-lg-3">
+        <span title="Longitude of your birth location, in decimal form" class="input-group-addon">lon</span>
+        <input id="lon" style="text-align:center;" size="6" type="text" class="form-control">
+      </div>
+      <div class="col-lg-3">
+        <span id="location"></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="place" class="col-lg-2 control-label"></label>
+      <div class="col-lg-5">
+        <a class="secondary" id="verifylocation" href="http://geonames.org/" target="_blank">Found on geonames.org</a>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="place" class="col-lg-2 control-label"></label>
+    <div class="col-lg-7">
+      <button id="generate" onClick="generateudid2()" type="button" class="primary btn btn-primary" >Generate your udid2!</button>
+      <button id="reset" onClick="resetform()" type="button" class="pull-right secondary btn btn-default">Reset form</button>
+      <p class="help-block"></p>
+    </div>
+  </div>
+  <div class="hidden" id="generated">
+    <div class="form-group">
+      <label for="place" class="col-lg-2 control-label"></label>
+      <div class="col-lg-7">
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Success!</strong></h3>
+          </div>
+          <div class="panel-body"><p> Your udid2 string is:</p>
+            <input id="udid2clear" style="font-family:fixed,courier" size="70" title="Your UDID2" type="text" class="form-control">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="place" class="col-lg-2 control-label"></label>
+      <div class="col-lg-7">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>What's next?</strong></h3>
+          </div>
+          <div class="panel-body">
+            <p>Now that you have your udid2 string, <u>you need to create your PGP key</u>.</p>
+            <p>During the creation, you will be asked for name, e-mail, and comment: <u><strong>give your udid2 as comment</strong></u>.</p>
+            <p>Once this is done, you may <a href="/pks/add">publish your key here</a> and on sks servers using your favorite tool.</p>
+            <p>And don't forget: ask people to <span style="font-size: 13px;" class="label label-info">sign your key!</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

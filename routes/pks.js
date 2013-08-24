@@ -17,6 +17,12 @@ module.exports = function (node, auth) {
     });
   };
   
+  this.udid2 = function(req, res){
+    res.render('pks/udid2', {
+      auth: auth
+    });
+  };
+  
   this.add = {
 
     get: function(req, res){
