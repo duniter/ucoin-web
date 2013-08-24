@@ -1,0 +1,15 @@
+<% layout('../model.ejs') -%>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="list-group" style="background-color: #f7f5fa;">
+        <a id="submenu-1" href="/contract/current" class="list-group-item"><span class="glyphicon glyphicon-list-alt">&nbsp;</span>&nbsp;Current</a>
+        <a id="submenu-2"  href="/contract/pending" class="list-group-item"><span class="glyphicon glyphicon-time">&nbsp;</span>&nbsp;Pending</a>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <%- body %>
+    </div>
+  </div>
+</div>

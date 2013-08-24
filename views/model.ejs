@@ -21,7 +21,7 @@
           <li id="menu-1"><a href="/"><span class="glyphicon glyphicon-home">&nbsp;</span>Home</a></li>
           <li id="menu-2"><a href="/pks"><span class="glyphicon glyphicon-user">&nbsp;</span>PKS</a></li>
           <li id="menu-3" class="disabled"><a href="#"><span class="glyphicon glyphicon-globe">&nbsp;</span>Peers</a></li>
-          <li id="menu-4" class="disabled"><a href="#"><span class="glyphicon glyphicon-list-alt">&nbsp;</span>Contract</a></li>
+          <li id="menu-4"><a href="/contract/current"><span class="glyphicon glyphicon-list-alt">&nbsp;</span>Contract</a></li>
           <li id="menu-5" class="disabled"><a href="#"><span class="glyphicon glyphicon-transfer">&nbsp;</span>Transactions</a></li>
         </ul>
         <% if(auth){ %>
@@ -61,6 +61,10 @@
           '/pks/add': 'submenu-2',
           '/pks/udid2': 'submenu-3'
         };
+        var urlContract = {
+          '/contract/current': 'submenu-1',
+          '/contract/pending': 'submenu-2'
+        };
         var matches = window.location.pathname.match(/^(\/[^\/]*)/g);
         $('#' + (urlMenu[matches[0]] ? urlMenu[matches[0]] : urlMenu['/'])).addClass('active');
 
@@ -73,6 +77,12 @@
         if(matches[0] == "/pks"){
           var matchesPKS = window.location.pathname.match(/^(\/[^?]*)/g);
           $('#' + urlPKS[matchesPKS[0]]).addClass('active');
+        }
+
+        // Contract menu
+        if(matches[0] == "/contract"){
+          var matchesContract = window.location.pathname.match(/^(\/[^?]*)/g);
+          $('#' + urlContract[matchesContract[0]]).addClass('active');
         }
       });
     </script>
