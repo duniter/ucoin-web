@@ -4,7 +4,7 @@
 
 <div class="panel-group" id="accordion">
   <% for(var i = 0; i < amendments.length; i++){ %>
-  <% var am = amendments[i]; %>
+  <% var am = amendments[i] %>
   <div class="panel panel-info">
     <div class="panel-heading">
       <h3 class="panel-title">
@@ -90,8 +90,8 @@
               <% if(am.votersChanges == 0){ %>
                 <span class="label label-warning">none</span>
               <% } %>
-              <% for(var i=0; i < am.votersChanges.length; i++){ %>
-              <% var change = am.votersChanges[i] %>
+              <% for(var j=0; j < am.votersChanges.length; j++){ %>
+              <% var change = am.votersChanges[j] %>
               <% if(change[0] == '+'){ %>
                 <span style="font-size: 11px;" class="label label-success"><%= change %></span>
               <% } else { %>
@@ -119,8 +119,8 @@
               <% if(am.membersChanges == 0){ %>
                 <span class="label label-warning">none</span>
               <% } %>
-              <% for(var i=0; i < am.membersChanges.length; i++){ %>
-              <% var change = am.membersChanges[i] %>
+              <% for(var j=0; j < am.membersChanges.length; j++){ %>
+              <% var change = am.membersChanges[j] %>
               <% if(change[0] == '+'){ %>
                 <span style="font-size: 11px;" class="label label-success"><%= change %></span>
               <% } else { %>
