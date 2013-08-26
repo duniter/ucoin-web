@@ -32,11 +32,14 @@ module.exports = function (node, auth) {
 
   function getPrevious (am, stack, done) {
     node.hdc.amendments.view.self(am.number-1, am.previousHash, function (err, previous) {
-      stack.push(previous);
-      if(previous.number > 0)
-        getPrevious(previous, stack, done);
-      else
-        done(null, stack);
+      if(previous){
+        stack.push(previous);
+        if(previous.number > 0)
+          getPrevious(previous, stack, done);
+        else
+          done(null, stack);
+      }
+      else done(null, stack);
     });
   }
   
