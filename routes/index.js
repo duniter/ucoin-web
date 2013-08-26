@@ -5,8 +5,11 @@ module.exports = function (node, auth) {
   
   this.index = function(req, res){
     var data = {
+      membersActualizing: 0,
+      membersJoining: 0,
+      membersLeaving: 0,
       transactionsCount: 0,
-        auth: auth
+      auth: auth
     };
     async.waterfall([
       function (next){
@@ -33,7 +36,6 @@ module.exports = function (node, auth) {
         data["amendmentsCount"] = json.number + 1;
         data["membersCount"] = json.membersCount;
         data["amendmentsPending"] = 0;
-        data["membersPending"] = 0;
         next();
       },
       function (next){
@@ -48,10 +50,14 @@ module.exports = function (node, auth) {
         next();
       },
       function (next){
-        node.hdc.community.memberships(next);
+        node.hdc.community.memberships({extract:true}, next);
       },
       function (json, next){
-        data["membersPending"] = json.merkle.leavesCount ? json.merkle.leavesCount : 0;
+        _(json.merkle.leaves).each(function (obj) {
+          data["membersJoining"] += obj.value.request.status == 'JOIN' ? 1 : 0;
+          data["membersActualizing"] += obj.value.request.status == 'ACTUALIZE' ? 1 : 0;
+          data["membersLeaving"] += obj.value.request.status == 'LEAVE' ? 1 : 0;
+        })
         next();
       },
     ], function (err, result) {
