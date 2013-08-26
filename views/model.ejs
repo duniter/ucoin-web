@@ -19,10 +19,10 @@
         <a href="#" class="navbar-brand">ucoin</a>
         <ul class="nav navbar-nav">
           <li id="menu-1"><a href="/"><span class="glyphicon glyphicon-home">&nbsp;</span>Home</a></li>
-          <li id="menu-2"><a href="/pks"><span class="glyphicon glyphicon-user">&nbsp;</span>PKS</a></li>
-          <li id="menu-3" class="disabled"><a href="#"><span class="glyphicon glyphicon-globe">&nbsp;</span>Peers</a></li>
+          <li id="menu-2"><a href="/community/current"><span class="glyphicon glyphicon-user">&nbsp;</span>Community</a></li>
           <li id="menu-4"><a href="/contract/current"><span class="glyphicon glyphicon-list-alt">&nbsp;</span>Contract</a></li>
           <li id="menu-5" class="disabled"><a href="#"><span class="glyphicon glyphicon-transfer">&nbsp;</span>Transactions</a></li>
+          <li id="menu-3" class="disabled"><a href="#"><span class="glyphicon glyphicon-globe">&nbsp;</span>Peers</a></li>
         </ul>
         <% if(auth){ %>
           <h4 class="navbar-text pull-right"><span class="label label-success">signed responses (secure mode)</span></h4>
@@ -47,7 +47,7 @@
       $('body').ready(function () {
         var urlMenu = {
           '/': 'menu-1',
-          '/pks': 'menu-2',
+          '/community': 'menu-2',
           '/peers': 'menu-3',
           '/contract': 'menu-4',
           '/tx': 'menu-5'
@@ -57,9 +57,11 @@
           '/cap': 'submenu-2'
         };
         var urlPKS = {
-          '/pks': 'submenu-1',
-          '/pks/add': 'submenu-2',
-          '/pks/udid2': 'submenu-3'
+          '/community/pks/lookup': 'submenu-1',
+          '/community/pks/add': 'submenu-2',
+          '/community/pks/udid2': 'submenu-3',
+          '/community/current': 'submenu-4',
+          '/community/pending': 'submenu-5'
         };
         var urlContract = {
           '/contract/current': 'submenu-1',
@@ -75,7 +77,7 @@
         }
 
         // PKS menu
-        if(matches[0] == "/pks"){
+        if(matches[0] == "/community"){
           var matchesPKS = window.location.pathname.match(/^(\/[^?]*)/g);
           $('#' + urlPKS[matchesPKS[0]]).addClass('active');
         }

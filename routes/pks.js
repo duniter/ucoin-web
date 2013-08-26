@@ -10,7 +10,7 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('pks/pks', {
+      res.render('community/pks/pks', {
         keys: json.keys,
         auth: auth
       });
@@ -18,7 +18,7 @@ module.exports = function (node, auth) {
   };
   
   this.udid2 = function(req, res){
-    res.render('pks/udid2', {
+    res.render('community/pks/udid2', {
       auth: auth
     });
   };
@@ -26,7 +26,7 @@ module.exports = function (node, auth) {
   this.add = {
 
     get: function(req, res){
-      res.render('pks/add', {
+      res.render('community/pks/add', {
         auth: auth,
         success: '',
         error: ''
@@ -97,7 +97,7 @@ module.exports = function (node, auth) {
             success = 'saved key of ' + name + comment + email;
           }
         }
-        res.render('pks/add', {
+        res.render('community/pks/add', {
           auth: auth,
           success: success,
           error: error

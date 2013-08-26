@@ -48,15 +48,18 @@ vucoin(host, port, auth, function (err, node) {
   }
 
   var routes   = require('./routes/index')(node, auth);
+  var members  = require('./routes/members')(node, auth);
   var pks      = require('./routes/pks')(node, auth);
   var contract = require('./routes/contract')(node, auth);
 
   app.get('/', routes.index);
   app.get('/cap', routes.capabilities);
-  app.get('/pks', pks.lookup);
-  app.get('/pks/add', pks.add.get);
-  app.post('/pks/add', pks.add.post);
-  app.get('/pks/udid2', pks.udid2);
+  app.get('/community/current', members.list);
+  app.get('/community/pending', members.pendingMemberships);
+  app.get('/community/pks/lookup', pks.lookup);
+  app.get('/community/pks/add', pks.add.get);
+  app.post('/community/pks/add', pks.add.post);
+  app.get('/community/pks/udid2', pks.udid2);
   app.get('/contract/current', contract.current);
   app.get('/contract/pending', contract.pending);
   app.get('/contract/votes', contract.votes);
