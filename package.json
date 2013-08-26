@@ -31,7 +31,8 @@
     "vucoin": ">=0.1.4",
     "underscore": "*",
     "async": "*",
-    "commander": "*"
+    "commander": "*",
+    "sha1": "*"
   },
   "devDependencies": {
     "mocha": "",
