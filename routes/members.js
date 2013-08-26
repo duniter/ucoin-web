@@ -15,7 +15,7 @@ module.exports = function (node, auth) {
               next(err, mems.merkle.leaves || {});
             });
           }
-          else next(null, { merkle: {} });
+          else next(null, {});
         });
       },
       function (mems, next){
