@@ -3,6 +3,11 @@
 <h1>Contract</h1>
 
 <div class="panel-group" id="accordion">
+  <% if(amendments.length == 0){ %>
+  <div class="alert alert-warning">
+    <strong>Contract is currently empty!</strong> it will be initialized once a vote is received.
+  </div>
+  <% } %>
   <% for(var i = 0; i < amendments.length; i++){ %>
   <% var am = amendments[i] %>
   <div class="panel panel-info">

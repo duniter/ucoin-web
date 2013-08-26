@@ -8,10 +8,12 @@ module.exports = function (node, auth) {
   this.current = function(req, res){
     async.waterfall([
       function (next){
-        node.hdc.amendments.current(next);
-      },
-      function (current, next){
-        getPrevious(current, [current], next);
+        node.hdc.amendments.current(function (err, am) {
+          if(am){
+            getPrevious(am, [am], next);
+          }
+          else next(null, []);
+        });
       }
     ], function (err, amendments) {
       if(err){
@@ -45,11 +47,6 @@ module.exports = function (node, auth) {
   
   this.pending = function(req, res){
     node.hdc.amendments.current(function (err, json) {
-      if(err){
-        res.send(500, err);
-        return;
-      }
-
       res.render('contract/pending', {
         auth: auth
       });
