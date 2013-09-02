@@ -65,7 +65,11 @@
                 <span class="label label-warning">none</span>
               <% } %>
               <% for(var j=0; j < tx.coins.length; j++){ %>
-              <%= tx.coins[j].id + ', ' + tx.coins[j].transaction_id %>
+              <%= tx.coins[j].id %>
+              <% if(tx.coins[j].transaction_id != ''){ %>
+              <br>
+              <%= '&nbsp;`--> ' + tx.coins[j].transaction_id %>
+              <% } %>
               <br>
               <% } %>
             </td>
