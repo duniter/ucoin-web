@@ -1,0 +1,82 @@
+<% layout('submodel.ejs') -%>
+
+<h1>Contract</h1>
+
+<div class="panel-group" id="accordion">
+  <% if(transactions.length == 0){ %>
+  <div class="alert alert-warning">
+    <strong>No transactions received yet!</strong>
+  </div>
+  <% } %>
+  <% for(var i = 0; i < transactions.length; i++){ %>
+  <% var tx = transactions[i] %>
+  <div class="panel panel-<%= (tx.type == 'ISSUANCE' ? 'success' : (tx.type == 'TRANSFERT' ? 'info' : 'warning')) %>">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <a style="font-family: courier" href="#collapse<%= i+1 %>" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
+          <strong><%= tx.type %></strong> of <strong><%= tx.sum %></strong> by <%= tx.sender %></a>
+      </h3>
+    </div>
+    <div class="panel-collapse collapse" id="collapse<%= i+1 %>">
+      <div class="panel-body">
+        <table class="table table-striped table-condensed">
+          <tr>
+            <th width="30%">Field</th>
+            <th width="70%">Value</th>
+          </tr>
+          <tr>
+            <td>Version</td>
+            <td><%= tx.version %></td>
+          </tr>
+          <tr>
+            <td>Currency</td>
+            <td><%= tx.currency %></td>
+          </tr>
+          <tr>
+            <td>Sender</td>
+            <td><%= tx.sender %></td>
+          </tr>
+          <tr>
+            <td>Number</td>
+            <td>#<%= tx.number %></td>
+          </tr>
+          <tr>
+            <td>PreviousHash</td>
+            <td>
+              <% if(tx.previousHash){ %>
+                <span style="font-family: fixed,courier"><%= tx.previousHash %></span>
+              <% } else { %>
+                <span class="label label-warning">none</span>
+              <% } %>
+            </td>
+          </tr>
+          <tr>
+            <td>Recipient</td>
+            <td><%= tx.recipient %></td>
+          </tr>
+          <tr>
+            <td>Type</td>
+            <td><%= tx.type %></td>
+          </tr>
+          <tr>
+            <td>Coins</td>
+            <td style="font-family: fixed,courier">
+              <% if(tx.coins.length == 0){ %>
+                <span class="label label-warning">none</span>
+              <% } %>
+              <% for(var j=0; j < tx.coins.length; j++){ %>
+              <%= tx.coins[j].id + ', ' + tx.coins[j].transaction_id %>
+              <br>
+              <% } %>
+            </td>
+          </tr>
+          <tr>
+            <td>Comment</td>
+            <td><%- tx.comment.replace(/\n/g, '<br>') -%></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
