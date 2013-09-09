@@ -13,7 +13,7 @@ module.exports = function (node, auth) {
     };
     async.waterfall([
       function (next){
-        node.ucg.peering(next);
+        node.ucg.peering.get(next);
       },
       function (json, next){
         data["currency"] = json.currency;
@@ -70,7 +70,7 @@ module.exports = function (node, auth) {
   };
   
   this.capabilities = function(req, res){
-    node.ucg.peering(proxy(res, function (json) {
+    node.ucg.peering.get(proxy(res, function (json) {
       var DONE = 2;
       var STARTED = 1;
       var NOTHING = 0;
