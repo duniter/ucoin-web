@@ -12,7 +12,7 @@ module.exports = function (node, auth) {
         node.hdc.amendments.current(function (err, am) {
           if(am){
             node.hdc.amendments.view.memberships(am.number, sha1(am.raw).toUpperCase(), { extract: true }, function (err, mems) {
-              next(err, mems.merkle.leaves || {});
+              next(err, mems.leaves || {});
             });
           }
           else next(null, {});
@@ -50,7 +50,7 @@ module.exports = function (node, auth) {
     async.waterfall([
       function (next){
         node.hdc.community.memberships({ extract: true }, function (err, mems) {
-          next(err, mems.merkle.leaves || {});
+          next(err, mems.leaves || {});
         });
       },
       function (mems, next){

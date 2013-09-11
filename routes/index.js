@@ -53,7 +53,7 @@ module.exports = function (node, auth) {
         node.hdc.community.memberships({extract:true}, next);
       },
       function (json, next){
-        _(json.merkle.leaves).each(function (obj) {
+        _(json.leaves).each(function (obj) {
           data["membersJoining"] += obj.value.request.status == 'JOIN' ? 1 : 0;
           data["membersActualizing"] += obj.value.request.status == 'ACTUALIZE' ? 1 : 0;
           data["membersLeaving"] += obj.value.request.status == 'LEAVE' ? 1 : 0;
