@@ -27,17 +27,18 @@ module.exports = function (node, auth) {
           var item = mems[index].value;
           status[item.issuer] = { membership: item.request };
           node.pks.lookup('0x' + item.issuer, function (err, json) {
+            console.log(json);
             if(json.keys.length == 0){
               callback('Member\'s public key with FPR ' + '0x' + item.issuer + ' not stored!');
               return;
             }
-            status[item.issuer].key = json.keys[0];
+            status[item.issuer].key = json.keys[0].key;
             callback(err);
           });
         }, next);
       }
     ], function (err) {
-      console.log(status);
+      // console.log(status);
       res.render('community/list', {
         status: _(status).values(),
         auth: auth
@@ -66,7 +67,7 @@ module.exports = function (node, auth) {
               callback('Member\'s public key with FPR ' + '0x' + item.issuer + ' not stored!');
               return;
             }
-            status[item.issuer].key = json.keys[0];
+            status[item.issuer].key = json.keys[0].key;
             callback(err);
           });
         }, next);

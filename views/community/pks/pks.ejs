@@ -10,10 +10,10 @@
   </tr>
   <% for(var i = 0; i < keys.length; i++){ %>
   <tr>
-    <td style="font-family: fixed,courier"><%= keys[i].name %></td>
-    <td style="font-family: fixed,courier"><%= keys[i].comment %></td>
-    <td style="font-family: fixed,courier">0x<%= keys[i].fingerprint.substring(32) %></td>
-    <td style="font-family: fixed,courier"><%= keys[i].email %></td>
+    <td style="font-family: fixed,courier"><%= keys[i].key.name %></td>
+    <td style="font-family: fixed,courier"><%= keys[i].key.comment %></td>
+    <td style="font-family: fixed,courier">0x<%= keys[i].key.fingerprint.substring(32) %></td>
+    <td style="font-family: fixed,courier"><%= keys[i].key.email %></td>
   </tr>
   <% } %>
 </table>
