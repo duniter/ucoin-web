@@ -1,0 +1,28 @@
+<% layout('submodel.ejs') -%>
+
+<h1>Trust Hash Table</h1>
+<table class="table table-condensed table-striped">
+  <tr>
+    <th style="width: 30%;">Key ID</th>
+    <th style="width: 35%;">Hosters</th>
+    <th style="width: 35%;">Trusts</th>
+  </tr>
+<% for(var i = 0; i < tht.length; i++){ %>
+<% var hosters = tht[i].hosters %>
+<% var trusts = tht[i].trusts %>
+<% var key = tht[i].fingerprint %>
+  <tr>
+    <td style="font-family: fixed,courier">0x<%= key.substring(0, 24) %></td>
+    <td style="font-family: fixed,courier">
+      <% for(var j = 0; j < hosters.length; j++){ %>
+        0x<%= hosters[j].substring(0, 24) %><br>
+      <% } %>
+    </td>
+    <td style="font-family: fixed,courier">
+      <% for(var j = 0; j < trusts.length; j++){ %>
+        0x<%= trusts[j].substring(0, 24) %><br>
+      <% } %>
+    </td>
+  </tr>
+<% } %>
+</table>

@@ -52,6 +52,7 @@ vucoin(host, port, auth, function (err, node) {
   var pks          = require('./routes/pks')(node, auth);
   var contract     = require('./routes/contract')(node, auth);
   var transactions = require('./routes/transactions')(node, auth);
+  var peers        = require('./routes/peers')(node, auth);
 
   app.get('/', routes.index);
   app.get('/cap', routes.capabilities);
@@ -65,6 +66,13 @@ vucoin(host, port, auth, function (err, node) {
   app.get('/contract/pending', contract.pending);
   app.get('/contract/votes', contract.votes);
   app.get('/tx/lasts', transactions.lasts);
+  app.get('/peers', peers.knownPeers);
+  app.get('/peers/keys', peers.managedKeys);
+  app.get('/peers/tht', peers.tht);
+  app.get('/peers/upstream/main', peers.upstreamALL);
+  app.get('/peers/upstream/keys', peers.upstreamKEYS);
+  app.get('/peers/downstream/main', peers.downstreamALL);
+  app.get('/peers/downstream/keys', peers.downstreamKEYS);
 
   http.createServer(app).listen(app_port, app_host, function(){
     console.log('Express server listening interface ' + app_host + ' on port ' + app_port);

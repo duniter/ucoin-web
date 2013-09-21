@@ -22,7 +22,7 @@
           <li id="menu-2"><a href="/community/current"><span class="glyphicon glyphicon-user">&nbsp;</span>Community</a></li>
           <li id="menu-4"><a href="/contract/current"><span class="glyphicon glyphicon-list-alt">&nbsp;</span>Contract</a></li>
           <li id="menu-5"><a href="/tx/lasts"><span class="glyphicon glyphicon-transfer">&nbsp;</span>Transactions</a></li>
-          <li id="menu-3" class="disabled"><a href="#"><span class="glyphicon glyphicon-globe">&nbsp;</span>Peers</a></li>
+          <li id="menu-3"><a href="/peers"><span class="glyphicon glyphicon-globe">&nbsp;</span>Peers</a></li>
         </ul>
         <% if(auth){ %>
           <h4 class="navbar-text pull-right"><span class="label label-success">signed responses (secure mode)</span></h4>
@@ -71,6 +71,15 @@
         var urlTransactions = {
           '/tx/lasts': 'submenu-1'
         };
+        var urlPeers = {
+          '/peers': 'submenu-11',
+          '/peers/keys': 'submenu-12',
+          '/peers/tht': 'submenu-13',
+          '/peers/upstream/main': 'submenu-21',
+          '/peers/upstream/keys': 'submenu-22',
+          '/peers/downstream/main': 'submenu-23',
+          '/peers/downstream/keys': 'submenu-24'
+        };
         var matches = window.location.pathname.match(/^(\/[^\/]*)/g);
         $('#' + (urlMenu[matches[0]] ? urlMenu[matches[0]] : urlMenu['/'])).addClass('active');
 
@@ -95,6 +104,12 @@
         if(matches[0] == "/tx"){
           var matchesTX = window.location.pathname.match(/^(\/[^?]*)/g);
           $('#' + urlTransactions[matchesTX[0]]).addClass('active');
+        }
+
+        // Peers menu
+        if(matches[0] == "/peers"){
+          var matchesTX = window.location.pathname.match(/^(\/[^?]*)/g);
+          $('#' + urlPeers[matchesTX[0]]).addClass('active');
         }
       });
     </script>
