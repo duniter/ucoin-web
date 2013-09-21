@@ -111,7 +111,7 @@ module.exports = function (node, auth) {
         async.forEach(_(merkle.leaves).keys(), function(merkleKey, callback){
           var k = merkle.leaves[merkleKey].value;
           node.ucg.peering.peers.upstream.of(k, function (err, json) {
-            if(!err)
+            if(!err && json.peers && json.peers.length > 0)
               keys[k] = json.peers;
             callback();
           });
@@ -164,7 +164,29 @@ module.exports = function (node, auth) {
   this.downstreamKEYS = function(req, res){
     async.waterfall([
       function (next){
-        node.ucg.peering.peers.upstream.get(next);
+        node.ucg.peering.keys({extract:true}, next);
+      },
+      function (merkle, next) {
+        var keys = {};
+        async.forEach(_(merkle.leaves).keys(), function(merkleKey, callback){
+          var k = merkle.leaves[merkleKey].value;
+          node.ucg.peering.peers.downstream.of(k, function (err, json) {
+            if(!err && json.peers && json.peers.length > 0)
+              keys[k] = json.peers;
+            callback();
+          });
+        }, function(err){
+          next(null, keys);
+        });
+      },
+      function (keys, next) {
+        var sortedFinal = [];
+        var sortedKeys = _(keys).keys();
+        sortedKeys.sort();
+        sortedKeys.forEach(function (k) {
+          sortedFinal.push({ key: k, peers: keys[k] });
+        });
+        next(null, sortedFinal);
       }
     ], function (err, keys) {
       if(err){
