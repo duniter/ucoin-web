@@ -1,5 +1,6 @@
 var async = require('async');
 var _     = require('underscore');
+var hdc   = require('hdc');
 
 module.exports = function (node, auth) {
   
@@ -33,9 +34,13 @@ module.exports = function (node, auth) {
         });
       },
       function (json, next){
+        var am = new hdc.Amendment();
+        am.membersChanges = json.membersChanges;
         data["amendmentsCount"] = json.number + 1;
         data["membersCount"] = json.membersCount;
         data["amendmentsPending"] = 0;
+        data["membersJoining"] = am.getNewMembers().length;
+        data["membersLeaving"] = am.getLeavingMembers().length;
         next();
       },
       function (next){
@@ -47,17 +52,6 @@ module.exports = function (node, auth) {
             data["amendmentsPending"] += _(value).size();
           }
         });
-        next();
-      },
-      function (next){
-        node.hdc.community.memberships({extract:true}, next);
-      },
-      function (json, next){
-        _(json.leaves).each(function (obj) {
-          data["membersJoining"] += obj.value.request.status == 'JOIN' ? 1 : 0;
-          data["membersActualizing"] += obj.value.request.status == 'ACTUALIZE' ? 1 : 0;
-          data["membersLeaving"] += obj.value.request.status == 'LEAVE' ? 1 : 0;
-        })
         next();
       },
     ], function (err, result) {
