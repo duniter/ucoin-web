@@ -1,4 +1,5 @@
 <% layout('submodel.ejs') -%>
+<% script('/js/beautify.js') -%>
 
 <h1>Contract</h1>
 
@@ -36,14 +37,8 @@
             <td>#<%= am.number %></td>
           </tr>
           <tr>
-            <td>PreviousHash</td>
-            <td>
-              <% if(am.previousHash){ %>
-                <span style="font-family: fixed,courier"><%= am.previousHash %></span>
-              <% } else { %>
-                <span class="label label-warning">none</span>
-              <% } %>
-            </td>
+            <td>Generated on</td>
+            <td id="generatedon"><%= am.generated %></td>
           </tr>
           <tr>
             <td>Universal Dividend</td>
@@ -66,12 +61,61 @@
             </td>
           </tr>
           <tr>
-            <td>Voters signatures root</td>
+            <td>Previous hash</td>
             <td>
-              <% if(am.votersSigRoot){ %>
-                <span style="font-family: fixed,courier"><%= am.votersSigRoot %></span>
+              <% if(am.previousHash){ %>
+                <span style="font-family: fixed,courier"><%= am.previousHash %></span>
               <% } else { %>
                 <span class="label label-warning">none</span>
+              <% } %>
+            </td>
+          </tr>
+          <tr>
+            <td>Previous votes root</td>
+            <td>
+              <% if(am.previousHash){ %>
+                <span style="font-family: fixed,courier"><%= am.previousVotesRoot %></span>
+              <% } else { %>
+                <span class="label label-warning">none</span>
+              <% } %>
+            </td>
+          </tr>
+          <tr>
+            <td>Previous votes count</td>
+            <td>
+              <% if(am.previousHash){ %>
+                <span style="font-family: fixed,courier"><%= am.previousVotesCount %></span>
+              <% } else { %>
+                <span class="label label-warning">none</span>
+              <% } %>
+            </td>
+          </tr>
+          <tr>
+            <td>Members status root</td>
+            <td style="font-family: fixed,courier"><%= am.membersStatusRoot %></td>
+          </tr>
+          <tr>
+            <td>Members root</td>
+            <td style="font-family: fixed,courier"><%= am.membersRoot %></td>
+          </tr>
+          <tr>
+            <td>Members count</td>
+            <td><%= am.membersCount %></td>
+          </tr>
+          <tr>
+            <td>Members changes</td>
+            <td>
+              <% if(am.membersChanges == 0){ %>
+                <span class="label label-warning">none</span>
+              <% } %>
+              <% for(var j=0; j < am.membersChanges.length; j++){ %>
+              <% var change = am.membersChanges[j] %>
+              <% if(change[0] == '+'){ %>
+                <span style="font-size: 11px;" class="label label-success"><%= change %></span>
+              <% } else { %>
+                <span style="font-size: 11px;" class="label label-danger"><%= change %></span>
+              <% } %>
+              <br>
               <% } %>
             </td>
           </tr>
@@ -97,35 +141,6 @@
               <% } %>
               <% for(var j=0; j < am.votersChanges.length; j++){ %>
               <% var change = am.votersChanges[j] %>
-              <% if(change[0] == '+'){ %>
-                <span style="font-size: 11px;" class="label label-success"><%= change %></span>
-              <% } else { %>
-                <span style="font-size: 11px;" class="label label-danger"><%= change %></span>
-              <% } %>
-              <br>
-              <% } %>
-            </td>
-          </tr>
-          <tr>
-            <td>Members status root</td>
-            <td style="font-family: fixed,courier"><%= am.membersStatusRoot %></td>
-          </tr>
-          <tr>
-            <td>Members root</td>
-            <td style="font-family: fixed,courier"><%= am.membersRoot %></td>
-          </tr>
-          <tr>
-            <td>Members count</td>
-            <td><%= am.membersCount %></td>
-          </tr>
-          <tr>
-            <td>Members changes</td>
-            <td>
-              <% if(am.membersChanges == 0){ %>
-                <span class="label label-warning">none</span>
-              <% } %>
-              <% for(var j=0; j < am.membersChanges.length; j++){ %>
-              <% var change = am.membersChanges[j] %>
               <% if(change[0] == '+'){ %>
                 <span style="font-size: 11px;" class="label label-success"><%= change %></span>
               <% } else { %>
