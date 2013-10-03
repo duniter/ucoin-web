@@ -9,11 +9,11 @@
     <th style="width: 50%;">udid2</th>
   </tr>
   <% for(var i = 0; i < status.length; i++){ %>
-  <% var st = status[i].membership.status %>
+  <% var st = status[i].status %>
   <% var trClass = st == 'JOIN' ? 'success' : (st == 'LEAVE' ?  'danger' : ''); %>
   <tr class="<%= trClass %>">
     <td style="font-family: fixed,courier"><%= status[i].key.name %></td>
-    <td style="font-family: fixed,courier"><%= status[i].membership.status %></td>
+    <td style="font-family: fixed,courier"><%= st %></td>
     <td style="font-family: fixed,courier">0x<%= status[i].key.fingerprint.substring(32) %></td>
     <td style="font-family: fixed,courier"><%= status[i].key.comment %></td>
   </tr>
