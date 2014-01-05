@@ -35,13 +35,13 @@ module.exports = function (node, auth) {
       },
       function (json, next){
         var am = new hdc.Amendment();
-        am.membersChanges = json.membersChanges;
+        am.membersChanges = json.membersChanges || [];
         data["amendmentsCount"] = json.number + 1;
         data["amendmentsPending"] = 0;
-        data["membersCount"] = json.membersCount;
+        data["membersCount"] = json.membersCount || 0;
         data["membersJoining"] = am.getNewMembers().length;
         data["membersLeaving"] = am.getLeavingMembers().length;
-        data["votersCount"] = json.votersCount;
+        data["votersCount"] = json.votersCount || 0;
         data["votersJoining"] = am.getNewVoters().length;
         data["votersLeaving"] = am.getLeavingVoters().length;
         next();
