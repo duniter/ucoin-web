@@ -9,14 +9,24 @@ module.exports = function (node, auth) {
   this.knownPeers = function(req, res){
     async.waterfall([
       function (next){
-        node.ucg.peering.peers.get({ extract: true }, next);
+        node.ucg.peering.peers.get({ leaves: true }, next);
       },
       function (merkle, next) {
         var peers = [];
-        _(merkle.leaves).keys().forEach(function (key) {
-          peers.push(merkle.leaves[key].value);
+        async.forEach(merkle.leaves, function(fingerprint, callback){
+          async.waterfall([
+            function (next){
+              node.ucg.peering.peers.get({ leaf: fingerprint }, next);
+            },
+            function(json, next){
+              var peer = (json.leaf && json.leaf.value) || {};
+              peers.push(peer);
+              next();
+            },
+          ], callback);
+        }, function (err) {
+          next(null, peers);
         });
-        next(null, peers);
       }
     ], function (err, peers) {
       if(err){
@@ -35,14 +45,10 @@ module.exports = function (node, auth) {
   this.managedKeys = function(req, res){
     async.waterfall([
       function (next){
-        node.ucg.peering.keys({extract:true}, next);
+        node.ucg.peering.keys({ leaves: true}, next);
       },
       function (merkle, next) {
-        var keys = [];
-        _(merkle.leaves).keys().forEach(function (key) {
-          keys.push(merkle.leaves[key].value);
-        });
-        next(null, keys);
+        next(null, merkle.leaves);
       }
     ], function (err, keys) {
       if(err){
@@ -60,14 +66,23 @@ module.exports = function (node, auth) {
   this.tht = function(req, res){
     async.waterfall([
       function (next){
-        node.ucg.tht.get({extract:true}, next);
+        node.ucg.tht.get({ leaves: true}, next);
       },
       function (merkle, next) {
         var tht = [];
-        _(merkle.leaves).keys().forEach(function (key) {
-          tht.push(merkle.leaves[key].value.entry);
+        async.forEach(merkle.leaves, function(hash, callback){
+          async.waterfall([
+            function(next){
+              node.ucg.tht.get({ leaf: hash }, next);
+            },
+            function (merkle, next){
+              tht.push(merkle.leaf.value.entry);
+              next(null);
+            },
+          ], callback);
+        }, function(err){
+          next(err, tht);
         });
-        next(null, tht);
       }
     ], function (err, tht) {
       if(err){
@@ -93,7 +108,7 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('peers/stream/all', {
+      res.render('peers/stream/streams', {
         subtitle: 'ALL Upstream',
         peers: result.peers || [],
         auth: auth
@@ -104,12 +119,11 @@ module.exports = function (node, auth) {
   this.upstreamKEYS = function(req, res){
     async.waterfall([
       function (next){
-        node.ucg.peering.keys({extract:true}, next);
+        node.ucg.peering.keys({ leaves: true }, next);
       },
       function (merkle, next) {
         var keys = {};
-        async.forEach(_(merkle.leaves).keys(), function(merkleKey, callback){
-          var k = merkle.leaves[merkleKey].value;
+        async.forEach(merkle.leaves, function(k, callback){
           node.ucg.peering.peers.upstream.of(k, function (err, json) {
             if(!err && json.peers && json.peers.length > 0)
               keys[k] = json.peers;
@@ -153,7 +167,7 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('peers/stream/all', {
+      res.render('peers/stream/streams', {
         subtitle: 'ALL Downstream',
         peers: result.peers || [],
         auth: auth
@@ -164,12 +178,11 @@ module.exports = function (node, auth) {
   this.downstreamKEYS = function(req, res){
     async.waterfall([
       function (next){
-        node.ucg.peering.keys({extract:true}, next);
+        node.ucg.peering.keys({ leaves: true }, next);
       },
       function (merkle, next) {
         var keys = {};
-        async.forEach(_(merkle.leaves).keys(), function(merkleKey, callback){
-          var k = merkle.leaves[merkleKey].value;
+        async.forEach(merkle.leaves, function(k, callback){
           node.ucg.peering.peers.downstream.of(k, function (err, json) {
             if(!err && json.peers && json.peers.length > 0)
               keys[k] = json.peers;

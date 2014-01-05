@@ -39,12 +39,10 @@ function MemberResponse (node, auth){
     var joining = this.getNew(hdcAM);
     var leaving = this.getLeaving(hdcAM);
     joining.forEach(function(m){
-      console.log('JOIN', m);
       status[m] = status[m] || { key: { name: '', fingerprint: m, comment: '' }, status: '' };
       status[m].status = 'JOIN';
     });
     leaving.forEach(function(m){
-      console.log('LEAVE', m);
       status[m] = status[m] || { key: { name: '', fingerprint: m, comment: '' }, status: '' };
       status[m].status = 'LEAVE';
     });
@@ -68,14 +66,13 @@ function MemberResponse (node, auth){
         next();
       },
       function (next){
-        method.call(method, am.number, sha1(am.raw).toUpperCase(), { extract: true }, function (err, members) {
+        method.call(method, am.number, sha1(am.raw).toUpperCase(), { leaves: true }, function (err, members) {
           next(err, members.leaves || {});
         });
       },
       function (members, next){
-        var indexes = [];
-        _(members).each(function (item, index) {
-          status[item.value] = status[item.value] || { key: { name: '', fingerprint: item.value, comment: '' }, status: '' };
+        members.forEach(function (fpr, index) {
+          status[fpr] = status[fpr] || { key: { name: '', fingerprint: fpr, comment: '' }, status: '' };
         });
         async.forEach(_(status).keys(), function(fingerprint, callback){
           that.node.pks.lookup('0x' + fingerprint, function (err, json) {

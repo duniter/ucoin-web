@@ -16,10 +16,21 @@
     <td>Community</td>
     <td>
       <a href="/community/current" class="btn btn-primary btn-xs"><%= membersCount %> members</a>
+      <% if(membersJoining > 0) { %>
+      <a href="/community/current" class="btn btn-success btn-xs">+<%= membersJoining %></a>
+      <% } %>
+      <% if(membersLeaving > 0) { %>
+      <a href="/community/current" class="btn btn-danger btn-xs">-<%= membersLeaving %></a>
+      <% } %>
     </td>
     <td>
-      <a href="/community/current" class="btn btn-success btn-xs"><%= membersJoining %> joining</a>
-      <a href="/community/current" class="btn btn-danger btn-xs"><%= membersLeaving %> leaving</a>
+      <a href="/community/voters" class="btn btn-primary btn-xs"><%= votersCount %> voters</a>
+      <% if(votersJoining > 0) { %>
+      <a href="/community/voters" class="btn btn-success btn-xs">+<%= votersJoining %></a>
+      <% } %>
+      <% if(votersLeaving > 0) { %>
+      <a href="/community/voters" class="btn btn-danger btn-xs">-<%= votersLeaving %></a>
+      <% } %>
     </td>
   </tr>
   <tr>

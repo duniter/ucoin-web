@@ -37,10 +37,13 @@ module.exports = function (node, auth) {
         var am = new hdc.Amendment();
         am.membersChanges = json.membersChanges;
         data["amendmentsCount"] = json.number + 1;
-        data["membersCount"] = json.membersCount;
         data["amendmentsPending"] = 0;
+        data["membersCount"] = json.membersCount;
         data["membersJoining"] = am.getNewMembers().length;
         data["membersLeaving"] = am.getLeavingMembers().length;
+        data["votersCount"] = json.votersCount;
+        data["votersJoining"] = am.getNewVoters().length;
+        data["votersLeaving"] = am.getLeavingVoters().length;
         next();
       },
       function (next){
