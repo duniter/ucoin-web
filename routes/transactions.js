@@ -24,10 +24,18 @@ module.exports = function (node, auth) {
           var coin = hdcTX.getCoins()[0];
           sum = coin.base * Math.pow(10, coin.power);
         }
-        if(hdcTX.type != 'FUSION'){
+        else if(hdcTX.type == 'TRANSFER'){
           var coins = hdcTX.getCoins();
           coins.forEach(function (coin) {
             sum += coin.base * Math.pow(10, coin.power);
+          });
+        }
+        else {
+          var coins = hdcTX.getCoins();
+          coins.forEach(function (coin) {
+            if (coin.transaction) {
+              sum += coin.base * Math.pow(10, coin.power);
+            }
           });
         }
         tx.sum = sum;
