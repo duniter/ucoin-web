@@ -20,7 +20,11 @@ module.exports = function (node, auth) {
       result.transactions.forEach(function (tx) {
         var sum = 0;
         var hdcTX = jsonTxToHDC(tx);
-        if(hdcTX.type == 'FUSION'){
+        if(hdcTX.type == 'ISSUANCE'){
+          var coin = hdcTX.getCoins()[0];
+          sum = coin.base * Math.pow(10, coin.power);
+        }
+        else if(hdcTX.type == 'FUSION'){
           var coin = hdcTX.getCoins()[0];
           sum = coin.base * Math.pow(10, coin.power);
         }

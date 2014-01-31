@@ -28,7 +28,7 @@
     "express": "3.2.4",
     "ejs": "*",
     "ejs-locals": "*",
-    "hdc": "*",
+    "hdc": "~0.4.0",
     "vucoin": "*",
     "underscore": "*",
     "async": "*",
