@@ -46,8 +46,29 @@ module.exports = function (node, auth) {
   }
   
   this.pending = function(req, res){
-    node.hdc.amendments.current(function (err, json) {
+    async.waterfall([
+      function (next){
+        node.hdc.amendments.current(function (err, am) {
+          next(null, am ? am.number : -1);
+        });
+      },
+      function (currentNumber, next){
+        node.ucs.amendment.proposed(currentNumber + 1, function (err, am) {
+          next(null, am ? [am] : []);
+        });
+      },
+    ], function (err, amendments) {
+      if(err){
+        res.send(500, err);
+        return;
+      }
+
+      amendments.forEach(function (am) {
+        am.hash = sha1(am.raw).toUpperCase();
+      });
+
       res.render('contract/pending', {
+        amendments: amendments,
         auth: auth
       });
     });

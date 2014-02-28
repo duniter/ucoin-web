@@ -18,10 +18,9 @@ module.exports = function (node, auth) {
       },
       function (json, next){
         data["currency"] = json.currency;
-        data["remotehost"] = json.remote.host;
-        data["remoteport"] = json.remote.port;
-        data["peers"] = json.peers;
-        data["fingerprint"] = json.key;
+        data["endpoints"] = json.endpoints;
+        data["peers"] = [];//json.peers;
+        data["fingerprint"] = json.fingerprint;
         next();
       },
       function (next){
@@ -37,14 +36,16 @@ module.exports = function (node, auth) {
         var am = new hdc.Amendment();
         am.membersChanges = json.membersChanges || [];
         data["amendmentsCount"] = json.number + 1;
-        data["amendmentsPending"] = 0;
         data["membersCount"] = json.membersCount || 0;
         data["membersJoining"] = am.getNewMembers().length;
         data["membersLeaving"] = am.getLeavingMembers().length;
         data["votersCount"] = json.votersCount || 0;
         data["votersJoining"] = am.getNewVoters().length;
         data["votersLeaving"] = am.getLeavingVoters().length;
-        next();
+        node.ucs.amendment.proposed(json.number + 1, function (err, json) {
+          data["amendmentsPending"] = err ? 0 : 1;
+          next();
+        });
       },
       function (next){
         node.hdc.amendments.votes.get(next);

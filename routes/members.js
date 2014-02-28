@@ -22,7 +22,6 @@ function MemberResponse (node, auth){
 
   this.node = node;
   this.auth = auth;
-  this.methode = node.hdc.amendments.view.members;
 
   this.getNew = function (am) {
     return am.getNewMembers();
@@ -48,27 +47,54 @@ function MemberResponse (node, auth){
     });
   }
 
+  this.changesToLookAt = function (am) {
+    return am.membersChanges;
+  };
+
   this.process = function (res) {
-    var method = this.methode;
     var status = {};
     var am;
     var that = this;
+
+    function getPrevious (node, am, stack, done) {
+      node.hdc.amendments.view.self(am.number-1, am.previousHash, function (err, previous) {
+        if(previous){
+          stack.push(previous);
+          if(previous.number > 0)
+            getPrevious(node, previous, stack, done);
+          else
+            done(null, stack);
+        }
+        else done(null, stack);
+      });
+    }
+
     async.waterfall([
       function (next){
-        that.node.hdc.amendments.current(next);
-      },
-      function (current, next){
-        am = current;
-        next();
-      },
-      function (next){
-        that.updateStatus(status, am);
-        next();
-      },
-      function (next){
-        method.call(method, am.number, sha1(am.raw).toUpperCase(), { leaves: true }, function (err, members) {
-          next(err, members.leaves || {});
+        that.node.hdc.amendments.current(function (err, am) {
+          if(am){
+            that.updateStatus(status, am);
+            getPrevious(that.node, am, [am], next);
+          }
+          else next(null, []);
         });
+      },
+      function (ams, next){
+        var members = {};
+        var stillMembers = [];
+        ams.forEach(function(am){
+          that.changesToLookAt(am).forEach(function(change){
+            var type = change.substr(0, 1);
+            var fpr = change.substr(1);
+            if (members[fpr] == undefined) {
+              members[fpr] = type == '+';
+              if (type == '+') {
+                stillMembers.push(fpr);
+              }
+            }
+          });
+        });
+        next(null, stillMembers);
       },
       function (members, next){
         members.forEach(function (fpr, index) {
@@ -96,13 +122,15 @@ function MemberResponse (node, auth){
 function VoterResponse (node, auth){  
   MemberResponse.call(this, node, auth);
 
-  this.methode = node.hdc.amendments.view.voters;
-
   this.getNew = function (am) {
     return am.getNewVoters();
-  }
+  };
 
   this.getLeaving = function (am) {
     return am.getLeavingVoters();
-  }
+  };
+
+  this.changesToLookAt = function (am) {
+    return am.votersChanges;
+  };
 }

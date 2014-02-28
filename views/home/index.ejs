@@ -57,16 +57,16 @@
     <th style="width: 70%;">Value</th>
   </tr>
   <tr>
-    <td>Remote host</td>
-    <td><%= remotehost ? remotehost : 'None' %></td>
-  </tr>
-  <tr>
-    <td>Remote port</td>
-    <td><%= remoteport ? remoteport : 'None' %></td>
-  </tr>
-  <tr>
     <td>Key fingerprint</td>
     <td><%= fingerprint ? fingerprint : 'None' %></td>
+  </tr>
+  <tr>
+    <td>Endpoints</td>
+    <td style="font-family: courier">
+      <% for(var i = 0; i < endpoints.length; i++){ %>
+      <%= endpoints[i] %>
+      <% } %>
+    </td>
   </tr>
   <tr>
     <td>Peers</td>

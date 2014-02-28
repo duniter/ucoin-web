@@ -65,10 +65,6 @@
             <td style="font-family: fixed,courier"><%= am.nextVotes %></td>
           </tr>
           <tr>
-            <td>Members root</td>
-            <td style="font-family: fixed,courier"><%= am.membersRoot %></td>
-          </tr>
-          <tr>
             <td>Previous hash</td>
             <td>
               <% if(am.previousHash){ %>
@@ -77,6 +73,10 @@
                 <span class="label label-warning">none</span>
               <% } %>
             </td>
+          </tr>
+          <tr>
+            <td>Members root</td>
+            <td style="font-family: fixed,courier"><%= am.membersRoot %></td>
           </tr>
           <tr>
             <td>Members count</td>

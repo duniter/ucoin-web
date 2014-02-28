@@ -29,7 +29,7 @@
     "ejs": "*",
     "ejs-locals": "*",
     "hdc": "~0.4.0",
-    "vucoin": "*",
+    "vucoin": "~0.11.0",
     "underscore": "*",
     "async": "*",
     "commander": "*",
