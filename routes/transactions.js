@@ -21,12 +21,10 @@ module.exports = function (node, auth) {
         var sum = 0;
         var hdcTX = jsonTxToHDC(tx);
         if(hdcTX.type == 'ISSUANCE'){
-          var coin = hdcTX.getCoins()[0];
-          sum = coin.base * Math.pow(10, coin.power);
-        }
-        else if(hdcTX.type == 'FUSION'){
-          var coin = hdcTX.getCoins()[0];
-          sum = coin.base * Math.pow(10, coin.power);
+          var coins = hdcTX.getCoins();
+          coins.forEach(function (coin) {
+            sum += coin.base * Math.pow(10, coin.power);
+          });
         }
         else if(hdcTX.type == 'TRANSFER'){
           var coins = hdcTX.getCoins();
