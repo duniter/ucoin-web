@@ -56,7 +56,18 @@ module.exports = function (node, auth) {
             data["amendmentsPending"] += _(value).size();
           }
         });
-        next();
+        node.ucs.parameters(function (err, parameters) {
+          if (!err) {
+            var start = new Date();
+            start.setTime(parseInt(parameters.AMStart)*1000);
+            data["AMStart"] = start.toString();
+            data["AMFreq"] = (parseInt(parameters.AMFrequency)/3600) + " hours";
+            data["UD0"] = parameters.UD0;
+            data["UDFreq"] = (parseInt(parameters.UDFrequency)/3600) + " hours";
+            data["UDPercent"] = (parameters.UDPercent*100) + "%";
+          }
+          next();
+        });
       },
     ], function (err, result) {
       if(err){
@@ -174,3 +185,19 @@ function proxy(res, callback) {
   }
 }
 
+Date.prototype.toString = function () {
+  return [
+    this.getFullYear(),
+    zeroLeft(this.getMonth() + 1),
+    zeroLeft(this.getDate()),
+  ].join("-")
+    + " " + [
+    zeroLeft(this.getHours()),
+    zeroLeft(this.getMinutes()),
+    zeroLeft(this.getSeconds())
+  ].join(":");
+}
+
+function zeroLeft(number){
+  return number < 10 ? "0" + (number) : number;
+}

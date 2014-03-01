@@ -4,8 +4,9 @@
 <table class="table">
   <tr>
     <th style="width: 30%;">Field</th>
-    <th style="width: 30%;">Current</th>
-    <th style="width: 40%;">Pending</th>
+    <th style="width: 24%;">Current</th>
+    <th style="width: 23%;"></th>
+    <th style="width: 23%;"></th>
   </tr>
   <tr>
     <td>Name</td>
@@ -32,6 +33,7 @@
       <a href="/community/voters" class="btn btn-danger btn-xs">-<%= votersLeaving %></a>
       <% } %>
     </td>
+    <td></td>
   </tr>
   <tr>
     <td>Contract</td>
@@ -41,13 +43,28 @@
     <td>
       <a href="/contract/pending" class="btn btn-info btn-xs"><%= amendmentsPending %> pending</a>
     </td>
+    <td></td>
+  </tr>
+</table>
+<h1>Contract details</h1>
+<table class="table">
+  <tr>
+    <th style="width: 30%;">Field</th>
+    <th style="width: 24%;"></th>
+    <th style="width: 23%;"></th>
+    <th style="width: 23%;"></th>
   </tr>
   <tr>
-    <td>Transactions</td>
-    <td>
-      <a class="btn btn-primary btn-xs"><%= transactionsCount %> recorded</a>
-    </td>
+    <td>Amendments</td>
+    <td>Start: <span class="label label-default"><%= AMStart %></span></td>
+    <td>Frequency: <span class="label label-default"><%= AMFreq %></span></td>
     <td></td>
+  </tr>
+  <tr>
+    <td>Universal Dividend</td>
+    <td>Minimum: <span class="label label-default"><%= UD0 %></span></td>
+    <td>Frequency: <span class="label label-default"><%= UDFreq %></span></td>
+    <td>%Growth: <span class="label label-default"><%= UDPercent %></span></td>
   </tr>
 </table>
 <h1>Host</h1>
