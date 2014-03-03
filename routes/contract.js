@@ -1,7 +1,8 @@
-var async = require('async');
-var sha1  = require('sha1');
-var fs    = require('fs');
-var _     = require('underscore');
+var async    = require('async');
+var sha1     = require('sha1');
+var fs       = require('fs');
+var _        = require('underscore');
+var contract = require('../tools/contract');
 
 module.exports = function (node, auth) {
   
@@ -33,16 +34,28 @@ module.exports = function (node, auth) {
   };
 
   function getPrevious (am, stack, done) {
-    node.hdc.amendments.view.self(am.number-1, am.previousHash, function (err, previous) {
-      if(previous){
-        stack.push(previous);
-        if(previous.number > 0)
-          getPrevious(previous, stack, done);
-        else
-          done(null, stack);
-      }
-      else done(null, stack);
-    });
+    var previous = contract.getNumber(am.number - 1);
+    if (previous) {
+      // Use cached version
+      stack.push(previous);
+      if(previous.number > 0)
+        getPrevious(previous, stack, done);
+      else
+        done(null, stack);
+    } else {
+      // Get remote version and cache it
+      node.hdc.amendments.view.self(am.number-1, am.previousHash, function (err, previous) {
+        if(previous){
+          stack.push(previous);
+          contract.push(previous);
+          if(previous.number > 0)
+            getPrevious(previous, stack, done);
+          else
+            done(null, stack);
+        }
+        else done(null, stack);
+      });
+    }
   }
   
   this.pending = function(req, res){
