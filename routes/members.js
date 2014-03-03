@@ -1,9 +1,10 @@
-var async = require('async');
-var fs    = require('fs');
-var _     = require('underscore');
-var hdc   = require('hdc');
-var sha1  = require('sha1');
-var util  = require('util');
+var async    = require('async');
+var fs       = require('fs');
+var _        = require('underscore');
+var hdc      = require('hdc');
+var sha1     = require('sha1');
+var util     = require('util');
+var contract = require('../tools/contract');
 
 module.exports = function (node, auth) {
   
@@ -56,25 +57,12 @@ function MemberResponse (node, auth){
     var am;
     var that = this;
 
-    function getPrevious (node, am, stack, done) {
-      node.hdc.amendments.view.self(am.number-1, am.previousHash, function (err, previous) {
-        if(previous){
-          stack.push(previous);
-          if(previous.number > 0)
-            getPrevious(node, previous, stack, done);
-          else
-            done(null, stack);
-        }
-        else done(null, stack);
-      });
-    }
-
     async.waterfall([
       function (next){
         that.node.hdc.amendments.current(function (err, am) {
           if(am){
             that.updateStatus(status, am);
-            getPrevious(that.node, am, [am], next);
+            contract.getStack(am, that.node, next);
           }
           else next(null, []);
         });

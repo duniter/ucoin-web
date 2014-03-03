@@ -11,7 +11,7 @@ module.exports = function (node, auth) {
       function (next){
         node.hdc.amendments.current(function (err, am) {
           if(am){
-            getPrevious(am, [am], next);
+            contract.getStack(am, node, next);
           }
           else next(null, []);
         });
@@ -32,31 +32,6 @@ module.exports = function (node, auth) {
       });
     });
   };
-
-  function getPrevious (am, stack, done) {
-    var previous = contract.getNumber(am.number - 1);
-    if (previous) {
-      // Use cached version
-      stack.push(previous);
-      if(previous.number > 0)
-        getPrevious(previous, stack, done);
-      else
-        done(null, stack);
-    } else {
-      // Get remote version and cache it
-      node.hdc.amendments.view.self(am.number-1, am.previousHash, function (err, previous) {
-        if(previous){
-          stack.push(previous);
-          contract.push(previous);
-          if(previous.number > 0)
-            getPrevious(previous, stack, done);
-          else
-            done(null, stack);
-        }
-        else done(null, stack);
-      });
-    }
-  }
   
   this.pending = function(req, res){
     async.waterfall([
