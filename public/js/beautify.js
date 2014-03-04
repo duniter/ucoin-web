@@ -1,6 +1,11 @@
+
 $(document).ready(function () {
-  var d = new Date();
-  var timestamp = parseInt($('#generatedon').text());
-  d.setTime(timestamp * 1000);
-  $('#generatedon').text(timestamp + ' (' + d.toLocaleString() + ')');
+  // Converts .timestamp to readable date
+  $('.timestamp').each(function(){
+    var this$ = $(this);
+    var d = new Date();
+    var timestamp = parseInt(this$.text());
+    d.setTime(timestamp * 1000);
+    this$.text(d.toLocaleString());
+  });
 });
