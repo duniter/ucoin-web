@@ -1,6 +1,7 @@
 var async = require('async');
 var _     = require('underscore');
 var hdc   = require('hdc');
+var contract = require('../tools/contract')
 
 module.exports = function (node, auth) {
   
@@ -24,12 +25,18 @@ module.exports = function (node, auth) {
         next();
       },
       function (next){
-        node.hdc.amendments.current(function (err, json) {
+        node.hdc.amendments.current(function (err, am) {
           if(err){
             next(null, { number: -1, membersCount:0 });
             return;
+          } else {
+            if(am){
+              contract.getStack(am, node, function (err) {
+                next(err, am);
+              });
+            }
+            else next(null, am);
           }
-          next(null, json);
         });
       },
       function (json, next){
@@ -42,6 +49,9 @@ module.exports = function (node, auth) {
         data["votersCount"] = json.votersCount || 0;
         data["votersJoining"] = am.getNewVoters().length;
         data["votersLeaving"] = am.getLeavingVoters().length;
+        data["MMass"] = contract.monetaryMass();
+        data["LastUD"] = contract.lastDividend();
+        data["LastMembers"] = contract.lastDividendMembersCount();
         node.ucs.amendment.proposed(json.number + 1, function (err, json) {
           data["amendmentsPending"] = err ? 0 : 1;
           next();

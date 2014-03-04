@@ -12,6 +12,25 @@
     <td>Name</td>
     <td><span class="text-info"><strong><%= currency %></strong></span></td>
     <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Monetary Mass</td>
+    <td><span class="label label-success"><strong><%= MMass %> BB</strong></span></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Last Dividend</td>
+    <td>
+      <span class="label label-success"><strong><%= LastUD %> BB</strong></span>
+       to 
+      <span class="label label-success"><strong><%= LastMembers %> members</strong></span>
+    </td>
+    <td>
+       <span class="label label-default"><strong>~<%= ((LastUD * LastMembers)/MMass*100).toFixed(0) %> %growth</strong></span>
+    </td>
+    <td></td>
   </tr>
   <tr>
     <td>Community</td>
@@ -46,7 +65,7 @@
     <td></td>
   </tr>
 </table>
-<h1>Contract details</h1>
+<h1>Monetary rules</h1>
 <table class="table">
   <tr>
     <th style="width: 30%;">Field</th>

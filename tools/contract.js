@@ -5,14 +5,31 @@ function ContractCache () {
   
   var amendments = [];
   var mapIndex = {};
+	var monetaryMass = 0;
+	var lastUD = {};
+	var highestAM = 0;
   var that = this;
 
   /**
   * Push an amendment in amendments stack.
   */
   this.push = function (am) {
-    amendments.push(am);
-    mapIndex[am.number] = amendments.length - 1;
+		if (mapIndex[am.number] == undefined || mapIndex[am.number] == null) {
+			amendments.push(am);
+			mapIndex[am.number] = amendments.length - 1;
+			if (am.number >= highestAM) {
+				highestAM = am.number;
+			}
+			if (am.number == highestAM && am.dividend) {
+				lastUD = {
+					dividend: am.dividend,
+					members: am.membersCount
+				};
+			}
+			if (am.dividend) {
+				monetaryMass += am.dividend * am.membersCount;
+			}
+		}
   };
 
   this.amendments = function () {
@@ -22,6 +39,18 @@ function ContractCache () {
   this.getNumber = function (number) {
     return (mapIndex[number] != undefined && amendments[mapIndex[number]]) || null;
   };
+
+	this.lastDividend = function () {
+		return lastUD.dividend;
+	};
+
+	this.lastDividendMembersCount = function () {
+		return lastUD.members;
+	};
+
+	this.monetaryMass = function () {
+		return monetaryMass;
+	};
 
   this.getStack = function (am, node, done) {
 
