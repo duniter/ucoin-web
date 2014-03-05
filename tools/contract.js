@@ -17,7 +17,7 @@ function ContractCache () {
 		if (mapIndex[am.number] == undefined || mapIndex[am.number] == null) {
 			amendments.push(am);
 			mapIndex[am.number] = amendments.length - 1;
-			if (am.number >= highestAM) {
+			if (am.number >= highestAM && am.dividend) {
 				highestAM = am.number;
 			}
 			if (am.number == highestAM && am.dividend) {
