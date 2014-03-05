@@ -46,7 +46,7 @@
   <tr>
     <td>Last Dividend</td>
     <td>
-      <span class="label label-success"><strong><%= LastUD %> BB</strong></span>
+      UD = <span class="label label-success"><strong><%= LastUD %> BB</strong></span>
        to 
       <span class="label label-success"><strong><%= LastMembers %> members</strong></span>
     </td>
@@ -82,7 +82,7 @@
   </tr>
   <tr>
     <td>Universal Dividend</td>
-    <td>UD = MAX( <span class="label label-default"><%= UD0 %> BB</span> ; <span class="label label-default"><%= UDPercent %></span> * M/N )</td>
+    <td>UD = MAX( <span class="label label-default"><%= LastUD %> BB</span> ; <span class="label label-default"><%= UDPercent %></span> * M/N )</td>
     <td>new every <span class="label label-default"><%= UDFreq %></span></td>
     <td></td>
   </tr>
