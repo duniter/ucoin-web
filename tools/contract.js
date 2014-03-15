@@ -54,6 +54,8 @@ function ContractCache () {
 
   this.getStack = function (am, node, done) {
 
+    this.push(am);
+
     // Calling from start amendment
     getPrevious(am, [am], done);
 
