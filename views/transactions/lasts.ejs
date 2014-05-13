@@ -10,7 +10,7 @@
   <% } %>
   <% for(var i = 0; i < transactions.length; i++){ %>
   <% var tx = transactions[i] %>
-  <div class="panel panel-<%= (tx.type == 'ISSUANCE' ? 'success' : (tx.type == 'TRANSFERT' ? 'info' : 'warning')) %>">
+  <div class="panel panel-success %>">
     <div class="panel-heading">
       <h3 class="panel-title">
         <a style="font-family: courier" href="#collapse<%= i+1 %>" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">
@@ -65,10 +65,11 @@
                 <span class="label label-warning">none</span>
               <% } %>
               <% for(var j=0; j < tx.coins.length; j++){ %>
-              <%= tx.coins[j].id %>
-              <% if(tx.coins[j].transaction_id != ''){ %>
-              <br>
-              <%= '&nbsp;`--> ' + tx.coins[j].transaction_id %>
+              <% var parts = tx.coins[j].split(':'); %>
+              <%= parts[0] %>
+              <% if (parts[1]) { %>
+                <br>
+                <%= '&nbsp;&nbsp;`--> ' + parts[1].split('-')[0] + '#' + parts[1].split('-')[1] %>
               <% } %>
               <br>
               <% } %>

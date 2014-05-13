@@ -1,14 +1,23 @@
-var async = require('async');
-var sha1  = require('sha1');
-var fs    = require('fs');
-var _     = require('underscore');
-var hdc   = require('hdc');
+var async    = require('async');
+var sha1     = require('sha1');
+var fs       = require('fs');
+var _        = require('underscore');
+var hdc      = require('hdc');
+var contract = require('../tools/contract');
 
 module.exports = function (node, auth) {
   
   this.lasts = function(req, res){
     async.waterfall([
       function (next){
+        node.hdc.amendments.current(function (err, am) {
+          if(am){
+            contract.getStack(am, node, next);
+          }
+          else next(null, []);
+        });
+      },
+      function (amendments, next){
         node.hdc.transactions.lasts(100, next);
       }
     ], function (err, result) {
@@ -20,27 +29,15 @@ module.exports = function (node, auth) {
       result.transactions.forEach(function (tx) {
         var sum = 0;
         var hdcTX = jsonTxToHDC(tx);
-        if(hdcTX.type == 'ISSUANCE'){
-          var coins = hdcTX.getCoins();
-          coins.forEach(function (coin) {
-            sum += coin.base * Math.pow(10, coin.power);
-          });
-        }
-        else if(hdcTX.type == 'TRANSFER'){
-          var coins = hdcTX.getCoins();
-          coins.forEach(function (coin) {
-            sum += coin.base * Math.pow(10, coin.power);
-          });
-        }
-        else {
-          var coins = hdcTX.getCoins();
-          coins.forEach(function (coin) {
-            if (coin.transaction) {
-              sum += coin.base * Math.pow(10, coin.power);
-            }
-          });
-        }
+        var coins = hdcTX.getCoins();
+        coins.forEach(function (coin) {
+          var am = contract.getNumber(coin.amNumber);
+          if (am && am.coinBase != null) {
+            sum += coinValue(am, coin.coinNumber);
+          }
+        });
         tx.sum = sum;
+        tx.type = "TRANSFER";
       });
 
       res.render('transactions/lasts', {
@@ -60,9 +57,17 @@ function jsonTxToHDC (tx) {
       hdcTX[key] = tx[key];
     }
   });
-  hdcTX.coins = [];
-  tx.coins.forEach(function (coin) {
-    hdcTX.coins.push(coin.id + ', ' + coin.transaction_id);
-  });
   return hdcTX;
+}
+
+function coinValue (am, coinNumber) {
+  var power = parseInt(am.coinBase);
+  var left = coinNumber + 1;
+  am.coinList.forEach(function(qty){
+    if (left > qty) {
+      left -= qty;
+      power++;
+    }
+  });
+  return Math.pow(2, power);
 }

@@ -15,7 +15,7 @@ module.exports = function (node, auth) {
     };
     async.waterfall([
       function (next){
-        node.ucg.peering.get(next);
+        node.network.peering.get(next);
       },
       function (json, next){
         data["currency"] = json.currency;
@@ -52,7 +52,7 @@ module.exports = function (node, auth) {
         data["MMass"] = contract.monetaryMass();
         data["LastUD"] = contract.lastDividend();
         data["LastMembers"] = contract.lastDividendMembersCount();
-        node.ucs.amendment.proposed(json.number + 1, function (err, json) {
+        node.registry.amendment.proposed(json.number + 1, function (err, json) {
           data["amendmentsPending"] = err ? 0 : 1;
           next();
         });
@@ -66,7 +66,7 @@ module.exports = function (node, auth) {
             data["amendmentsPending"] += _(value).size();
           }
         });
-        node.ucs.parameters(function (err, parameters) {
+        node.registry.parameters(function (err, parameters) {
           if (!err) {
             var start = new Date();
             start.setTime(parseInt(parameters.AMStart)*1000);
@@ -89,7 +89,7 @@ module.exports = function (node, auth) {
   };
   
   this.capabilities = function(req, res){
-    node.ucg.peering.get(proxy(res, function (json) {
+    node.network.peering.get(proxy(res, function (json) {
       var DONE = 2;
       var STARTED = 1;
       var NOTHING = 0;

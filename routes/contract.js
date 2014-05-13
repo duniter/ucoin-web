@@ -41,7 +41,7 @@ module.exports = function (node, auth) {
         });
       },
       function (currentNumber, next){
-        node.ucs.amendment.proposed(currentNumber + 1, function (err, am) {
+        node.registry.amendment.proposed(currentNumber + 1, function (err, am) {
           next(null, am ? [am] : []);
         });
       },

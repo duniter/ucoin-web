@@ -45,16 +45,14 @@
             <td>
               <% if(am.dividend){ %>
                 <div class="label label-success"><%= am.dividend %></div>
-              <% } else { %>
-                <span class="label label-warning">none</span>
-              <% } %>
-            </td>
-          </tr>
-          <tr>
-            <td>Coin minimal power</td>
-            <td>
-              <% if(am.coinMinPower){ %>
-                <div class="label label-info"><%= am.coinMinPower %></div>
+                <% if(am.coinList){ %>
+                  |
+                  <% var base = am.coinBase; %>
+                  <% for(var c = 0; c < am.coinList.length; c++){ %>
+                    <span class="label label-primary"><%= Math.pow(2, base) %> BB x <%= am.coinList[c] %></span>
+                    <% base++; %>
+                  <% } %>
+                <% } %>
               <% } else { %>
                 <span class="label label-warning">none</span>
               <% } %>
