@@ -1,0 +1,13 @@
+<h1>{{subtitle}}</h1>
+<table class="table table-condensed table-striped">
+  <tr>
+    <th style="width: 25%;">Name</th>
+    <th style="width: 15%;">Fingerprint</th>
+    <th style="width: 50%;">Comment</th>
+  </tr>
+  <tr ng-repeat="key in keys" ng-class="{success: key.status == 'JOIN', danger: key.status == 'LEAVE'}">
+    <td style="font-family: fixed,courier">{{key.name}}</td>
+    <td style="font-family: fixed,courier">0x{{key.keyID}}</td>
+    <td style="font-family: fixed,courier">{{key.comment}}</td>
+  </tr>
+</table>

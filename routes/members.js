@@ -8,7 +8,7 @@ var contract = require('../tools/contract');
 
 module.exports = function (node, auth) {
   
-  this.list = function(req, res){
+  this.members = function(req, res){
     new MemberResponse(node, auth).process(res);
   };
   
@@ -91,15 +91,26 @@ function MemberResponse (node, auth){
         async.forEach(_(status).keys(), function(fingerprint, callback){
           that.node.pks.lookup('0x' + fingerprint, function (err, json) {
             if(json.keys.length > 0){
-              status[fingerprint].key= json.keys[0].key;
+              status[fingerprint].key = json.keys[0].key;
+              status[fingerprint].key.keyID = fingerprint.substring(24);
             }
             callback(err);
           });
         }, next);
       },
-    ], function (err) {
-      res.render('community/list', {
-        status: _(status).values(),
+      function (next) {
+        var keys = [];
+        _(status).keys().forEach(function(fpr){
+          var key = status[fpr].key;
+          key.status = status[fpr].status;
+          keys.push(key);
+        });
+        next(null, keys);
+      }
+    ], function (err, keys) {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
+        keys: keys,
         auth: auth
       });
     });

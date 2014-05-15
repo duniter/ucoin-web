@@ -1,0 +1,95 @@
+<h1>Contract</h1>
+
+<div class="panel-group" id="accordion">
+  <div class="alert alert-warning" ng-class="{hidden: amendments.length > 0}">
+    <strong>{{errorMessage}}</strong> {{errorAddition}}
+  </div>
+  <div class="panel panel-info" ng-repeat="am in amendments">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <a style="font-family: courier" data-target="#collapse{{$index+1}}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion">#{{am.number}}-{{am.hash}}</a>
+      </h3>
+    </div>
+    <div class="panel-collapse collapse" ng-class="{in: $index == 0}" id="collapse{{$index+1}}">
+      <div class="panel-body">
+        <table class="table table-striped table-condensed">
+          <tr>
+            <th width="30%">Field</th>
+            <th width="70%">Value</th>
+          </tr>
+          <tr>
+            <td>Version</td>
+            <td>{{am.version}}</td>
+          </tr>
+          <tr>
+            <td>Currency</td>
+            <td>{{am.currency}}</td>
+          </tr>
+          <tr>
+            <td>Number</td>
+            <td>#{{am.number}}</td>
+          </tr>
+          <tr>
+            <td>Generated on</td>
+            <td class="timestamp">{{am.generated}}</td>
+          </tr>
+          <tr>
+            <td>Universal Dividend</td>
+            <td>
+                <div class="label label-success" ng-class="{hidden: !am.dividend}">{{am.dividend}}</div>
+                <span ng-class="{hidden: !am.dividend}">
+                  |
+                  <span ng-repeat="c in am.coins"><span class="label label-primary">{{c.base}} BB x {{c.quantity}}</span>&nbsp;</span>
+                </span>
+                <span class="label label-warning" ng-class="{hidden: am.dividend}">none</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Next required votes</td>
+            <td style="font-family: fixed,courier">{{am.nextVotes}}</td>
+          </tr>
+          <tr>
+            <td>Previous hash</td>
+            <td>
+                <span style="font-family: fixed,courier" ng-class="{hidden: !am.previousHash}">{{am.previousHash}}</span>
+                <span class="label label-warning" ng-class="{hidden: am.previousHash}">none</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Members root</td>
+            <td style="font-family: fixed,courier">{{am.membersRoot}}</td>
+          </tr>
+          <tr>
+            <td>Members count</td>
+            <td>{{am.membersCount}}</td>
+          </tr>
+          <tr>
+            <td>Members changes</td>
+            <td class="membersChanges">
+                <span class="label label-warning" ng-class="{hidden: am.membersChanges.length > 0}">none</span>
+                <span style="font-size: 11px;" class="label" ng-repeat="change in am.membersChanges" ng-class="{'label-success': change.add, 'label-danger': !change.add}">{{change.fingerprint}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Voters root</td>
+            <td>
+                <span style="font-family: fixed,courier">{{am.votersRoot}}</span>
+                <span class="label label-warning" ng-class="{hidden: am.votersRoot}">none</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Voters count</td>
+            <td>{{am.votersCount}}</td>
+          </tr>
+          <tr>
+            <td>Voters changes</td>
+            <td class="votersChanges">
+                <span class="label label-warning" ng-class="{hidden: am.votersChanges.length > 0}">none</span>
+                <span style="font-size: 11px;" class="label" ng-repeat="change in am.votersChanges" ng-class="{'label-success': change.add, 'label-danger': !change.add}">{{change.fingerprint}}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

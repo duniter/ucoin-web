@@ -1,0 +1,9 @@
+
+<div class="panel panel-default" ng-repeat="menu in menus">
+  <div class="panel-heading">{{menu.title}}</div>
+  <div class="list-group" style="background-color: #f7f5fa;">
+    <a ng-repeat="submenu in menu.submenus" href="{{submenu.href}}" class="list-group-item" ng-class="{active : $index == selectedIndex && $parent.$index == selectedParentIndex}">
+      <span class="glyphicon glyphicon-{{submenu.icon}}">&nbsp;</span>&nbsp;{{submenu.title}}
+    </a>
+  </div>
+</div>

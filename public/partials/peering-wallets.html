@@ -1,0 +1,17 @@
+<h1>Known Wallets</h1>
+<table class="table table-condensed table-striped">
+  <tr>
+    <th style="width: 30%;">Key ID</th>
+    <th style="width: 35%;">Hosters</th>
+    <th style="width: 35%;">Trusts</th>
+  </tr>
+  <tr ng-repeat="w in wallets" class="wallet">
+    <td style="font-family: fixed,courier">{{w.keyID}}</td>
+    <td style="font-family: fixed,courier">
+      <span ng-repeat="keyID in w.hosters">{{keyID}}</span>
+    </td>
+    <td style="font-family: fixed,courier">
+      <span ng-repeat="keyID in w.trusts">{{keyID}}</span>
+    </td>
+  </tr>
+</table>

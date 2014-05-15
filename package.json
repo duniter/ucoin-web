@@ -26,8 +26,6 @@
   },
   "dependencies": {
     "express": "3.2.4",
-    "ejs": "*",
-    "ejs-locals": "*",
     "hdc": "~0.7.0",
     "vucoin": "~0.17.0",
     "underscore": "*",

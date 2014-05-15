@@ -4,7 +4,6 @@ var path    = require('path');
 var fs      = require('fs');
 var vucoin  = require('vucoin');
 var program = require('commander');
-var engine  = require('ejs-locals');
 
 program
   .option('-p, --port <port>', 'Local port to listen', parseInt)
@@ -29,18 +28,15 @@ vucoin(host, port, auth, function (err, node) {
 
   var app = express();
 
-  app.engine('ejs', engine);
-
   // all environments
+  app.set("view options", {layout: false});
   app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use(app.router);
 
   // development only
   if ('development' == app.get('env')) {
@@ -53,26 +49,25 @@ vucoin(host, port, auth, function (err, node) {
   var contract     = require('./routes/contract')(node, auth);
   var transactions = require('./routes/transactions')(node, auth);
   var peers        = require('./routes/peers')(node, auth);
-
-  app.get('/', routes.index);
-  app.get('/cap', routes.capabilities);
-  app.get('/community/current', members.list);
-  app.get('/community/voters', members.voters);
-  app.get('/community/pks/lookup', pks.lookup);
-  app.get('/community/pks/add', pks.add.get);
-  app.post('/community/pks/add', pks.add.post);
-  app.get('/community/pks/udid2', pks.udid2);
-  app.get('/contract/current', contract.current);
-  app.get('/contract/pending', contract.pending);
-  app.get('/contract/votes', contract.votes);
-  app.get('/tx/lasts', transactions.lasts);
-  app.get('/peers', peers.knownPeers);
-  app.get('/peers/keys', peers.managedKeys);
-  app.get('/peers/tht', peers.tht);
-  app.get('/peers/upstream/main', peers.upstreamALL);
-  app.get('/peers/upstream/keys', peers.upstreamKEYS);
-  app.get('/peers/downstream/main', peers.downstreamALL);
-  app.get('/peers/downstream/keys', peers.downstreamKEYS);
+  
+  app.get('/home', routes.home);
+  app.get('/community/members',             members.members);
+  app.get('/community/voters',              members.voters);
+  app.get('/community/pks/lookup',          pks.lookup);
+  app.get('/community/pks/add',             pks.add.get);
+  app.post('/community/pks/add',            pks.add.post);
+  app.get('/community/pks/udid2',           pks.udid2);
+  app.get('/contract/current',              contract.current);
+  app.get('/contract/pending',              contract.pending);
+  app.get('/contract/votes',                contract.votes);
+  app.get('/transactions/lasts',            transactions.lasts);
+  app.get('/peering/peers',                 peers.knownPeers);
+  app.get('/peering/peers/keys',            peers.managedKeys);
+  app.get('/peering/wallets',               peers.wallets);
+  app.get('/peering/upstream',              peers.upstreamALL);
+  app.get('/peering/peers/upstream/keys',   peers.upstreamKEYS);
+  app.get('/peering/downstream',            peers.downstreamALL);
+  app.get('/peering/peers/downstream/keys', peers.downstreamKEYS);
 
   http.createServer(app).listen(app_port, app_host, function(){
     console.log('Express server listening interface ' + app_host + ' on port ' + app_port);

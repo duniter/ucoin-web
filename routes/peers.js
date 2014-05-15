@@ -34,7 +34,8 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('peers/stream/all', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         subtitle: 'Known peers',
         peers: peers || [],
         auth: auth
@@ -56,14 +57,15 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('peers/managed', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         keys: keys || [],
         auth: auth
       });
     });
   };
   
-  this.tht = function(req, res){
+  this.wallets = function(req, res){
     async.waterfall([
       function (next){
         node.network.wallet.get({ leaves: true}, next);
@@ -90,8 +92,9 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('peers/tht', {
-        tht: wallets || [],
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
+        wallets: wallets || [],
         auth: auth
       });
     });
@@ -108,7 +111,8 @@ module.exports = function (node, auth) {
         res.send(500, err);
         return;
       }
-      res.render('peers/stream/streams', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         subtitle: 'ALL Upstream',
         peers: peers || [],
         auth: auth
@@ -148,7 +152,8 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('peers/stream/keys', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         subtitle: 'Upstreams by key',
         keys: keys || [],
         auth: auth
@@ -168,7 +173,8 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('peers/stream/streams', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         subtitle: 'ALL Downstream',
         peers: peers || [],
         auth: auth
@@ -208,7 +214,8 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('peers/stream/keys', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         subtitle: 'Downstreams by key',
         keys: keys || [],
         auth: auth

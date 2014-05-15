@@ -1,0 +1,34 @@
+<div class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <a href="#" class="navbar-brand">ucoin</a>
+    <ul class="nav navbar-nav">
+      <li ng-class="{active : home}">
+        <a href="#/home">
+          <span class="glyphicon glyphicon-home">&nbsp;</span>Home
+        </a>
+      </li>
+      <li ng-class="{active : community}">
+        <a href="#/community/members">
+          <span class="glyphicon glyphicon-user">&nbsp;</span>Community
+        </a>
+      </li>
+      <li ng-class="{active : contract}">
+        <a href="#/contract/current">
+          <span class="glyphicon glyphicon-list-alt">&nbsp;</span>Contract
+        </a>
+      </li>
+      <li ng-class="{active : transaction}">
+        <a href="#/transactions/lasts">
+          <span class="glyphicon glyphicon-transfer">&nbsp;</span>Transactions
+        </a>
+      </li>
+      <li ng-class="{active : isPeers}">
+        <a href="#/peering/peers">
+          <span class="glyphicon glyphicon-globe">&nbsp;</span>Peers
+        </a>
+      </li>
+    </ul>
+    <h4 class="navbar-text pull-right"><span class="label label-success">signed responses (secure mode)</span></h4>
+    <!-- <h4 class="navbar-text pull-right"><span class="label label-warning">unsigned responses (fast mode)</span></h4> -->
+  </div>
+</div>

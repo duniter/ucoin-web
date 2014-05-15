@@ -10,8 +10,14 @@ module.exports = function (node, auth) {
         return;
       }
 
-      res.render('community/pks/pks', {
-        keys: json.keys,
+      var keys = [];
+      json.keys.forEach(function (key) {
+        keys.push(key.key);
+      });
+
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
+        keys: keys,
         auth: auth
       });
     });

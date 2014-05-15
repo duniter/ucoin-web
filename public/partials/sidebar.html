@@ -1,0 +1,5 @@
+<div class="list-group" style="background-color: #f7f5fa;">
+  <a ng-repeat="menu in menus" href="{{menu.href}}" class="list-group-item" ng-class="{active : $index == selectedIndex}">
+    <span class="glyphicon glyphicon-{{menu.icon}}">&nbsp;</span>&nbsp;{{menu.title}}
+  </a>
+</div>

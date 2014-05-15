@@ -1,0 +1,13 @@
+<h1>Known peers</h1>
+<table class="table table-condensed table-striped">
+  <tr>
+    <th style="width: 20%;">Key ID</th>
+    <th style="width: 80%;">Endpoints</th>
+  </tr>
+  <tr ng-repeat="peer in peers">
+    <td style="font-family: fixed,courier">{{peer.keyID}}</td>
+    <td class="endpoint" style="font-family: fixed,courier">
+      <span ng-repeat="ep in peer.endpoints">{{ep}}</span>
+    </td>
+  </tr>
+</table>

@@ -26,7 +26,8 @@ module.exports = function (node, auth) {
         am.hash = sha1(am.raw).toUpperCase();
       });
 
-      res.render('contract/current', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         amendments: amendments,
         auth: auth
       });
@@ -55,7 +56,8 @@ module.exports = function (node, auth) {
         am.hash = sha1(am.raw).toUpperCase();
       });
 
-      res.render('contract/pending', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         amendments: amendments,
         auth: auth
       });
@@ -84,7 +86,8 @@ module.exports = function (node, auth) {
       });
 
       numbers.reverse();
-      res.render('contract/votes', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         numbers: numbers,
         auth: auth
       });

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="ucoinApp">
+  <head>
+    <title>uCoin WebDemo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+    <style>
+      body{
+        overflow-y: scroll;
+      }
+
+      .membersChanges span.label-success,
+      .membersChanges span.label-danger,
+      .votersChanges span.label-success,
+      .votersChanges span.label-danger,
+      .endpoint span.label-success,
+      .endpoint span.label-danger,
+      .wallet span .label-success,
+      .wallet span .label-danger{
+        margin-right: 30px;
+        float: left;
+        width: 275px;
+        margin-bottom: 3px;
+      }
+      .coins span, .wallet span {
+        float: left;
+        width: 400px;
+        margin-bottom: 3px;
+      }
+
+      #table-am-index .even td {
+        background-color: white;
+      }
+
+      .comment pre {
+        border: none;
+        margin: 0px;
+        padding: 0px;
+        background: none;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/angular/angular.min.js"></script>
+    <script src="/js/angular-route/angular-route.min.js"></script>
+    <script src="/js/app.js"></script>
+
+    <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+    <!-- <script src="/js/respond.js"></script> -->
+
+    <!-- <script src="/js/global.js"></script> -->
+    <div ng-view></div>
+  </body>
+</html>

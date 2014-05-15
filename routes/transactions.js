@@ -40,7 +40,8 @@ module.exports = function (node, auth) {
         tx.type = "TRANSFER";
       });
 
-      res.render('transactions/lasts', {
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
         transactions: result.transactions,
         auth: auth
       });

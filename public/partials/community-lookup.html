@@ -1,0 +1,15 @@
+<h1>Public keys</h1>
+<table class="table table-condensed table-striped">
+  <tr>
+    <th style="width: 20%;">Name</th>
+    <th style="width: 50%;">Comment</th>
+    <th style="width: 10%;">Fingerprint</th>
+    <th style="width: 20%;">Email</th>
+  </tr>
+  <tr ng-repeat="key in keys">
+    <td style="font-family: fixed,courier">{{key.name}}</td>
+    <td style="font-family: fixed,courier">{{key.comment}}</td>
+    <td style="font-family: fixed,courier">0x{{key.keyID}}</td>
+    <td style="font-family: fixed,courier">{{key.email}}</td>
+  </tr>
+</table>

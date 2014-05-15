@@ -5,7 +5,7 @@ var contract = require('../tools/contract')
 
 module.exports = function (node, auth) {
   
-  this.index = function(req, res){
+  this.home = function(req, res){
     var data = {
       membersActualizing: 0,
       membersJoining: 0,
@@ -76,110 +76,17 @@ module.exports = function (node, auth) {
             data["UDFreq"] = (parseInt(parameters.UDFrequency)/3600) + " hours";
             data["UDPercent"] = (parameters.UDPercent*100) + "%";
           }
-          next();
+          next(null, data);
         });
       },
-    ], function (err, result) {
+    ], function (err, data) {
       if(err){
         res.send(500, err);
         return;
       }
-      res.render('home/index', data);
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, data);
     });
-  };
-  
-  this.capabilities = function(req, res){
-    node.network.peering.get(proxy(res, function (json) {
-      var DONE = 2;
-      var STARTED = 1;
-      var NOTHING = 0;
-      res.render('home/capabilities', {
-        caps: [
-          {
-            title: 'PKS',
-            values: [
-              {cap: "Submit a Public Key - self signed", level: STARTED},
-              {cap: "Search for one or more keys in submitted keys", level: STARTED}
-            ]
-          },
-          {
-            title: 'Community',
-            values: [
-              {cap: "Register - ask for joining the Community", level: DONE},
-              {cap: "Actualize - update his living status", level: DONE},
-              {cap: "Leave - ask for leaving the Community", level: DONE},
-              {cap: "Implement a strategy for status's changes acception", level: NOTHING},
-              {cap: "View Community changes (status, people) of a promoted Amendment", level: DONE},
-              {cap: "View Community changes (status, people) for next Amendment", level: DONE}
-            ]
-          },
-          {
-            title: 'Amendments',
-            values: [
-              {cap: "Receive votes for an Amendment", level: DONE},
-              {cap: "Record a voted Amendment", level: DONE},
-              {cap: "Have an overview of received votes/amendments", level: DONE},
-              {cap: "View current votes of a pending Amendment", level: DONE},
-              {cap: "Implement strategy for promoting Amendments", level: STARTED},
-              {cap: "Promote a pending Amendment", level: DONE},
-              {cap: "View currently promoted Amendment", level: DONE},
-              {cap: "View previously promoted Amendments", level: DONE},
-              {cap: "View registrations of a promoted Amendment", level: DONE},
-              {cap: "View signatures (votes) of a promoted Amendment", level: DONE}
-            ]
-          },
-          {
-          title: 'Transactions',
-            values: [
-              {cap: "Receive issuance transactions", level: DONE},
-              {cap: "Receive fusion transactions", level: DONE},
-              {cap: "Receive transfert transactions", level: DONE},
-              {cap: "View all the transactions", level: DONE},
-              {cap: "View a single transaction", level: STARTED},
-              {cap: "View transactions for a sender", level: DONE},
-              {cap: "View transactions for a recipient", level: STARTED},
-              {cap: "View coins owned by a PGP key", level: DONE},
-              {cap: "View a coin's transaction chain", level: DONE},
-              {cap: "View all keys managed by this node (for receiving and sending)", level: STARTED}
-            ]
-          },
-          {
-          title: 'Peering',
-            values: [
-              {cap: "Authenticate responses before interpreting them", level: STARTED},
-              {cap: "Retrieve PGP keys from another node", level: DONE},
-              {cap: "Retrieve promoted Amendments from another node", level: DONE},
-              {cap: "Retrieve registrations of an Amendment from another node", level: DONE},
-              {cap: "Retrieve signatures (votes) of an Amendment from another node", level: DONE},
-              {cap: "Retrieve transactions from another node", level: DONE},
-              {cap: "Retrieve transactions of a sender from another node", level: DONE},
-              {cap: "Retrieve transactions of a recipient from another node", level: NOTHING},
-              {cap: "Add a key to managed keys", level: NOTHING},
-              {cap: "Add a bunch of keys to managed keys", level: NOTHING},
-              {cap: "Remove a key from managed keys", level: NOTHING},
-              {cap: "Remove a bunch of keys from managed keys", level: NOTHING},
-              {cap: "View managed keys", level: NOTHING},
-              {cap: "Synchronise from another node in launched mode", level: NOTHING},
-              {cap: "Synchronise public keys", level: NOTHING},
-              {cap: "Synchronise amendments excepted currently promoted", level: NOTHING},
-              {cap: "Synchronise currently promoted amendment", level: NOTHING},
-              {cap: "Synchronise current votes", level: NOTHING},
-              {cap: "Synchronise current memberships", level: NOTHING},
-              {cap: "Synchronise pending votes for next amendment", level: NOTHING},
-              {cap: "Synchronise managed keys transactions", level: NOTHING},
-              {cap: "Synchronise peers", level: NOTHING},
-              {cap: "Subscribe to another node for a given key", level: NOTHING},
-              {cap: "Unsubscribe to another node for a given key", level: NOTHING},
-              {cap: "Maintain peers list according to peers status updates", level: NOTHING},
-              {cap: "Maintain peers list according to peers status updates", level: NOTHING},
-              {cap: "Regular check of others nodes' changes", level: NOTHING},
-              {cap: "Synchronise from another node using sync command", level: NOTHING},
-            ]
-          }
-        ],
-        auth: auth
-      });
-    }));
   };
 
   return this;
