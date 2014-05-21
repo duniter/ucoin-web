@@ -35,29 +35,27 @@
           </tr>
           <tr>
             <td>Universal Dividend</td>
-            <td>
-                <div class="label label-success" ng-class="{hidden: !am.dividend}">{{am.dividend}}</div>
-                <span ng-class="{hidden: !am.dividend}">
-                  |
-                  <span ng-repeat="c in am.coins"><span class="label label-primary">{{c.base}} BB x {{c.quantity}}</span>&nbsp;</span>
-                </span>
-                <span class="label label-warning" ng-class="{hidden: am.dividend}">none</span>
+            <td class="udcoins">
+                <span class="label label-success" ng-hide="!am.dividend">{{am.dividend}}</span>
+                <span ng-hide="!am.dividend" class="pipe">|</span>
+                <span ng-repeat="c in am.coins"><span class="label label-primary">{{c.base}} BB x {{c.quantity}}</span>&nbsp;</span>
+                <span class="label label-warning" ng-hide="am.dividend">none</span>
             </td>
           </tr>
           <tr>
             <td>Next required votes</td>
-            <td style="font-family: fixed,courier">{{am.nextVotes}}</td>
+            <td class="courier">{{am.nextVotes}}</td>
           </tr>
           <tr>
             <td>Previous hash</td>
             <td>
-                <span style="font-family: fixed,courier" ng-class="{hidden: !am.previousHash}">{{am.previousHash}}</span>
+                <span class="courier" ng-class="{hidden: !am.previousHash}">{{am.previousHash}}</span>
                 <span class="label label-warning" ng-class="{hidden: am.previousHash}">none</span>
             </td>
           </tr>
           <tr>
             <td>Members root</td>
-            <td style="font-family: fixed,courier">{{am.membersRoot}}</td>
+            <td class="courier">{{am.membersRoot}}</td>
           </tr>
           <tr>
             <td>Members count</td>
@@ -73,7 +71,7 @@
           <tr>
             <td>Voters root</td>
             <td>
-                <span style="font-family: fixed,courier">{{am.votersRoot}}</span>
+                <span class="courier">{{am.votersRoot}}</span>
                 <span class="label label-warning" ng-class="{hidden: am.votersRoot}">none</span>
             </td>
           </tr>

@@ -4,11 +4,15 @@ var ucoinApp = angular.module('ucoinApp', [
   'ucoinControllers'
 ]);
 
+var currency_acronym = "BB";
+var relative_acronym = "UD";
+
 var routes = {
   'homeController': {
     model: 'partials/container.html',
     bodies: {
-      '/home': 'home'
+      '/home': 'home',
+      '/tech': 'tech'
     }
   },
   'communityController': {
@@ -68,6 +72,8 @@ var ucoinControllers = angular.module('ucoinControllers', []);
 
 ucoinControllers.controller('homeController', function ($scope, $route, $location, $http) {
   
+    $scope.currency_acronym = currency_acronym;
+    $scope.relative_acronym = relative_acronym;
   $http.get('/home').success(function (data) {
     $.each(data, function (key, value) {
       $scope[key] = value;
@@ -75,12 +81,20 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
   });
 
   $scope.path = $route.current.path;
-  $scope.selectedIndex = 0;
   $scope.menus = [{
-    title: 'Statistics',
-    icon: 'signal',
+    title: 'Overview',
+    icon: 'picture',
     href: '#/home'
+  },{
+    title: 'Technical details',
+    icon: 'wrench',
+    href: '#/tech'
   }];
+
+  $scope.selectedIndex = [
+    '/home',
+    '/tech',
+  ].indexOf($location.path());
 
   $scope.home = true;
 });
@@ -88,6 +102,8 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
 
 ucoinControllers.controller('communityController', function ($scope, $route, $location, $http) {
 
+  $scope.currency_acronym = currency_acronym;
+  $scope.relative_acronym = relative_acronym;
   var forMenus = {
     '/community/members':    { menuIndex: 0, subIndex: 0 },
     '/community/voters':     { menuIndex: 0, subIndex: 1 },
@@ -139,6 +155,8 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
 
 ucoinControllers.controller('contractController', function ($scope, $route, $location, $http) {
 
+  $scope.currency_acronym = currency_acronym;
+  $scope.relative_acronym = relative_acronym;
   $scope.selectedIndex = [
     '/contract/current',
     '/contract/pending',
@@ -207,6 +225,8 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
 
 ucoinControllers.controller('transactionsController', function ($scope, $route, $location, $http) {
 
+  $scope.currency_acronym = currency_acronym;
+  $scope.relative_acronym = relative_acronym;
   $scope.selectedIndex = [
     '/transactions/lasts'
   ].indexOf($location.path());
@@ -242,6 +262,8 @@ ucoinControllers.controller('transactionsController', function ($scope, $route, 
 
 ucoinControllers.controller('peersController', function ($scope, $route, $location, $http) {
 
+  $scope.currency_acronym = currency_acronym;
+  $scope.relative_acronym = relative_acronym;
   var forMenus = {
     '/peering/peers':      { menuIndex: 0, subIndex: 0 },
     '/peering/wallets':    { menuIndex: 0, subIndex: 1 },

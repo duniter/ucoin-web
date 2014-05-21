@@ -1,101 +1,101 @@
 <!-- Home -->
-<h1>Currency</h1>
+<h1><span class="text-info"><strong>{{ currency }} ({{ currency_acronym }})</strong></span></h1>
 <table class="table">
   <tr>
-    <th style="width: 30%;">Field</th>
-    <th style="width: 30%;">Current</th>
-    <th style="width: 40%;"></th>
+    <th style="width: 30%;"></th>
+    <th style="width: 20%;">Var</th>
+    <th style="width: 25%;">Quantitative</th>
+    <th style="width: 25%;">Relative</th>
   </tr>
   <tr>
-    <td>Name</td>
-    <td><span class="text-info"><strong>{{ currency }}</strong></span></td>
+    <td>Monetary Mass</td>
+    <td>M</td>
+    <td><span class="label label-success"><strong>{{ MMass }} {{ currency_acronym }}</strong></span></td>
+    <td><span class="label label-primary"><strong>~{{ (MMass/LastUD).toFixed(2) }} {{ relative_acronym }}</strong></span></td>
+  </tr>
+  <tr>
+    <td>Members</td>
+    <td>N</td>
+    <td><span class="label label-info">{{ membersCount }} members</span></td>
+    <td><span class="label label-info">{{ membersCount }} members</span></td>
+  </tr>
+  <tr>
+    <td>Monetary Mass per member</td>
+    <td>M/N</td>
+    <td>
+       <span class="label label-success"><strong>~{{ (MMassPerMember).toFixed(0) }} {{ currency_acronym }}</strong></span>
+    </td>
+    <td>
+       <span class="label label-primary"><strong>~{{ (MMassPerMember/LastUD).toFixed(2) }} {{ relative_acronym }}</strong></span>
+    </td>
+  </tr>
+  <tr>
+    <td>Universal Dividend</td>
+    <td>{{ relative_acronym }}</td>
+    <td>
+       <span class="label label-success"><strong>{{ LastUD }} {{ currency_acronym }}</strong></span>
+    </td>
+    <td>
+       <span class="label label-primary"><strong>{{ LastUD/LastUD }} {{ relative_acronym }}</strong></span>
+    </td>
+  </tr>
+  <tr>
+    <td>Actual %Growth of M (M<sub>t</sub> / M<sub>t-1</sub>)</td>
+    <td>c<sub>actual</sub></td>
+    <td>
+      <span class="label label-default"><strong>{{ (((MMass-PreviousMMass)/PreviousMMass)*100).toFixed(2) }}%</strong></span>
+    </td>
+    <td>
+       <span class="label label-default"><strong>{{ ((((MMass/LastUD)/(PreviousMMassInUD))-1)*100).toFixed(2) }}%</strong></span>
+    </td>
+  </tr>
+</table>
+<h1>Rules</h1>
+<table class="table">
+  <tr>
+    <td style="width: 30%;">%Growth (c)</td>
+    <td style="width: 70%;"><span class="label label-default">{{ UDPercent }}</span> / <span class="label label-default">{{ UDFreq }}</span></td>
+  </tr>
+  <tr>
+    <td>Universal Dividend (formula)</td>
+    <td>UD <sub>t+1</sub> = MAX ( UD <sub>t</sub> ; c * M/N<sub>t+1</sub> )</td>
     <td></td>
   </tr>
   <tr>
-    <td>Monetary Mass (current)</td>
-    <td>M = <span class="label label-success"><strong>{{ MMass }} BB</strong></span></td>
-    <td>
-       M/N = <span class="label label-default"><strong>{{ (MMass/membersCount).toFixed(0) }} BB</strong></span>
-    </td>
+    <td>Universal Dividend (computed)</td>
+    <td>UD <sub>t+1</sub> = MAX ( <span class="label label-default">{{ LastUD }} {{ currency_acronym }}</span> ; <span class="label label-default">{{ UDPercent }}</span> * <span class="label label-success"><strong>{{ MMass }} {{ currency_acronym }}</strong></span> / N<sub>t+1</sub> )</td>
+    <td></td>
   </tr>
+</table>
+<p class="bg-info text-info basic-info"><strong>N<sub>t+1</sub></strong> is the number of members in next amendment: <strong>it is not known by advance</strong>.</p>
+<h1>Contract</h1>
+<table class="table">
   <tr>
-    <td>Community</td>
-    <td>
-      N = <a href="#/community/members" class="btn btn-primary btn-xs">{{ membersCount }} members</a>
-      dN = 
-      <a href="#/community/members" class="btn btn-success btn-xs">+{{ membersJoining }}</a>
-      <a href="#/community/members" class="btn btn-danger btn-xs">-{{ membersLeaving }}</a>
+    <td style="width: 30%;">Community</td>
+    <td style="width: 30%;">
+      <a href="#/community/members" class="btn btn-default btn-xs">{{ membersCount }} members</a>
+      <a href="#/community/members" class="btn btn-success btn-xs" ng-hide="membersJoining == 0">+{{ membersJoining }}</a>
+      <a href="#/community/members" class="btn btn-danger btn-xs" ng-hide="membersLeaving == 0">-{{ membersLeaving }}</a>
     </td>
-    <td>
-      <a href="#/community/voters" class="btn btn-primary btn-xs">{{ votersCount }} voters</a>
-      <a href="#/community/voters" class="btn btn-success btn-xs">+{{ votersJoining }}</a>
-      <a href="#/community/voters" class="btn btn-danger btn-xs">-{{ votersLeaving }}</a>
-    </td>
-  </tr>
-  <tr>
-    <td>Last Dividend</td>
-    <td>
-      UD = <span class="label label-success"><strong>{{ LastUD }} BB</strong></span>
-       to 
-      <span class="label label-success"><strong>{{ LastMembers }} members</strong></span>
-    </td>
-    <td>
-       actual growth:
-      <span class="label label-default"><strong>{{ (LastUD * LastMembers).toFixed(0) }} BB</strong></span>
-      |
-      <span class="label label-default"><strong>{{ ((LastUD * LastMembers)/(MMass - (LastUD * LastMembers))*100).toFixed(0) }}%</strong></span>
+    <td style="width: 40%;">
+      <a href="#/community/voters" class="btn btn-default btn-xs">{{ votersCount }} voters</a>
+      <a href="#/community/voters" class="btn btn-success btn-xs" ng-hide="votersJoining == 0">+{{ votersJoining }}</a>
+      <a href="#/community/voters" class="btn btn-danger btn-xs" ng-hide="votersLeaving == 0">-{{ votersLeaving }}</a>
     </td>
   </tr>
   <tr>
     <td>Contract's composition</td>
     <td>
-      <a href="#/contract/current" class="btn btn-primary btn-xs">{{ amendmentsCount }} amendments</a>
+      <a href="#/contract/current" class="btn btn-default btn-xs">{{ amendmentsCount }} amendments</a>
     </td>
     <td>
-      <a href="#/contract/pending" class="btn btn-info btn-xs">{{ amendmentsPending }} pending</a>
+      <a href="#/contract/pending" class="btn btn-default btn-xs">{{ amendmentsPending }} pending</a>
     </td>
-  </tr>
-</table>
-<h1>Monetary rules</h1>
-<table class="table">
-  <tr>
-    <th style="width: 30%;">Field</th>
-    <th style="width: 30%;"></th>
-    <th style="width: 40%;"></th>
   </tr>
   <tr>
     <td>Amendments</td>
     <td>First on: <span class="label label-default">{{ AMStart }}</span></td>
     <td>new every <span class="label label-default">{{ AMFreq }}</span></td>
     <td></td>
-  </tr>
-  <tr>
-    <td>Universal Dividend</td>
-    <td>UD = MAX( <span class="label label-default">{{ LastUD }} BB</span> ; <span class="label label-default">{{ UDPercent }}</span> * M/N )</td>
-    <td>new every <span class="label label-default">{{ UDFreq }}</span></td>
-    <td></td>
-  </tr>
-</table>
-<h1>Host</h1>
-<table class="table">
-  <tr>
-    <th style="width: 30%;">Field</th>
-    <th style="width: 70%;">Value</th>
-  </tr>
-  <tr>
-    <td>Key fingerprint</td>
-    <td style="font-family: courier">{{ fingerprint ? fingerprint : 'None' }}</td>
-  </tr>
-  <tr>
-    <td>Endpoints</td>
-    <td style="font-family: courier">
-      <span ng-repeat="ep in endpoints">{{ ep }}<br/></span>
-    </td>
-  </tr>
-  <tr>
-    <td>Peers</td>
-    <td>
-      <a href="#/peering/peers" class="btn btn-primary btn-xs">{{ peers ? peers.length : '0' }} connected</a>
-    </td>
   </tr>
 </table>

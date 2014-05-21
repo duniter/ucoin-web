@@ -1,0 +1,23 @@
+<h1>Host</h1>
+<table class="table">
+  <tr>
+    <th style="width: 30%;">Field</th>
+    <th style="width: 70%;">Value</th>
+  </tr>
+  <tr>
+    <td>Key fingerprint</td>
+    <td style="font-family: courier">{{ fingerprint ? fingerprint : 'None' }}</td>
+  </tr>
+  <tr>
+    <td>Endpoints</td>
+    <td style="font-family: courier">
+      <span ng-repeat="ep in endpoints">{{ ep }}<br/></span>
+    </td>
+  </tr>
+  <tr>
+    <td>Peers</td>
+    <td>
+      <a href="#/peering/peers" class="btn btn-default btn-xs">{{ peers ? peers.length : '0' }} connected</a>
+    </td>
+  </tr>
+</table>

@@ -50,8 +50,13 @@ module.exports = function (node, auth) {
         data["votersJoining"] = am.getNewVoters().length;
         data["votersLeaving"] = am.getLeavingVoters().length;
         data["MMass"] = contract.monetaryMass();
+        data["MMassPerMember"] = contract.monetaryMass() / data.membersCount;
         data["LastUD"] = contract.lastDividend();
         data["LastMembers"] = contract.lastDividendMembersCount();
+        data["PreviousMMass"] = contract.monetaryMass() - (contract.lastDividend() * data["LastMembers"]);
+        data["PreviousUD"] = contract.previousDividend();
+        data["PreviousMMassInUD"] = data.PreviousUD == null ? 0 : data.PreviousMMass/data.PreviousUD;
+        data["PreviousMembers"] = contract.previousDividendMembersCount();
         node.registry.amendment.proposed(json.number + 1, function (err, json) {
           data["amendmentsPending"] = err ? 0 : 1;
           next();

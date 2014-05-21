@@ -6,7 +6,8 @@ function ContractCache () {
   var amendments = [];
   var mapIndex = {};
 	var monetaryMass = 0;
-	var lastUD = {};
+  var lastUD = {};
+	var previousUD = {};
 	var highestAM = 0;
   var that = this;
 
@@ -20,12 +21,21 @@ function ContractCache () {
 			if (am.number >= highestAM && am.dividend) {
 				highestAM = am.number;
 			}
-			if (am.number == highestAM && am.dividend) {
-				lastUD = {
-					dividend: am.dividend,
-					members: am.membersCount
-				};
-			}
+      if (am.dividend) {
+        if (am.number < highestAM && (!previousUD.amNumber || previousUD.amNumber < am.number)) {
+          previousUD = {
+            amNumber: am.number,
+            dividend: am.dividend,
+            members: am.membersCount
+          };
+        }
+        if (am.number == highestAM) {
+          lastUD = {
+            dividend: am.dividend,
+            members: am.membersCount
+          };
+        }
+      }
 			if (am.dividend) {
 				monetaryMass += am.dividend * am.membersCount;
 			}
@@ -40,13 +50,21 @@ function ContractCache () {
     return (mapIndex[number] != undefined && amendments[mapIndex[number]]) || null;
   };
 
-	this.lastDividend = function () {
-		return lastUD.dividend;
-	};
+  this.lastDividend = function () {
+    return lastUD.dividend;
+  };
 
 	this.lastDividendMembersCount = function () {
 		return lastUD.members;
 	};
+
+  this.previousDividend = function () {
+    return previousUD.dividend || 0;
+  };
+
+  this.previousDividendMembersCount = function () {
+    return previousUD.members || 0;
+  };
 
 	this.monetaryMass = function () {
 		return monetaryMass;
