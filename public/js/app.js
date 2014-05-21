@@ -72,12 +72,14 @@ var ucoinControllers = angular.module('ucoinControllers', []);
 
 ucoinControllers.controller('homeController', function ($scope, $route, $location, $http) {
   
-    $scope.currency_acronym = currency_acronym;
-    $scope.relative_acronym = relative_acronym;
+  $scope.currency_acronym = currency_acronym;
+  $scope.relative_acronym = relative_acronym;
   $http.get('/home').success(function (data) {
     $.each(data, function (key, value) {
       $scope[key] = value;
-    })
+    });
+
+    $scope.isNotLoading = true;
   });
 
   $scope.path = $route.current.path;
@@ -122,8 +124,12 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
       console.log(data);
       $.each(data, function (key, value) {
         $scope[key] = value;
-      })
+      });
+
+      $scope.isNotLoading = true;
     });
+  } else {
+    $scope.isNotLoading = true;
   }
   
   $scope.path = $route.current.path;
@@ -193,6 +199,8 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
           });
         });
       });
+
+      $scope.isNotLoading = true;
     });
   }
   
@@ -247,6 +255,8 @@ ucoinControllers.controller('transactionsController', function ($scope, $route, 
           };
         });
       });
+
+      $scope.isNotLoading = true;
     });
   }
   
@@ -290,6 +300,8 @@ ucoinControllers.controller('peersController', function ($scope, $route, $locati
       $scope.wallets && $scope.wallets.forEach(function(w){
         w.keyID = '0x' + w.fingerprint.substring(24);
       });
+
+      $scope.isNotLoading = true;
     });
   }
   
