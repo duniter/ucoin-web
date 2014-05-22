@@ -50,13 +50,13 @@
     </td>
   </tr>
   <tr>
-    <td>M variation (M<sub>t</sub> - M<sub>t-1</sub>)</td>
+    <td>M variation (M<sub>t</sub> - M<sub>t-1</sub> / M<sub>t-1</sub>)</td>
     <td>dM</td>
     <td>
       <span class="label label-default"><strong>{{ (((M-M_1)/M)*100).toFixed(2) }}%</strong></span>
     </td>
     <td>
-       <span class="label label-default"><strong>{{ (((M/UD - M_1/UD_1)/(M/UD_1))*100).toFixed(2) }}%</strong></span>
+       <span class="label label-default"><strong>{{ (((M/UD - M_1/UD_1)/(M_1/UD_1))*100).toFixed(2) }}%</strong></span>
     </td>
   </tr>
 </table>
