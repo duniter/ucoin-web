@@ -9,44 +9,54 @@
   </tr>
   <tr>
     <td>Monetary Mass</td>
-    <td>M</td>
-    <td><span class="label label-success"><strong>{{ MMass }} {{ currency_acronym }}</strong></span></td>
-    <td><span class="label label-primary"><strong>~{{ (MMass/LastUD).toFixed(2) }} {{ relative_acronym }}</strong></span></td>
+    <td>M<sub>t</sub></td>
+    <td><span class="label label-success"><strong>{{ M }} {{ currency_acronym }}</strong></span></td>
+    <td><span class="label label-primary"><strong>~{{ (M/UD).toFixed(2) }} {{ relative_acronym }}</strong></span></td>
   </tr>
   <tr>
     <td>Members</td>
-    <td>N</td>
-    <td><span class="label label-info">{{ membersCount }} members</span></td>
-    <td><span class="label label-info">{{ membersCount }} members</span></td>
+    <td>N<sub>t</sub></td>
+    <td><span class="label label-info">{{ N }} members</span></td>
+    <td><span class="label label-info">{{ N }} members</span></td>
   </tr>
   <tr>
     <td>Monetary Mass per member</td>
-    <td>M/N</td>
+    <td>M<sub>t</sub>/N<sub>t</sub></td>
     <td>
-       <span class="label label-success"><strong>~{{ (MMassPerMember).toFixed(0) }} {{ currency_acronym }}</strong></span>
+       <span class="label label-success"><strong>~{{ (MsurN).toFixed(0) }} {{ currency_acronym }}</strong></span>
     </td>
     <td>
-       <span class="label label-primary"><strong>~{{ (MMassPerMember/LastUD).toFixed(2) }} {{ relative_acronym }}</strong></span>
+       <span class="label label-primary"><strong>~{{ (MsurN/UD).toFixed(2) }} {{ relative_acronym }}</strong></span>
     </td>
   </tr>
   <tr>
     <td>Universal Dividend</td>
-    <td>{{ relative_acronym }}</td>
+    <td>{{ relative_acronym }}<sub>t</sub></td>
     <td>
-       <span class="label label-success"><strong>{{ LastUD }} {{ currency_acronym }}</strong></span>
+       <span class="label label-success"><strong>{{ UD }} {{ currency_acronym }}</strong></span>
     </td>
     <td>
-       <span class="label label-primary"><strong>{{ LastUD/LastUD }} {{ relative_acronym }}</strong></span>
+       <span class="label label-primary"><strong>{{ UD/UD }} {{ relative_acronym }}</strong></span>
     </td>
   </tr>
   <tr>
-    <td>Actual %Growth of M (M<sub>t</sub> / M<sub>t-1</sub>)</td>
+    <td>Actual %Growth (UD<sub>t</sub> / (M<sub>t-1</sub>/N<sub>t</sub>))</td>
     <td>c<sub>actual</sub></td>
     <td>
-      <span class="label label-default"><strong>{{ (((MMass-PreviousMMass)/PreviousMMass)*100).toFixed(2) }}%</strong></span>
+      <span class="label label-default"><strong>{{ ((UD*N/M_1)*100).toFixed(2) }}%</strong></span>
     </td>
     <td>
-       <span class="label label-default"><strong>{{ ((((MMass/LastUD)/(PreviousMMassInUD))-1)*100).toFixed(2) }}%</strong></span>
+       <span class="label label-default"><strong>{{ (((UD/UD)*N/(M_1/UD))*100).toFixed(2) }}%</strong></span>
+    </td>
+  </tr>
+  <tr>
+    <td>M variation ((M<sub>t</sub> - M<sub>t-1</sub>) / M<sub>t-1</sub>)</td>
+    <td>dM</td>
+    <td>
+      <span class="label label-default"><strong>{{ (((M-M_1)/M_1)*100).toFixed(2) }}%</strong></span>
+    </td>
+    <td>
+       <span class="label label-default"><strong>{{ (((M/UD - M_1/UD_1)/(M_1/UD_1))*100).toFixed(2) }}%</strong></span>
     </td>
   </tr>
 </table>
@@ -58,12 +68,12 @@
   </tr>
   <tr>
     <td>Universal Dividend (formula)</td>
-    <td>UD <sub>t+1</sub> = MAX ( UD <sub>t</sub> ; c * M/N<sub>t+1</sub> )</td>
+    <td>UD <sub>t+1</sub> = MAX ( UD <sub>t</sub> ; c * M<sub>t</sub> / N<sub>t+1</sub> )</td>
     <td></td>
   </tr>
   <tr>
     <td>Universal Dividend (computed)</td>
-    <td>UD <sub>t+1</sub> = MAX ( <span class="label label-default">{{ LastUD }} {{ currency_acronym }}</span> ; <span class="label label-default">{{ UDPercent }}</span> * <span class="label label-success"><strong>{{ MMass }} {{ currency_acronym }}</strong></span> / N<sub>t+1</sub> )</td>
+    <td>UD <sub>t+1</sub> = MAX ( <span class="label label-default">{{ UD }} {{ currency_acronym }}</span> ; <span class="label label-default">{{ UDPercent }}</span> * <span class="label label-success"><strong>{{ M }} {{ currency_acronym }}</strong></span> / N<sub>t+1</sub> )</td>
     <td></td>
   </tr>
 </table>
@@ -73,7 +83,7 @@
   <tr>
     <td style="width: 30%;">Community</td>
     <td style="width: 30%;">
-      <a href="#/community/members" class="btn btn-default btn-xs">{{ membersCount }} members</a>
+      <a href="#/community/members" class="btn btn-default btn-xs">{{ N }} members</a>
       <a href="#/community/members" class="btn btn-success btn-xs" ng-hide="membersJoining == 0">+{{ membersJoining }}</a>
       <a href="#/community/members" class="btn btn-danger btn-xs" ng-hide="membersLeaving == 0">-{{ membersLeaving }}</a>
     </td>
