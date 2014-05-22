@@ -50,11 +50,11 @@ module.exports = function (node, auth) {
         data["votersJoining"] = am.getNewVoters().length;
         data["votersLeaving"] = am.getLeavingVoters().length;
         data["M"] = contract.monetaryMass();
-        data["UD"] = contract.lastDividend();
+        data["UD_1"] = contract.lastDividend();
         data["N"] = contract.lastDividendMembersCount();
         data["MsurN"] = contract.monetaryMass() / data.N;
-        data["M_1"] = contract.monetaryMass() - (data.N * data.UD);
-        data["UD_1"] = contract.previousDividend();
+        data["M_1"] = contract.monetaryMass() - (data.N * data.UD_1);
+        data["UD_2"] = contract.previousDividend();
         data["N_1"] = contract.previousDividendMembersCount();
         node.registry.amendment.proposed(json.number + 1, function (err, json) {
           data["amendmentsPending"] = err ? 0 : 1;
@@ -79,6 +79,7 @@ module.exports = function (node, auth) {
             data["UD0"] = parameters.UD0;
             data["UDFreq"] = (parseInt(parameters.UDFrequency)/3600) + " hours";
             data["UDPercent"] = (parameters.UDPercent*100) + "%";
+            data["UD"] = parameters.UDPercent * (data.M / data.N);
           }
           next(null, data);
         });
