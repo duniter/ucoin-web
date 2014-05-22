@@ -38,6 +38,8 @@
             <td class="udcoins">
                 <span class="label label-success" ng-hide="!am.dividend">{{am.dividend}}</span>
                 <span ng-hide="!am.dividend" class="pipe">|</span>
+                <span ng-hide="!am.dividend" class="label label-default">Algo: {{ am.coinAlgo }}</span>
+                <span ng-hide="!am.dividend" class="pipe">|</span>
                 <span ng-repeat="c in am.coins"><span class="label label-primary">{{c.base}} BB x {{c.quantity}}</span>&nbsp;</span>
                 <span class="label label-warning" ng-hide="am.dividend">none</span>
             </td>
