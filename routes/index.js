@@ -79,7 +79,7 @@ module.exports = function (node, auth) {
             data["UD0"] = parameters.UD0;
             data["UDFreq"] = (parseInt(parameters.UDFrequency)/3600) + " hours";
             data["UDPercent"] = (parameters.UDPercent*100) + "%";
-            data["UD"] = parameters.UDPercent * (data.M / data.N);
+            data["UD"] = Math.max(contract.lastDividend(), parameters.UDPercent * (data.M / data.N));
           }
           next(null, data);
         });
