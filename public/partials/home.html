@@ -33,7 +33,7 @@
     <td>Universal Dividend</td>
     <td>{{ relative_acronym }}<sub>t</sub></td>
     <td>
-       <span class="label label-default"><strong>{{ UD }} {{ currency_acronym }}</strong></span>
+       <span class="label label-success"><strong>{{ UD }} {{ currency_acronym }}</strong></span>
     </td>
     <td>
        <span class="label label-primary"><strong>{{ UD/UD }} {{ relative_acronym }}</strong></span>
@@ -53,11 +53,19 @@
     <td>M relative variation</td>
     <td>dM</td>
     <td>
-      <span class="label label-default"><strong>{{ (((M-M_1)/M_1)*100).toFixed(2) }}%</strong></span>
+      <span class="label label-default"><strong>{{ (((Mfull-M)/M)*100).toFixed(2) }}%</strong></span>
     </td>
     <td>
        <span class="label label-default"><strong>{{ (((M/UD - M_1/UD_1)/(M_1/UD_1))*100).toFixed(2) }}%</strong></span>
     </td>
+  </tr>
+  <tr>
+    <td>Monetary Mass, included UD<sub>t</sub></td>
+    <td>M<sub>t + 1</sub></td>
+    <td>
+      <span class="label label-default"><strong>{{ (Mfull).toFixed(0) }} {{ currency_acronym }}</strong></span>
+    </td>
+    <td></td>
   </tr>
 </table>
 <h1>Rules</h1>
