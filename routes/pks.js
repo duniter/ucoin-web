@@ -12,7 +12,7 @@ module.exports = function (node, auth) {
 
       var keys = [];
       json.keys.forEach(function (key) {
-        keys.push(key.key);
+        keys.push(key);
       });
 
       res.setHeader('Content-type', 'application/json');

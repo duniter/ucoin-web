@@ -91,7 +91,7 @@ function MemberResponse (node, auth){
         async.forEach(_(status).keys(), function(fingerprint, callback){
           that.node.pks.lookup('0x' + fingerprint, function (err, json) {
             if(json.keys.length > 0){
-              status[fingerprint].key = json.keys[0].key;
+              status[fingerprint].key = json.keys[0];
               status[fingerprint].key.keyID = fingerprint.substring(24);
             }
             callback(err);
