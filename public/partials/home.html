@@ -49,24 +49,6 @@
        <span class="label label-default"><strong>{{ ((UD/UD)/(MsurN/UD)*100).toFixed(2) }}%</strong></span>
     </td>
   </tr>
-  <tr>
-    <td>M relative variation</td>
-    <td>dM</td>
-    <td>
-      <span class="label label-default"><strong>{{ (((Mfull-M)/M)*100).toFixed(2) }}%</strong></span>
-    </td>
-    <td>
-       <span class="label label-default"><strong>{{ (((M/UD - M_1/UD_1)/(M/UD))*100).toFixed(2) }}%</strong></span>
-    </td>
-  </tr>
-  <tr>
-    <td>Monetary Mass, included UD<sub>t</sub></td>
-    <td>M<sub>t + 1</sub></td>
-    <td>
-      <span class="label label-default"><strong>{{ (Mfull).toFixed(0) }} {{ currency_acronym }}</strong></span>
-    </td>
-    <td></td>
-  </tr>
 </table>
 <h1>Rules</h1>
 <table class="table">
@@ -85,35 +67,7 @@
     <td></td>
   </tr>
 </table>
-<p class="bg-info text-info basic-info"><strong>N<sub>t+1</sub></strong> is the number of members in next amendment: <strong>it is not known by advance</strong>.</p>
-<h1>Contract</h1>
-<table class="table">
-  <tr>
-    <td style="width: 30%;">Community</td>
-    <td style="width: 30%;">
-      <a href="#/community/members" class="btn btn-default btn-xs">{{ N }} members</a>
-      <a href="#/community/members" class="btn btn-success btn-xs" ng-hide="membersJoining == 0">+{{ membersJoining }}</a>
-      <a href="#/community/members" class="btn btn-danger btn-xs" ng-hide="membersLeaving == 0">-{{ membersLeaving }}</a>
-    </td>
-    <td style="width: 40%;">
-      <a href="#/community/voters" class="btn btn-default btn-xs">{{ votersCount }} voters</a>
-      <a href="#/community/voters" class="btn btn-success btn-xs" ng-hide="votersJoining == 0">+{{ votersJoining }}</a>
-      <a href="#/community/voters" class="btn btn-danger btn-xs" ng-hide="votersLeaving == 0">-{{ votersLeaving }}</a>
-    </td>
-  </tr>
-  <tr>
-    <td>Contract's composition</td>
-    <td>
-      <a href="#/contract/current" class="btn btn-default btn-xs">{{ amendmentsCount }} amendments</a>
-    </td>
-    <td>
-      <a href="#/contract/pending" class="btn btn-default btn-xs">{{ amendmentsPending }} pending</a>
-    </td>
-  </tr>
-  <tr>
-    <td>Amendments</td>
-    <td>First on: <span class="label label-default">{{ AMStart }}</span></td>
-    <td>new every <span class="label label-default">{{ AMFreq }}</span></td>
-    <td></td>
-  </tr>
-</table>
+<!-- <p class="bg-info text-info basic-info"><strong>N<sub>t+1</sub></strong> is the number of members in next amendment: <strong>it is not known by advance</strong>.</p> -->
+<h1>Graphs</h1>
+<div id="graphQ" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="graphR" style="min-width: 310px; height: 400px; margin: 0 auto"></div>

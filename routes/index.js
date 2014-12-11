@@ -21,68 +21,83 @@ module.exports = function (node, auth) {
         data["currency"] = json.currency;
         data["endpoints"] = json.endpoints;
         data["peers"] = [];//json.peers;
-        data["fingerprint"] = json.fingerprint;
+        data["fingerprint"] = json.pubkey;
         next();
       },
       function (next){
-        node.hdc.amendments.current(function (err, am) {
-          if(err){
-            next(null, { number: -1, membersCount:0 });
-            return;
-          } else {
-            if(am){
-              contract.getStack(am, node, function (err) {
-                next(err, am);
-              });
-            }
-            else next(null, am);
+        async.parallel({
+          current: function (next) {
+            node.blockchain.current(next);
+          },
+          parameters: function (next) {
+            node.currency.parameters(function (err, json) {
+              next(err, json);
+            });
+          },
+          uds: function (next) {
+            async.waterfall([
+              function (next) {
+                node.blockchain.with.ud(next);
+              },
+              function (json, next) {
+                var blockNumbers = json.result.blocks;
+                var blocks = [];
+                async.forEachSeries(blockNumbers, function (blockNumber, callback) {
+                  async.waterfall([
+                    function (next) {
+                      node.blockchain.block(blockNumber, next);
+                    },
+                    function (block, next) {
+                      blocks.push(block);
+                      next();
+                    }
+                  ], callback);
+                }, function (err) {
+                  next(err, blocks);
+                });
+              }
+            ], next);
+          },
+          root: function (next) {
+            node.blockchain.block(0, next);
           }
-        });
+        }, next);
       },
-      function (json, next){
-        var am = new hdc.Amendment();
-        am.membersChanges = json.membersChanges || [];
-        data["amendmentsCount"] = json.number + 1;
-        data["membersCount"] = json.membersCount || 0;
-        data["membersJoining"] = am.getNewMembers().length;
-        data["membersLeaving"] = am.getLeavingMembers().length;
-        data["votersCount"] = json.votersCount || 0;
-        data["votersJoining"] = am.getNewVoters().length;
-        data["votersLeaving"] = am.getLeavingVoters().length;
-        data["UD"] = contract.lastDividend();
-        data["N"] = contract.lastDividendMembersCount();
-        data["Mfull"] = contract.monetaryMass();
-        data["M"] = data.Mfull - data.UD * data.N;
+      function (res, next){
+        var current = res.current;
+        var uds = res.uds;
+        var parameters = res.parameters;
+        var root = res.root;
+        var lastUDblock = uds.length > 0 ? uds[uds.length-1] : null;
+        var prevUDblock = uds.length > 1 ? uds[uds.length-2] : null;
+        data["currency_acronym"] = 'ZB';
+        data["amendmentsCount"] = current.number + 1;
+        data["membersCount"] = current.membersCount || 0;
+        data["membersJoining"] = 0; // TODO
+        data["membersLeaving"] = 0; // TODO
+        data["votersCount"] = 0; // TODO
+        data["votersJoining"] = 0; // TODO
+        data["votersLeaving"] = 0; // TODO
+        data["UD_1"] = prevUDblock ? prevUDblock.dividend : 0;
+        data["N_1"] = prevUDblock ? prevUDblock.membersCount : 0;
+        data["M"] = lastUDblock ? lastUDblock.monetaryMass : 0;
+        data["N"] = lastUDblock ? lastUDblock.membersCount : 0;
         data["MsurN"] = data.M / data.N;
-        data["UD_1"] = contract.previousDividend();
-        data["N_1"] = contract.previousDividendMembersCount();
-        data["M_1"] = data.M - (data.N_1 * data.UD_1);
-        node.registry.amendment.proposed(json.number + 1, function (err, json) {
-          data["amendmentsPending"] = err ? 0 : 1;
-          next();
-        });
-      },
-      function (next){
-        node.hdc.amendments.votes.get(next);
-      },
-      function (json, next){
-        _(json.amendments).each(function (value, number) {
-          if(number > data["amendmentsCount"] - 1){
-            data["amendmentsPending"] += _(value).size();
-          }
-        });
-        node.registry.parameters(function (err, parameters) {
-          if (!err) {
-            var start = new Date();
-            start.setTime(parseInt(parameters.AMStart)*1000);
-            data["AMStart"] = start.toString();
-            data["AMFreq"] = (parseInt(parameters.AMFrequency)/3600) + " hours";
-            data["UD0"] = parameters.UD0;
-            data["UDFreq"] = (parseInt(parameters.UDFrequency)/3600) + " hours";
-            data["UDPercent"] = (parameters.UDPercent*100) + "%";
-          }
-          next(null, data);
-        });
+        var prevUD = lastUDblock ? lastUDblock.dividend : parameters.ud0;
+        var c = parameters.c;
+        data["UD"] = Math.max(prevUD, c*data.M/data.N);
+        data["blocks"] = res.uds;
+        data["parameters"] = res.parameters;
+        // ....
+        // var start = new Date();
+        // start.setTime(parseInt(parameters.AMStart)*1000);
+        data["amendmentsPending"] = 0; // TODO
+        data["AMStart"] = 0; // TODO start.toString();
+        data["AMFreq"] = (parseInt(parameters.avgGenTime)/60) + " minutes";
+        data["UD0"] = parameters.ud0;
+        data["UDFreq"] = (parseInt(parameters.dt)/(3600*24)) + " days";
+        data["UDPercent"] = (parameters.c*100) + "%";
+        next(null, data);
       },
     ], function (err, data) {
       if(err){

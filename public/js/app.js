@@ -4,7 +4,7 @@ var ucoinApp = angular.module('ucoinApp', [
   'ucoinControllers'
 ]);
 
-var currency_acronym = "BB";
+var currency_acronym = "..";
 var relative_acronym = "UD";
 
 var routes = {
@@ -80,6 +80,27 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
     });
 
     $scope.isNotLoading = true;
+
+    setTimeout(function () {
+      var masses = [];
+      var uds = [];
+      var nbUDs = [];
+      var nbUDsOnUD = [];
+      var firstTime = 0
+      var dt = data.parameters.dt;
+      data.blocks.forEach(function (b) {
+        var i = masses.length;
+        masses.push(b.monetaryMass);
+        uds.push(b.dividend);
+        nbUDs.push(Math.round(masses[i] / uds[i]));
+        nbUDsOnUD.push(1);
+        if (!firstTime) {
+          firstTime = parseInt(b.medianTime);
+        }
+      });
+      genererGrapheQuantitative(firstTime, dt, uds, masses, $scope.currency_acronym);
+      genererGrapheRelative(firstTime, dt, nbUDsOnUD, nbUDs, $scope.currency_acronym);
+    }, 100);
   });
 
   $scope.path = $route.current.path;

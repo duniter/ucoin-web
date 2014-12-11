@@ -24,7 +24,7 @@ var auth     = program.auth || config.auth || false;
 
 host = host.match(/:/) ? '[' + host + ']' : host;
 
-vucoin(host, port, auth, function (err, node) {
+vucoin(host, port, function (err, node) {
 
   var app = express();
 
