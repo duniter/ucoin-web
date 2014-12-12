@@ -1,5 +1,5 @@
 <h1>{{subtitle}}</h1>
-<table class="table table-condensed table-striped">
+<!-- <table class="table table-condensed table-striped">
   <tr>
     <th style="width: 25%;">Name</th>
     <th style="width: 15%;">Fingerprint</th>
@@ -11,3 +11,79 @@
     <td style="font-family: fixed,courier">{{key.comment}}</td>
   </tr>
 </table>
+ -->
+<h2>Legend</h2>
+<p>
+  When hovering a member's name, links will take specific color and aspect for 2 different meaning:
+  <ul>
+     <li><strong class="green">Green link</strong>: links emitted by the centered member, without being signed in return</li>
+     <li><strong class="red">Red link</strong>: links received by the centered member, without signing back signatory in return</li>
+     <li><strong class="dashed">Dashed link</strong>: symmetric links (both members signed each other)</li>
+   </ul>
+ </p>
+Tension: <input type="range" min="0" max="100" value="85">
+<div id="wot2"></div>
+<style type="text/css">
+
+  .green {
+    color: green;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .dashed {
+    border-bottom: 1px dashed;
+  }
+
+  #wot2 > div {
+  }
+
+  path.arc {
+    cursor: move;
+    fill: #fff;
+  }
+
+  .node {
+    font-size: 10px;
+  }
+
+  .node:hover {
+    fill: #1f77b4;
+  }
+
+  .link {
+    fill: none;
+    stroke: #1f77b4;
+    stroke-opacity: .4;
+    pointer-events: none;
+  }
+
+  .link.source, .link.target, .link.bidirectionnal {
+    stroke-opacity: 1;
+    stroke-width: 2px;
+  }
+
+  .link.bidirectionnal {
+    stroke-dasharray: 5,5;
+    stroke: #222222;
+  }
+
+  .node.source {
+    fill: #d62728 !important;
+  }
+
+  .link.target {
+    stroke: #d62728;
+  }
+
+  .node.target {
+    fill: #2ca02c;
+  }
+
+  .link.source {
+    stroke: #2ca02c;
+  }
+
+</style>

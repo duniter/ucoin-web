@@ -148,6 +148,27 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
       });
 
       $scope.isNotLoading = true;
+
+      if ($location.path() == '/community/pks/lookup') {
+        setTimeout(function () {
+          wotGraph('#wot', data.links);
+        }, 100);
+      }
+
+      if ($location.path() == '/community/members') {
+        setTimeout(function () {
+          var bidirectionnals = {};
+          data.wot.forEach(function (source) {
+            data.wot.forEach(function (target) {
+              if (~target.imports.indexOf(source.name) && ~source.imports.indexOf(target.name)) {
+                bidirectionnals[source.name] = bidirectionnals[source.name] || [];
+                bidirectionnals[source.name].push(target.name);
+              }
+            });
+          });
+          wotGraph2('#wot2', data.wot, bidirectionnals);
+        }, 100);
+      }
     });
   } else {
     $scope.isNotLoading = true;
@@ -161,23 +182,27 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
       title: 'Members',
       icon: 'user',
       href: '#/community/members'
-    },{
-      title: 'Voters',
-      icon: 'user',
-      href: '#/community/voters'
-    }]
-  },{
-    title: 'Public keys',
-    submenus: [{
-      title: 'Lookup',
-      icon: 'search',
-      href: '#/community/pks/lookup'
-    },{
-      title: 'Generate udid2',
-      icon: 'barcode',
-      href: '#/community/pks/udid2'
-    }]
-  }];
+    }
+    // ,{
+    //   title: 'Voters',
+    //   icon: 'user',
+    //   href: '#/community/voters'
+    // }
+    ]
+  }
+  // ,{
+  //   title: 'Public keys',
+  //   submenus: [{
+  //     title: 'Lookup',
+  //     icon: 'search',
+  //     href: '#/community/pks/lookup'
+  //   },{
+  //     title: 'Generate udid2',
+  //     icon: 'barcode',
+  //     href: '#/community/pks/udid2'
+  //   }]
+  // }
+  ];
 });
 
 ucoinControllers.controller('contractController', function ($scope, $route, $location, $http) {

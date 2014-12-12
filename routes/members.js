@@ -9,8 +9,47 @@ var contract = require('../tools/contract');
 module.exports = function (node, auth) {
   
   this.members = function(req, res){
-    new MemberResponse(node, auth).process(res);
+    var members = [];
+    async.waterfall([
+      function (next) {
+        node.wot.members(next);
+      },
+      function (res, next) {
+        async.forEachSeries(res.results, function (member, callback) {
+          async.waterfall([
+            function (next) {
+              node.wot.certifiedBy(member.pubkey, next);
+            },
+            function (res, next) {
+              var certifieds = [];
+              res.certifications.forEach(function (cert) {
+                certifieds.push(cert.uid);
+              });
+              members.push({
+                "name": member.uid,
+                "imports": certifieds
+              });
+              next();
+            }
+          ], callback);
+        }, next);
+      },
+    ], function (err) {
+      if(err){
+        res.send(500, err);
+        return;
+      }
+
+      res.setHeader('Content-type', 'application/json');
+      res.send(200, {
+        "wot": members
+      });
+    });
   };
+  
+  // this.members = function(req, res){
+  //   new MemberResponse(node, auth).process(res);
+  // };
   
   this.voters = function(req, res){
     new VoterResponse(node, auth).process(res);

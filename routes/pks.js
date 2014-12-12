@@ -4,21 +4,43 @@ var fs    = require('fs');
 module.exports = function (node, auth) {
   
   this.lookup = function(req, res){
-    node.pks.lookup('', function (err, json) {
+    var members = [];
+    async.waterfall([
+      function (next) {
+        node.wot.members(next);
+      },
+      function (res, next) {
+        members = res.results;
+        async.forEachSeries(members, function (member, callback) {
+          async.waterfall([
+            function (next) {
+              node.wot.certifiedBy(member.pubkey, next);
+            },
+            function (res, next) {
+              member.certs = res.certifications;
+              next();
+            }
+          ], callback);
+        }, next);
+      },
+      function (next) {
+        var links = [];
+        members.forEach(function (member) {
+          member.certs.forEach(function (cert) {
+            links.push({ source: member.uid, target: cert.uid });
+          });
+        });
+        next(null, links);
+      }
+    ], function (err, links) {
       if(err){
         res.send(500, err);
         return;
       }
 
-      var keys = [];
-      json.keys.forEach(function (key) {
-        keys.push(key);
-      });
-
       res.setHeader('Content-type', 'application/json');
       res.send(200, {
-        keys: keys,
-        auth: auth
+        "links": links
       });
     });
   };
