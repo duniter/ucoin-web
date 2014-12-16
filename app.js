@@ -57,6 +57,7 @@ vucoin(host, port, function (err, node) {
   app.get('/community/pks/add',             pks.add.get);
   app.post('/community/pks/add',            pks.add.post);
   app.get('/community/pks/udid2',           pks.udid2);
+  app.get('/blockchain/graphs',             contract.graphs);
   app.get('/contract/current',              contract.current);
   app.get('/contract/pending',              contract.pending);
   app.get('/contract/votes',                contract.votes);

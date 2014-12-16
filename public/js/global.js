@@ -432,3 +432,196 @@ function wotGraph2 (id, wot, bidirectionnals) {
     return a[0] * b[0] + a[1] * b[1];
   }
 }
+
+
+/*********** GRAPHES BLOCKCHAIN **********/
+
+function timeGraphs (id, timeAccelerations, medianTimeIncrements) {
+  $(id).highcharts({
+      chart: {
+          type: "area",
+          zoomType: 'x'
+      },
+      title: {
+          text: 'Blockchain time variations'
+      },
+      subtitle: {
+          text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' :
+                  'Pinch the chart to zoom in'
+      },
+      xAxis: {
+          minRange: 10 // 10 blocks
+      },
+      yAxis: {
+          title: {
+              text: 'Number of seconds'
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      plotOptions: {
+          area: {
+              fillColor: {
+                  linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                  stops: [
+                      [0, Highcharts.getOptions().colors[0]],
+                      [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                  ]
+              },
+              marker: {
+                  radius: 2
+              },
+              lineWidth: 1,
+              states: {
+                  hover: {
+                      lineWidth: 1
+                  }
+              },
+              threshold: null
+          }
+      },
+
+      series: [
+        {
+          name: 'Time acceleration',
+          data: timeAccelerations
+        },{
+          name: "Median Time variation",
+          data: medianTimeIncrements
+        }
+      ]
+  });
+}
+
+
+/*********** GRAPHES BLOCKCHAIN **********/
+
+function wotGraphs (id, members, newcomers, actives, leavers, excluded) {
+  $(id).highcharts({
+      chart: {
+          type: "line",
+          zoomType: 'x'
+      },
+      title: {
+          text: 'Web of Trust variations'
+      },
+      subtitle: {
+          text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' :
+                  'Pinch the chart to zoom in'
+      },
+      xAxis: {
+          minRange: 10 // 10 blocks
+      },
+      yAxis: {
+          title: {
+              text: 'Number of individuals'
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      plotOptions: {
+          area: {
+              fillColor: {
+                  linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                  stops: [
+                      [0, Highcharts.getOptions().colors[0]],
+                      [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                  ]
+              },
+              marker: {
+                  radius: 2
+              },
+              lineWidth: 1,
+              states: {
+                  hover: {
+                      lineWidth: 1
+                  }
+              },
+              threshold: null
+          }
+      },
+
+      series: [
+        {
+          type: 'area',
+          name: 'Members',
+          data: members
+        },{
+          name: 'Newcomers',
+          data: newcomers
+        },{
+          name: 'Actives',
+          data: actives
+        },{
+          name: 'Leavers',
+          data: leavers
+        },{
+          name: 'Excluded',
+          data: excluded
+        }
+      ]
+  });
+}
+
+
+/*********** GRAPHES BLOCKCHAIN **********/
+
+function txsGraphs (id, transactions) {
+  $(id).highcharts({
+      chart: {
+          type: "area",
+          zoomType: 'x'
+      },
+      title: {
+          text: 'Transactions volume'
+      },
+      subtitle: {
+          text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' :
+                  'Pinch the chart to zoom in'
+      },
+      xAxis: {
+          minRange: 10 // 10 blocks
+      },
+      yAxis: {
+          title: {
+              text: 'Number of transactions'
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      plotOptions: {
+          area: {
+              fillColor: {
+                  linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                  stops: [
+                      [0, Highcharts.getOptions().colors[0]],
+                      [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                  ]
+              },
+              marker: {
+                  radius: 2
+              },
+              lineWidth: 1,
+              states: {
+                  hover: {
+                      lineWidth: 1
+                  }
+              },
+              threshold: null
+          }
+      },
+
+      series: [
+        {
+          name: 'Transactions',
+          data: transactions
+        }
+      ]
+  });
+}

@@ -28,6 +28,7 @@ var routes = {
   'contractController': {
     model: 'partials/container.html',
     bodies: {
+      '/blockchain/graphs': 'blockchain-graphs',
       '/contract/current': 'contract-current',
       '/contract/pending': 'contract-current',
       '/contract/votes': 'contract-votes',
@@ -210,12 +211,14 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
   $scope.currency_acronym = currency_acronym;
   $scope.relative_acronym = relative_acronym;
   $scope.selectedIndex = [
+    '/blockchain/graphs',
     '/contract/current',
     '/contract/pending',
     '/contract/votes'
   ].indexOf($location.path());
 
-  if (~['/contract/current',
+  if (~['/blockchain/graphs',
+        '/contract/current',
         '/contract/pending',
         '/contract/votes'].indexOf($location.path())) {
     $http.get($location.path()).success(function (data) {
@@ -224,27 +227,11 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
         $scope[key] = value;
       });
 
-      $scope.amendments && $scope.amendments.forEach(function(am){
-        // Coins
-        var base = am.coinBase;
-        am.coins = [];
-        am.coinList.forEach(function(item){
-          am.coins.push({
-            base: Math.pow(2, base),
-            quantity: item
-          });
-          base++;
-        });
-        // MembersChanges/VotersChanges
-        ['membersChanges', 'votersChanges'].forEach(function(changeType){
-          am[changeType].forEach(function(change, index){
-            am[changeType][index] = {
-              fingerprint: change,
-              add: ~change.indexOf('+')
-            };
-          });
-        });
-      });
+      setTimeout(function() {
+        timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements);
+        wotGraphs('#wotGraph', data.members, data.newcomers, data.actives, data.leavers, data.excluded);
+        txsGraphs('#txsGraph', data.transactions);
+      }, 10);
 
       $scope.isNotLoading = true;
     });
@@ -252,18 +239,24 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
   
   $scope.path = $route.current.path;
   $scope.menus = [{
-    title: 'Current',
-    icon: 'list-alt',
-    href: '#/contract/current'
-  },{
-    title: 'Pending',
-    icon: 'time',
-    href: '#/contract/pending'
-  },{
-    title: 'Votes',
-    icon: 'envelope',
-    href: '#/contract/votes'
-  }];
+    title: 'Graphs',
+    icon: 'stats',
+    href: '#/blockchain/graphs'
+  }
+  // ,{
+  //   title: 'Current',
+  //   icon: 'list-alt',
+  //   href: '#/contract/current'
+  // },{
+  //   title: 'Pending',
+  //   icon: 'time',
+  //   href: '#/contract/pending'
+  // },{
+  //   title: 'Votes',
+  //   icon: 'envelope',
+  //   href: '#/contract/votes'
+  // }
+  ];
   $scope.contract = true;
 
   if($location.path() == "/contract/current") {

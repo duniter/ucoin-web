@@ -6,6 +6,56 @@ var contract = require('../tools/contract');
 
 module.exports = function (node, auth) {
   
+  this.graphs = function(req, res){
+    async.waterfall([
+      function (next) {
+        fs.readFile(__dirname + '/../blockchain.json', next);
+      },
+      function (data, next) {
+        var json = JSON.parse(data);
+        var accelerations = [];
+        var increments = [];
+        var members = [];
+        var newcomers = [];
+        var actives = [];
+        var leavers = [];
+        var excluded = [];
+        var transactions = [];
+        json.forEach(function (block, index) {
+          members.push(block.membersCount);
+          newcomers.push(block.identities.length);
+          actives.push(block.actives.length);
+          leavers.push(block.leavers.length);
+          excluded.push(block.excluded.length);
+          transactions.push(block.transactions.length);
+          accelerations.push(block.time - block.medianTime);
+          increments.push(block.medianTime - (index ? json[index-1].medianTime : block.medianTime));
+        });
+        next(null, {
+          'accelerations': accelerations,
+          'medianTimeIncrements': increments,
+          'members': members,
+          'newcomers': newcomers,
+          'actives': actives,
+          'leavers': leavers,
+          'excluded': excluded,
+          'transactions': transactions
+        });
+      }
+    ], successOr500(res));
+  };
+
+  function successOr500 (res) {
+    res.setHeader('Content-type', 'application/json');
+    return function (err, json) {
+      if(err){
+        res.send(500, err);
+        return;
+      }
+      res.send(200, json);
+    };
+  }
+  
   this.current = function(req, res){
     async.waterfall([
       function (next){
