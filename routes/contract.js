@@ -19,6 +19,8 @@ module.exports = function (node, auth) {
         var certifications = [];
         var newcomers = [];
         var actives = [];
+        var outputs = [];
+        var outputsEstimated = [];
         var leavers = [];
         var excluded = [];
         var transactions = [];
@@ -32,6 +34,26 @@ module.exports = function (node, auth) {
           transactions.push(block.transactions.length);
           accelerations.push(block.time - block.medianTime);
           increments.push(block.medianTime - (index ? json[index-1].medianTime : block.medianTime));
+          var outputVolume = 0;
+          block.transactions.forEach(function (tx) {
+            tx.outputs.forEach(function (out) {
+              var amount = parseInt(out.split(':')[1]);
+              outputVolume += amount;
+            });
+          });
+          outputs.push(outputVolume);
+          // Volume without money change
+          var outputVolumeEstimated = 0;
+          block.transactions.forEach(function (tx) {
+            tx.outputs.forEach(function (out) {
+              var sp = out.split(':');
+              var recipient = sp[0];
+              var amount = parseInt(sp[1]);
+              if (tx.signatories.indexOf(recipient) == -1)
+                outputVolumeEstimated += amount;
+            });
+          });
+          outputsEstimated.push(outputVolumeEstimated);
         });
         next(null, {
           'accelerations': accelerations,
@@ -42,6 +64,8 @@ module.exports = function (node, auth) {
           'actives': actives,
           'leavers': leavers,
           'excluded': excluded,
+          'outputs': outputs,
+          'outputsEstimated': outputsEstimated,
           'transactions': transactions
         });
       }
