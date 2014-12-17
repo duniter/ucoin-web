@@ -71,7 +71,7 @@ ucoinApp.config(['$routeProvider',
 
 var ucoinControllers = angular.module('ucoinControllers', []);
 
-ucoinControllers.controller('homeController', function ($scope, $route, $location, $http) {
+ucoinControllers.controller('homeController', function ($scope, $route, $location, $http, $timeout) {
   
   $scope.currency_acronym = currency_acronym;
   $scope.relative_acronym = relative_acronym;
@@ -80,9 +80,7 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
       $scope[key] = value;
     });
 
-    $scope.isNotLoading = true;
-
-    setTimeout(function () {
+    $timeout(function () {
       var masses = [];
       var uds = [];
       var nbUDs = [];
@@ -99,9 +97,10 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
           firstTime = parseInt(b.medianTime);
         }
       });
+      $scope.isNotLoading = true;
       genererGrapheQuantitative(firstTime, dt, uds, masses, $scope.currency_acronym);
       genererGrapheRelative(firstTime, dt, nbUDsOnUD, nbUDs, $scope.currency_acronym);
-    }, 100);
+    }, 500);
   });
 
   $scope.path = $route.current.path;
@@ -124,7 +123,7 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
 });
 
 
-ucoinControllers.controller('communityController', function ($scope, $route, $location, $http) {
+ucoinControllers.controller('communityController', function ($scope, $route, $location, $http, $timeout) {
 
   $scope.currency_acronym = currency_acronym;
   $scope.relative_acronym = relative_acronym;
@@ -148,16 +147,14 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
         $scope[key] = value;
       });
 
-      $scope.isNotLoading = true;
-
       if ($location.path() == '/community/pks/lookup') {
-        setTimeout(function () {
+        $timeout(function () {
+          $scope.isNotLoading = true;
           wotGraph('#wot', data.links);
-        }, 100);
+        }, 500);
       }
-
-      if ($location.path() == '/community/members') {
-        setTimeout(function () {
+      else if ($location.path() == '/community/members') {
+        $timeout(function () {
           var bidirectionnals = {};
           data.wot.forEach(function (source) {
             data.wot.forEach(function (target) {
@@ -167,8 +164,12 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
               }
             });
           });
+          $scope.isNotLoading = true;
           wotGraph2('#wot2', data.wot, bidirectionnals);
-        }, 100);
+        }, 500);
+      }
+      else {
+        $scope.isNotLoading = true;
       }
     });
   } else {
@@ -206,7 +207,7 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
   ];
 });
 
-ucoinControllers.controller('contractController', function ($scope, $route, $location, $http) {
+ucoinControllers.controller('contractController', function ($scope, $route, $location, $http, $timeout) {
 
   $scope.currency_acronym = currency_acronym;
   $scope.relative_acronym = relative_acronym;
@@ -227,13 +228,12 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
         $scope[key] = value;
       });
 
-      setTimeout(function() {
+      $timeout(function() {
+        $scope.isNotLoading = true;
         timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements);
         wotGraphs('#wotGraph', data.members, data.newcomers, data.actives, data.leavers, data.excluded);
         txsGraphs('#txsGraph', data.transactions);
-      }, 10);
-
-      $scope.isNotLoading = true;
+      }, 500);
     });
   }
   
