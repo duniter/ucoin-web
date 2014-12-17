@@ -24,6 +24,10 @@ function genererGrapheQuantitative(firstUDTime, dt, UDs, masses, currencyAcronym
             legend: {
                 enabled: true
             },
+            tooltip: {
+                shared: true,
+                crosshairs: true
+            },
             plotOptions: {
                 area: {
                     fillColor: {
@@ -88,6 +92,10 @@ function genererGrapheRelative(firstUDTime, dt, UDs, masses, currencyAcronym) {
             },
             legend: {
                 enabled: true
+            },
+            tooltip: {
+                shared: true,
+                crosshairs: true
             },
             plotOptions: {
                 area: {
@@ -461,6 +469,10 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements) {
       legend: {
           enabled: true
       },
+      tooltip: {
+          shared: true,
+          crosshairs: true
+      },
       plotOptions: {
           area: {
               fillColor: {
@@ -519,6 +531,10 @@ function wotGraphs (id, members, newcomers, actives, leavers, excluded) {
           title: {
               text: 'Number of individuals'
           }
+      },
+      tooltip: {
+          shared: true,
+          crosshairs: true
       },
       legend: {
           enabled: true
@@ -621,6 +637,62 @@ function txsGraphs (id, transactions) {
         {
           name: 'Transactions',
           data: transactions
+        }
+      ]
+  });
+}
+
+function certsGraph (id, certifications) {
+  $(id).highcharts({
+      chart: {
+          type: "area",
+          zoomType: 'x'
+      },
+      title: {
+          text: 'Certifications volume'
+      },
+      subtitle: {
+          text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' :
+                  'Pinch the chart to zoom in'
+      },
+      xAxis: {
+          minRange: 10 // 10 blocks
+      },
+      yAxis: {
+          title: {
+              text: 'Number of certifications'
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      plotOptions: {
+          area: {
+              fillColor: {
+                  linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                  stops: [
+                      [0, Highcharts.getOptions().colors[0]],
+                      [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                  ]
+              },
+              marker: {
+                  radius: 2
+              },
+              lineWidth: 1,
+              states: {
+                  hover: {
+                      lineWidth: 1
+                  }
+              },
+              threshold: null
+          }
+      },
+
+      series: [
+        {
+          name: 'Certifications',
+          data: certifications
         }
       ]
   });

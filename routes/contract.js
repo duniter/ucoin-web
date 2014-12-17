@@ -16,6 +16,7 @@ module.exports = function (node, auth) {
         var accelerations = [];
         var increments = [];
         var members = [];
+        var certifications = [];
         var newcomers = [];
         var actives = [];
         var leavers = [];
@@ -23,6 +24,7 @@ module.exports = function (node, auth) {
         var transactions = [];
         json.forEach(function (block, index) {
           members.push(block.membersCount);
+          certifications.push(block.certifications.length);
           newcomers.push(block.identities.length);
           actives.push(block.actives.length);
           leavers.push(block.leavers.length);
@@ -34,6 +36,7 @@ module.exports = function (node, auth) {
         next(null, {
           'accelerations': accelerations,
           'medianTimeIncrements': increments,
+          'certifications': certifications,
           'members': members,
           'newcomers': newcomers,
           'actives': actives,
