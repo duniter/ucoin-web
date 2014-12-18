@@ -507,6 +507,79 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements) {
   });
 }
 
+function issuersGraphs (id, ndDifferentIssuers, parameters) {
+  $(id).highcharts({
+      chart: {
+          type: "area",
+          zoomType: 'x'
+      },
+      title: {
+          text: 'Different block issuers count over last ' + parameters.blocksRot + ' blocks'
+      },
+      subtitle: {
+          text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' :
+                  'Pinch the chart to zoom in'
+      },
+      xAxis: {
+          minRange: 10 // 10 blocks
+      },
+      yAxis: {
+          title: {
+              text: 'Number of issuers'
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      tooltip: {
+          shared: true,
+          crosshairs: true
+      },
+      plotOptions: {
+          area: {
+              fillColor: {
+                  linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                  stops: [
+                      [0, Highcharts.getOptions().colors[0]],
+                      [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                  ]
+              },
+              marker: {
+                  radius: 2
+              },
+              lineWidth: 1,
+              states: {
+                  hover: {
+                      lineWidth: 1
+                  }
+              },
+              threshold: null
+          },
+          series: {
+              cursor: 'pointer',
+              point: {
+                  events: {
+                      click: function (e) {
+                        popIssuer(e, this);
+                      }
+                  }
+              },
+              marker: {
+                  lineWidth: 1
+              }
+          },
+      },
+
+      series: [
+        {
+          name: 'Issuers',
+          data: ndDifferentIssuers
+        }
+      ]
+  });
+}
+
 
 /*********** GRAPHES BLOCKCHAIN **********/
 
@@ -781,6 +854,21 @@ function popBlock (e, obj) {
         headingText: 'Transactions detail',
         maincontentText: msg ? msg : '<i>No transactions in this block.</i>',
         width: msg ? 400 : 200
+    });
+  });
+}
+
+function popIssuer (e, obj) {
+  $.getJSON('/blockchain/block/' + obj.x, function (block) {
+    var msg = 'Issuer of block#' + block.number + ' was ' + block.issuer.substring(0,20);
+    hs.htmlExpand(null, {
+        pageOrigin: {
+            x: e.pageX || e.clientX,
+            y: e.pageY || e.clientY
+        },
+        headingText: 'Block\' issuer detail',
+        maincontentText: msg,
+        width: 400
     });
   });
 }

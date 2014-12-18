@@ -13,6 +13,23 @@ module.exports = function (node, auth) {
       },
       function (data, next) {
         var json = JSON.parse(data);
+        var sp = json[0].parameters.split(':');
+        var parameters = {
+          "c":                parseFloat(sp[0]),
+          "dt":               parseInt(sp[1]),
+          "ud0":              parseInt(sp[2]),
+          "sigDelay":         parseInt(sp[3]),
+          "sigValidity":      parseInt(sp[4]),
+          "sigQty":           parseInt(sp[5]),
+          "sigWoT":           parseInt(sp[6]),
+          "msValidity":       parseInt(sp[7]),
+          "stepMax":          parseInt(sp[8]),
+          "medianTimeBlocks": parseInt(sp[9]),
+          "avgGenTime":       parseInt(sp[10]),
+          "dtDiffEval":       parseInt(sp[11]),
+          "blocksRot":        parseInt(sp[12]),
+          "percentRot":       parseFloat(sp[13])
+        };
         var accelerations = [];
         var increments = [];
         var members = [];
@@ -24,6 +41,7 @@ module.exports = function (node, auth) {
         var leavers = [];
         var excluded = [];
         var transactions = [];
+        var nbDifferentIssuers = [];
         json.forEach(function (block, index) {
           members.push(block.membersCount);
           certifications.push(block.certifications.length);
@@ -34,6 +52,7 @@ module.exports = function (node, auth) {
           transactions.push(block.transactions.length);
           accelerations.push(block.time - block.medianTime);
           increments.push(block.medianTime - (index ? json[index-1].medianTime : block.medianTime));
+          // Volume
           var outputVolume = 0;
           block.transactions.forEach(function (tx) {
             tx.outputs.forEach(function (out) {
@@ -54,8 +73,15 @@ module.exports = function (node, auth) {
             });
           });
           outputsEstimated.push(outputVolumeEstimated);
+          // Number of different issuers
+          var issuers = [];
+          for (var i = Math.max(0, index - 1 - parameters.blocksRot); i <= index - 1; i++) {
+            issuers.push(json[i].issuer);
+          }
+          nbDifferentIssuers.push(_(issuers).uniq().length);
         });
         next(null, {
+          'parameters': parameters,
           'accelerations': accelerations,
           'medianTimeIncrements': increments,
           'certifications': certifications,
@@ -66,7 +92,8 @@ module.exports = function (node, auth) {
           'excluded': excluded,
           'outputs': outputs,
           'outputsEstimated': outputsEstimated,
-          'transactions': transactions
+          'transactions': transactions,
+          'nbDifferentIssuers': nbDifferentIssuers
         });
       }
     ], successOr500(res));
