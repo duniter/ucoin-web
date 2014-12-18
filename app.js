@@ -49,6 +49,7 @@ vucoin(host, port, function (err, node) {
   var contract     = require('./routes/contract')(node, auth);
   var transactions = require('./routes/transactions')(node, auth);
   var peers        = require('./routes/peers')(node, auth);
+  var blockchain   = require('./routes/blockchain')(node, auth);
   
   app.get('/home', routes.home);
   app.get('/community/members',             members.members);
@@ -69,6 +70,7 @@ vucoin(host, port, function (err, node) {
   app.get('/peering/peers/upstream/keys',   peers.upstreamKEYS);
   app.get('/peering/downstream',            peers.downstreamALL);
   app.get('/peering/peers/downstream/keys', peers.downstreamKEYS);
+  app.get('/blockchain/block/:number',      blockchain.block);
 
   http.createServer(app).listen(app_port, app_host, function(){
     console.log('Web interface: http://' + app_host + ':' + app_port);

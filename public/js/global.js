@@ -630,7 +630,20 @@ function txsGraphs (id, transactions) {
                   }
               },
               threshold: null
-          }
+          },
+          series: {
+              cursor: 'pointer',
+              point: {
+                  events: {
+                      click: function (e) {
+                        popBlock(e, this);
+                      }
+                  }
+              },
+              marker: {
+                  lineWidth: 1
+              }
+          },
       },
 
       series: [
@@ -690,7 +703,20 @@ function outputVolumeGraph (id, transactions, transactions2) {
                   }
               },
               threshold: null
-          }
+          },
+          series: {
+              cursor: 'pointer',
+              point: {
+                  events: {
+                      click: function (e) {
+                        popBlock(e, this);
+                      }
+                  }
+              },
+              marker: {
+                  lineWidth: 1
+              }
+          },
       },
 
       series: [
@@ -703,6 +729,46 @@ function outputVolumeGraph (id, transactions, transactions2) {
           data: transactions2
         }
       ]
+  });
+}
+
+function popBlock (e, obj) {
+  $.getJSON('/blockchain/block/' + obj.x, function (block) {
+    var msg = '';
+    if (block.transactions.length) {
+      // Volume without money change
+      block.transactions.forEach(function (tx) {
+        var issuers = [];
+        tx.signatories.forEach(function (signatory) {
+          issuers.push(signatory.substring(0, 6));
+        });
+        msg += issuers.join(',');
+        var receips = [];
+        var outputVolume = 0;
+        var outputVolumeEstimated = 0;
+        tx.outputs.forEach(function (out) {
+          var sp = out.split(':');
+          var recipient = sp[0];
+          var amount = parseInt(sp[1]);
+          outputVolume += amount;
+          if (tx.signatories.indexOf(recipient) == -1) {
+            outputVolumeEstimated += amount;
+            receips.push('<b>' + amount + ' units</b> to ' + recipient.substring(0, 6));
+          }
+        });
+        msg += ' sent ' + receips.join(',');
+        msg += ' (change was <b>' + (outputVolume - outputVolumeEstimated) + ' units</b>)<br/>';
+      });
+    }
+    hs.htmlExpand(null, {
+        pageOrigin: {
+            x: e.pageX || e.clientX,
+            y: e.pageY || e.clientY
+        },
+        headingText: 'Transactions detail',
+        maincontentText: msg ? msg : '<i>No transactions in this block.</i>',
+        width: msg ? 400 : 200
+    });
   });
 }
 
