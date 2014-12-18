@@ -558,7 +558,20 @@ function wotGraphs (id, members, newcomers, actives, leavers, excluded) {
                   }
               },
               threshold: null
-          }
+          },
+          series: {
+              cursor: 'pointer',
+              point: {
+                  events: {
+                      click: function (e) {
+                        popMembers(e, this);
+                      }
+                  }
+              },
+              marker: {
+                  lineWidth: 1
+              }
+          },
       },
 
       series: [
@@ -788,6 +801,45 @@ function popCerts (e, obj) {
         },
         headingText: 'Certifications detail',
         maincontentText: msg ? msg : '<i>No certifications in this block.</i>',
+        width: msg ? 400 : 200
+    });
+  });
+}
+
+function popMembers (e, obj) {
+  $.getJSON('/blockchain/block/' + obj.x, function (block) {
+    var msg = '';
+    if (block.joiners.length) {
+      block.joiners.forEach(function (cert) {
+        var sp = cert.split(':');
+        msg += sp[5] + ' has joined (pubkey ' + sp[0].substring(0,6) + ')<br/>';
+      });
+    }
+    if (block.actives.length) {
+      block.actives.forEach(function (cert) {
+        var sp = cert.split(':');
+        msg += sp[5] + ' has updated (pubkey ' + sp[0].substring(0,6) + ')<br/>';
+      });
+    }
+    if (block.leavers.length) {
+      block.leavers.forEach(function (cert) {
+        var sp = cert.split(':');
+        msg += sp[5] + ' has updated (pubkey ' + sp[0].substring(0,6) + ')<br/>';
+      });
+    }
+    if (block.excluded.length) {
+      block.excluded.forEach(function (cert) {
+        var sp = cert.split(':');
+        msg += sp[0].substring(0,6) + ' has been excluded<br/>';
+      });
+    }
+    hs.htmlExpand(null, {
+        pageOrigin: {
+            x: e.pageX || e.clientX,
+            y: e.pageY || e.clientY
+        },
+        headingText: 'Memberships detail',
+        maincontentText: msg ? msg : '<i>No memberships nor excluded member in this block.</i>',
         width: msg ? 400 : 200
     });
   });
