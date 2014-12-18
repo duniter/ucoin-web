@@ -42,6 +42,7 @@ module.exports = function (node, auth) {
         var excluded = [];
         var transactions = [];
         var nbDifferentIssuers = [];
+        var difficulties = [];
         json.forEach(function (block, index) {
           members.push(block.membersCount);
           certifications.push(block.certifications.length);
@@ -51,6 +52,7 @@ module.exports = function (node, auth) {
           excluded.push(block.excluded.length);
           transactions.push(block.transactions.length);
           accelerations.push(block.time - block.medianTime);
+          difficulties.push(block.powMin);
           increments.push(block.medianTime - (index ? json[index-1].medianTime : block.medianTime));
           // Volume
           var outputVolume = 0;
@@ -93,6 +95,7 @@ module.exports = function (node, auth) {
           'outputs': outputs,
           'outputsEstimated': outputsEstimated,
           'transactions': transactions,
+          'difficulties': difficulties,
           'nbDifferentIssuers': nbDifferentIssuers
         });
       }

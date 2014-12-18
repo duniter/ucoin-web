@@ -580,6 +580,66 @@ function issuersGraphs (id, ndDifferentIssuers, parameters) {
   });
 }
 
+function difficultyGraph (id, difficulties) {
+  $(id).highcharts({
+      chart: {
+          type: "area",
+          zoomType: 'x'
+      },
+      title: {
+          text: 'Proof-of-Work difficulty by block'
+      },
+      subtitle: {
+          text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' :
+                  'Pinch the chart to zoom in'
+      },
+      xAxis: {
+          minRange: 10 // 10 blocks
+      },
+      yAxis: {
+          title: {
+              text: 'Number of zeros'
+          }
+      },
+      legend: {
+          enabled: true
+      },
+      tooltip: {
+          shared: true,
+          crosshairs: true
+      },
+      plotOptions: {
+          area: {
+              fillColor: {
+                  linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                  stops: [
+                      [0, Highcharts.getOptions().colors[0]],
+                      [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                  ]
+              },
+              marker: {
+                  radius: 2
+              },
+              lineWidth: 1,
+              states: {
+                  hover: {
+                      lineWidth: 1
+                  }
+              },
+              threshold: null
+          }
+      },
+
+      series: [
+        {
+          name: 'PoW difficulty',
+          data: difficulties
+        }
+      ]
+  });
+}
+
 
 /*********** GRAPHES BLOCKCHAIN **********/
 

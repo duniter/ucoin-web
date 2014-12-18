@@ -236,6 +236,7 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
         certsGraph('#certsGraph', data.certifications);
         outputVolumeGraph('#outputVolumeGraph', data.outputs, data.outputsEstimated);
         issuersGraphs('#issuersGraph', data.nbDifferentIssuers, data.parameters);
+        difficultyGraph('#difficultyGraph', data.difficulties);
         // estimatedOutputVolumeGraph('#estimatedOutputVolumeGraph', data.outputsEstimated);
       }, 500);
     });
