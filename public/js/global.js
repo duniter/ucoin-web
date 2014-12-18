@@ -772,6 +772,27 @@ function popBlock (e, obj) {
   });
 }
 
+function popCerts (e, obj) {
+  $.getJSON('/blockchain/block/' + obj.x, function (block) {
+    var msg = '';
+    if (block.certifications.length) {
+      block.certifications.forEach(function (cert) {
+        var sp = cert.split(':');
+        msg += sp[0].substring(0,6) + ' certified ' + sp[1].substring(0,6) + '<br/>';
+      });
+    }
+    hs.htmlExpand(null, {
+        pageOrigin: {
+            x: e.pageX || e.clientX,
+            y: e.pageY || e.clientY
+        },
+        headingText: 'Certifications detail',
+        maincontentText: msg ? msg : '<i>No certifications in this block.</i>',
+        width: msg ? 400 : 200
+    });
+  });
+}
+
 function certsGraph (id, certifications) {
   $(id).highcharts({
       chart: {
@@ -816,7 +837,20 @@ function certsGraph (id, certifications) {
                   }
               },
               threshold: null
-          }
+          },
+          series: {
+              cursor: 'pointer',
+              point: {
+                  events: {
+                      click: function (e) {
+                        popCerts(e, this);
+                      }
+                  }
+              },
+              marker: {
+                  lineWidth: 1
+              }
+          },
       },
 
       series: [
