@@ -1,0 +1,79 @@
+<!-- Home -->
+<h1><span class="text-info"><strong>Currency Parameters</strong></span></h1>
+<table class="table">
+  <tr>
+    <th style="width: 20%;">Var</th>
+    <th style="width: 20%;">Value</th>
+    <th style="width: 60%;">Description</th>
+  </tr>
+  <tr>
+    <td>c</td>
+    <td><span class="label label-default"><strong>{{ (parameters.c*100) }} %</strong></span></td>
+    <td>%growth</td>
+  </tr>
+  <tr>
+    <td>dt</td>
+    <td><span class="label label-default"><strong>{{ parameters.dt }} s</strong></span></td>
+    <td>Time period between two UD</td>
+  </tr>
+  <tr>
+    <td>ud0</td>
+    <td><span class="label label-default"><strong>{{ parameters.ud0 }}{{ currency_acronym }}</strong></span></td>
+    <td>UD(0), i.e. initial Universal Dividend</td>
+  </tr>
+  <tr>
+    <td>sigDelay</td>
+    <td><span class="label label-default"><strong>{{ parameters.sigDelay }} s</strong></span></td>
+    <td>Minimum delay between 2 identical certifications (same pubkeys)</td>
+  </tr>
+  <tr>
+    <td>sigValidity</td>
+    <td><span class="label label-default"><strong>{{ parameters.sigValidity }} s</strong></span></td>
+    <td>Maximum age of a valid signature (in seconds)</td>
+  </tr>
+  <tr>
+    <td>sigQty</td>
+    <td><span class="label label-default"><strong>{{ parameters.sigQty }}</strong></span></td>
+    <td>Minimum quantity of signatures to be part of the WoT</td>
+  </tr>
+  <tr>
+    <td>sigWoT</td>
+    <td><span class="label label-default"><strong>{{ parameters.sigWoT }}</strong></span></td>
+    <td>Minimum quantity of valid made certifications to be part of the WoT for distance rule</td>
+  </tr>
+  <tr>
+    <td>msValidity</td>
+    <td><span class="label label-default"><strong>{{ parameters.msValidity }} s</strong></span></td>
+    <td>Maximum age of a valid membership (in seconds)</td>
+  </tr>
+  <tr>
+    <td>stepMax</td>
+    <td><span class="label label-default"><strong>{{ parameters.stepMax }}</strong></span></td>
+    <td>Maximum distance between each WoT member and a newcomer</td>
+  </tr>
+  <tr>
+    <td>medianTimeBlocks</td>
+    <td><span class="label label-default"><strong>{{ parameters.medianTimeBlocks }}</strong></span></td>
+    <td>Number of blocks used for calculating median time.</td>
+  </tr>
+  <tr>
+    <td>avgGenTime</td>
+    <td><span class="label label-default"><strong>{{ parameters.avgGenTime }} s</strong></span></td>
+    <td>The average time for writing 1 block (wished time)</td>
+  </tr>
+  <tr>
+    <td>dtDiffEval</td>
+    <td><span class="label label-default"><strong>{{ parameters.dtDiffEval }}</strong></span></td>
+    <td>The number of blocks required to evaluate again PoWMin value</td>
+  </tr>
+  <tr>
+    <td>blocksRot</td>
+    <td><span class="label label-default"><strong>{{ parameters.blocksRot }}</strong></span></td>
+    <td>The number of previous blocks to check for personalized difficulty</td>
+  </tr>
+  <tr>
+    <td>percentRot</td>
+    <td><span class="label label-default"><strong>{{ parameters.percentRot*100 }} %</strong></span></td>
+    <td>The percent of previous issuers to reach for personalized difficulty</td>
+  </tr>
+</table>

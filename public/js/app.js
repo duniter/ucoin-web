@@ -12,6 +12,7 @@ var routes = {
     model: 'partials/container.html',
     bodies: {
       '/home': 'home',
+      '/parameters': 'parameters',
       '/tech': 'tech'
     }
   },
@@ -109,13 +110,18 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
     icon: 'picture',
     href: '#/home'
   },{
-    title: 'Technical details',
+    title: 'Parameters',
     icon: 'wrench',
+    href: '#/parameters'
+  },{
+    title: 'Peer informations',
+    icon: 'globe',
     href: '#/tech'
   }];
 
   $scope.selectedIndex = [
     '/home',
+    '/parameters',
     '/tech',
   ].indexOf($location.path());
 
