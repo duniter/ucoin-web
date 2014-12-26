@@ -86,12 +86,15 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
       var uds = [];
       var nbUDs = [];
       var nbUDsOnUD = [];
+      var cActuals = [];
       var firstTime = 0
       var dt = data.parameters.dt;
-      data.blocks.forEach(function (b) {
+      data.blocks.forEach(function (b, index) {
         var i = masses.length;
         masses.push(b.monetaryMass);
         uds.push(b.dividend);
+        if (index < (data.blocks.length - 1))
+          cActuals.push(data.blocks[index + 1].dividend/(b.monetaryMass/b.membersCount)*100);
         nbUDs.push(Math.round(masses[i] / uds[i]));
         nbUDsOnUD.push(1);
         if (!firstTime) {
@@ -99,6 +102,7 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
         }
       });
       $scope.isNotLoading = true;
+      genererGrapheCactual(firstTime, dt, uds, cActuals, $scope.currency_acronym);
       genererGrapheQuantitative(firstTime, dt, uds, masses, $scope.currency_acronym);
       genererGrapheRelative(firstTime, dt, nbUDsOnUD, nbUDs, $scope.currency_acronym);
     }, 500);
