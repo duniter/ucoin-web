@@ -1,4 +1,4 @@
-function genererGrapheMMassUDM(firstUDTime, dt, values, currencyAcronym) {
+function genererGrapheMMassUDM(firstUDTime, dt, values, members, currencyAcronym) {
     $(function () {
         $('#graphMMassUDM').highcharts({
             chart: {
@@ -19,15 +19,17 @@ function genererGrapheMMassUDM(firstUDTime, dt, values, currencyAcronym) {
             yAxis: {
                 title: {
                     text: 'UD count'
-                }
+                },
+                floor: 0
             },
+            colors: ['#7cb5ec', '#5cb85c'],
             legend: {
                 enabled: true
             },
-            // tooltip: {
-            //     shared: true,
-            //     crosshairs: true
-            // },
+            tooltip: {
+                shared: true,
+                crosshairs: true
+            },
             plotOptions: {
                 area: {
                     fillColor: {
@@ -52,21 +54,29 @@ function genererGrapheMMassUDM(firstUDTime, dt, values, currencyAcronym) {
 
             series: [{
                 type: 'area',
-                name: 'Monetary Mass (UD) per member',
+                name: 'M (relative) per member',
                 pointInterval: dt*1000,
                 pointStart: firstUDTime*1000,
                 data: values
+            },{
+                type: 'line',
+                name: 'N (members count)',
+                pointInterval: dt*1000,
+                pointStart: firstUDTime*1000,
+                data: members
             }]
         });
     });
-};function genererGrapheCactual(firstUDTime, dt, UDs, cActuals, currencyAcronym) {
+};
+
+function genererGrapheCactual(firstUDTime, dt, UDs, cActuals, members, currencyAcronym) {
     $(function () {
         $('#graphC').highcharts({
             chart: {
                 zoomType: 'x'
             },
             title: {
-                text: '\'c\' parameter evolution from the beginning'
+                text: '« c » actual value'
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -80,15 +90,18 @@ function genererGrapheMMassUDM(firstUDTime, dt, values, currencyAcronym) {
             yAxis: {
                 title: {
                     text: 'percent'
-                }
+                },
+                ceiling: 100,
+                floor: 0
             },
             legend: {
                 enabled: true
             },
-            // tooltip: {
-            //     shared: true,
-            //     crosshairs: true
-            // },
+            colors: ['#7cb5ec', '#5cb85c'],
+            tooltip: {
+                shared: true,
+                crosshairs: true
+            },
             plotOptions: {
                 area: {
                     fillColor: {
@@ -112,11 +125,17 @@ function genererGrapheMMassUDM(firstUDTime, dt, values, currencyAcronym) {
             },
 
             series: [{
-                type: 'area',
-                name: 'c parameter (actual)',
+                type: 'line',
+                name: 'c (actual)',
                 pointInterval: dt*1000,
                 pointStart: firstUDTime*1000,
                 data: cActuals
+            },{
+                type: 'line',
+                name: 'N (members count)',
+                pointInterval: dt*1000,
+                pointStart: firstUDTime*1000,
+                data: members
             }]
         });
     });
@@ -143,7 +162,8 @@ function genererGrapheQuantitative(firstUDTime, dt, UDs, masses, currencyAcronym
             yAxis: {
                 title: {
                     text: 'Currency units (' + currencyAcronym + ')'
-                }
+                },
+                floor: 0
             },
             legend: {
                 enabled: true
@@ -212,7 +232,8 @@ function genererGrapheRelative(firstUDTime, dt, UDs, masses, currencyAcronym) {
             yAxis: {
                 title: {
                     text: 'UD count'
-                }
+                },
+                floor: 0
             },
             legend: {
                 enabled: true
@@ -588,7 +609,9 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements) {
       yAxis: {
           title: {
               text: 'Number of seconds'
-          }
+          },
+          floor: 0,
+          min: 0
       },
       legend: {
           enabled: true
@@ -651,7 +674,8 @@ function issuersGraphs (id, ndDifferentIssuers, parameters) {
       yAxis: {
           title: {
               text: 'Number of issuers'
-          }
+          },
+          floor: 0
       },
       legend: {
           enabled: true
@@ -724,7 +748,9 @@ function difficultyGraph (id, difficulties) {
       yAxis: {
           title: {
               text: 'Number of zeros'
-          }
+          },
+          floor: 0,
+          min: 0
       },
       legend: {
           enabled: true
@@ -787,7 +813,8 @@ function wotGraphs (id, members, newcomers, actives, leavers, excluded) {
       yAxis: {
           title: {
               text: 'Number of individuals'
-          }
+          },
+          floor: 0
       },
       tooltip: {
           shared: true,
@@ -876,7 +903,9 @@ function txsGraphs (id, transactions) {
       yAxis: {
           title: {
               text: 'Number of transactions'
-          }
+          },
+          floor: 0,
+          min: 0
       },
       legend: {
           enabled: true
@@ -945,7 +974,9 @@ function outputVolumeGraph (id, transactions, transactions2) {
       yAxis: {
           title: {
               text: 'Output volume'
-          }
+          },
+          floor: 0,
+          min: 0
       },
       legend: {
           enabled: true
@@ -1137,7 +1168,9 @@ function certsGraph (id, certifications) {
       yAxis: {
           title: {
               text: 'Number of certifications'
-          }
+          },
+          floor: 0,
+          min: 0
       },
       legend: {
           enabled: true

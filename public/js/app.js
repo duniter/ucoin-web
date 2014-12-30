@@ -86,37 +86,41 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
 
     if (~['/graphs', '/home'].indexOf($location.path())) {
 
+      var dt = data.parameters.dt;
+      var ud0 = data.parameters.ud0;
       var masses = [];
+      var members = [];
       var uds = [];
       var nbUDs = [];
       var nbUDsOnUD = [];
       var mMassUDM = [];
       var cActuals = [];
       var firstTime = 0
-      var dt = data.parameters.dt;
       data.blocks.forEach(function (b, index) {
-        var i = masses.length;
-        masses.push(b.monetaryMass);
-        uds.push(b.dividend);
-        if (index < (data.blocks.length - 1)) {
-          var UD = data.blocks[index + 1].dividend;
-          cActuals.push(UD/(b.monetaryMass/b.membersCount)*100);
-          mMassUDM.push((masses[i]/UD)/b.membersCount);
-          nbUDs.push(Math.round(masses[i] / UD));
-        }
-        // mMassUDM.push((masses[i]/uds[i])/b.membersCount);
-        nbUDsOnUD.push(1);
         if (!firstTime) {
           firstTime = parseInt(b.medianTime);
         }
+        var i = masses.length;
+        var UD = b.dividend;
+        var N = b.membersCount;
+        var M = b.monetaryMass-UD*N;
+        var c = b.medianTime == firstTime ? 10000 : UD*N/M;
+        members.push(N);
+        uds.push(UD);
+        masses.push(M);
+        cActuals.push(c*100);
+        nbUDs.push(Math.round(M / UD));
+        mMassUDM.push(parseFloat((Math.round(M / UD) / N).toFixed(2)));
+        nbUDsOnUD.push(1);
+        // mMassUDM.push((masses[i]/uds[i])/b.membersCount);
       });
 
       $timeout(function () {
         if (~['/graphs', '/home'].indexOf($location.path())) {
-          genererGrapheMMassUDM(firstTime, dt, mMassUDM, $scope.currency_acronym);
+          genererGrapheMMassUDM(firstTime, dt, mMassUDM, members, $scope.currency_acronym);
         }
         if (~['/graphs'].indexOf($location.path())) {
-          genererGrapheCactual(firstTime, dt, uds, cActuals, $scope.currency_acronym);
+          genererGrapheCactual(firstTime, dt, uds, cActuals, members, $scope.currency_acronym);
           genererGrapheQuantitative(firstTime, dt, uds, masses, $scope.currency_acronym);
           genererGrapheRelative(firstTime, dt, nbUDsOnUD, nbUDs, $scope.currency_acronym);
         }
