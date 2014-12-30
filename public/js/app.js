@@ -284,11 +284,15 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
           // Comboboxes
           var textField1 = $("#textFieldBlock1");
           var textField2 = $("#textFieldBlock2");
-          textField1.val(0);
-          textField2.val(data.speed.length - 1);
+          var resetButton = $("#buttonReset");
+          resetButton.click(function () {
+            textField1.val(0);
+            textField2.val(data.speed.length - 1);
+            textField2.trigger('change');
+          });
           textField1.change(majGraphes);
           textField2.change(majGraphes);
-          textField2.trigger('change');
+          resetButton.trigger('click');
 
           function majGraphes () {
             $("#timeGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
