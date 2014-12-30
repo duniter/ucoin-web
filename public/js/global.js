@@ -1,3 +1,5 @@
+var hcDifficulty = null;
+
 function genererGrapheMMassUDM(firstUDTime, dt, values, members, currencyAcronym) {
     $(function () {
         $('#graphMMassUDM').highcharts({
@@ -741,7 +743,7 @@ function issuersGraphs (id, ndDifferentIssuers, parameters) {
 }
 
 function difficultyGraph (id, difficulties) {
-  $(id).highcharts({
+  hcDifficulty = $(id).highcharts({
       chart: {
           type: "area",
           zoomType: 'x'

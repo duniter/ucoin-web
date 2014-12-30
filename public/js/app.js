@@ -280,6 +280,21 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
           timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements, data.speed, minSpeeds, maxSpeeds);
           issuersGraphs('#issuersGraph', data.nbDifferentIssuers, data.parameters);
           difficultyGraph('#difficultyGraph', data.difficulties);
+
+          // Comboboxes
+          var textField1 = $("#textFieldBlock1");
+          var textField2 = $("#textFieldBlock2");
+          textField1.val(0);
+          textField2.val(data.speed.length - 1);
+          textField1.change(majGraphes);
+          textField2.change(majGraphes);
+          textField2.trigger('change');
+
+          function majGraphes () {
+            $("#timeGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
+            $("#issuersGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
+            $("#difficultyGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
+          }
         }
         if (~['/blockchain/wotgraphs'].indexOf($location.path())) {
           wotGraphs('#wotGraph', data.members, data.newcomers, data.actives, data.leavers, data.excluded);
