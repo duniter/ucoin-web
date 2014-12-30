@@ -12,6 +12,7 @@ var routes = {
     model: 'partials/container.html',
     bodies: {
       '/home': 'home',
+      '/graphs': 'currency-graphs',
       '/parameters': 'parameters',
       '/tech': 'tech'
     }
@@ -30,6 +31,8 @@ var routes = {
     model: 'partials/container.html',
     bodies: {
       '/blockchain/graphs': 'blockchain-graphs',
+      '/blockchain/wotgraphs': 'blockchain-wotgraphs',
+      '/blockchain/txgraphs': 'blockchain-txgraphs',
       '/contract/current': 'contract-current',
       '/contract/pending': 'contract-current',
       '/contract/votes': 'contract-votes',
@@ -81,11 +84,13 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
       $scope[key] = value;
     });
 
-    $timeout(function () {
+    if (~['/graphs', '/home'].indexOf($location.path())) {
+
       var masses = [];
       var uds = [];
       var nbUDs = [];
       var nbUDsOnUD = [];
+      var mMassUDM = [];
       var cActuals = [];
       var firstTime = 0
       var dt = data.parameters.dt;
@@ -93,19 +98,33 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
         var i = masses.length;
         masses.push(b.monetaryMass);
         uds.push(b.dividend);
-        if (index < (data.blocks.length - 1))
-          cActuals.push(data.blocks[index + 1].dividend/(b.monetaryMass/b.membersCount)*100);
-        nbUDs.push(Math.round(masses[i] / uds[i]));
+        if (index < (data.blocks.length - 1)) {
+          var UD = data.blocks[index + 1].dividend;
+          cActuals.push(UD/(b.monetaryMass/b.membersCount)*100);
+          mMassUDM.push((masses[i]/UD)/b.membersCount);
+          nbUDs.push(Math.round(masses[i] / UD));
+        }
+        // mMassUDM.push((masses[i]/uds[i])/b.membersCount);
         nbUDsOnUD.push(1);
         if (!firstTime) {
           firstTime = parseInt(b.medianTime);
         }
       });
+
+      $timeout(function () {
+        if (~['/graphs', '/home'].indexOf($location.path())) {
+          genererGrapheMMassUDM(firstTime, dt, mMassUDM, $scope.currency_acronym);
+        }
+        if (~['/graphs'].indexOf($location.path())) {
+          genererGrapheCactual(firstTime, dt, uds, cActuals, $scope.currency_acronym);
+          genererGrapheQuantitative(firstTime, dt, uds, masses, $scope.currency_acronym);
+          genererGrapheRelative(firstTime, dt, nbUDsOnUD, nbUDs, $scope.currency_acronym);
+        }
+        $scope.isNotLoading = true;
+      }, 500);
+    } else {
       $scope.isNotLoading = true;
-      genererGrapheCactual(firstTime, dt, uds, cActuals, $scope.currency_acronym);
-      genererGrapheQuantitative(firstTime, dt, uds, masses, $scope.currency_acronym);
-      genererGrapheRelative(firstTime, dt, nbUDsOnUD, nbUDs, $scope.currency_acronym);
-    }, 500);
+    }
   });
 
   $scope.path = $route.current.path;
@@ -113,6 +132,10 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
     title: 'Overview',
     icon: 'picture',
     href: '#/home'
+  },{
+    title: 'Currency graphs',
+    icon: 'stats',
+    href: '#/graphs'
   },{
     title: 'Parameters',
     icon: 'wrench',
@@ -125,6 +148,7 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
 
   $scope.selectedIndex = [
     '/home',
+    '/graphs',
     '/parameters',
     '/tech',
   ].indexOf($location.path());
@@ -223,12 +247,16 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
   $scope.relative_acronym = relative_acronym;
   $scope.selectedIndex = [
     '/blockchain/graphs',
+    '/blockchain/wotgraphs',
+    '/blockchain/txgraphs',
     '/contract/current',
     '/contract/pending',
     '/contract/votes'
   ].indexOf($location.path());
 
   if (~['/blockchain/graphs',
+        '/blockchain/wotgraphs',
+        '/blockchain/txgraphs',
         '/contract/current',
         '/contract/pending',
         '/contract/votes'].indexOf($location.path())) {
@@ -239,14 +267,20 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
       });
 
       $timeout(function() {
+        if (~['/blockchain/graphs'].indexOf($location.path())) {
+          timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements);
+          issuersGraphs('#issuersGraph', data.nbDifferentIssuers, data.parameters);
+          difficultyGraph('#difficultyGraph', data.difficulties);
+        }
+        if (~['/blockchain/wotgraphs'].indexOf($location.path())) {
+          wotGraphs('#wotGraph', data.members, data.newcomers, data.actives, data.leavers, data.excluded);
+          certsGraph('#certsGraph', data.certifications);
+        }
+        if (~['/blockchain/txgraphs'].indexOf($location.path())) {
+          txsGraphs('#txsGraph', data.transactions);
+          outputVolumeGraph('#outputVolumeGraph', data.outputs, data.outputsEstimated);
+        }
         $scope.isNotLoading = true;
-        timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements);
-        wotGraphs('#wotGraph', data.members, data.newcomers, data.actives, data.leavers, data.excluded);
-        txsGraphs('#txsGraph', data.transactions);
-        certsGraph('#certsGraph', data.certifications);
-        outputVolumeGraph('#outputVolumeGraph', data.outputs, data.outputsEstimated);
-        issuersGraphs('#issuersGraph', data.nbDifferentIssuers, data.parameters);
-        difficultyGraph('#difficultyGraph', data.difficulties);
         // estimatedOutputVolumeGraph('#estimatedOutputVolumeGraph', data.outputsEstimated);
       }, 500);
     });
@@ -254,9 +288,17 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
   
   $scope.path = $route.current.path;
   $scope.menus = [{
-    title: 'Graphs',
+    title: 'Technical graphs',
     icon: 'stats',
     href: '#/blockchain/graphs'
+  },{
+    title: 'WoT graphs',
+    icon: 'globe',
+    href: '#/blockchain/wotgraphs'
+  },{
+    title: 'Transactions graphs',
+    icon: 'transfer',
+    href: '#/blockchain/txgraphs'
   }
   // ,{
   //   title: 'Current',
