@@ -5,7 +5,7 @@ function genererGrapheMMassUDM(firstUDTime, dt, values, members, currencyAcronym
                 zoomType: 'x'
             },
             title: {
-                text: 'Monetary Mass (UD) per member'
+                text: 'Monetary Mass per member: (M/UD)/N'
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -18,7 +18,7 @@ function genererGrapheMMassUDM(firstUDTime, dt, values, members, currencyAcronym
             },
             yAxis: {
                 title: {
-                    text: 'UD count'
+                    text: 'count'
                 },
                 floor: 0
             },
@@ -54,13 +54,13 @@ function genererGrapheMMassUDM(firstUDTime, dt, values, members, currencyAcronym
 
             series: [{
                 type: 'area',
-                name: 'M (relative) per member',
+                name: '(M/UD)/N',
                 pointInterval: dt*1000,
                 pointStart: firstUDTime*1000,
                 data: values
             },{
                 type: 'line',
-                name: 'N (members count)',
+                name: 'N',
                 pointInterval: dt*1000,
                 pointStart: firstUDTime*1000,
                 data: members
@@ -148,7 +148,7 @@ function genererGrapheQuantitative(firstUDTime, dt, UDs, masses, currencyAcronym
                 zoomType: 'x'
             },
             title: {
-                text: 'Monetary mass evolution from the beginning'
+                text: 'Monetary mass (quantitative): M'
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -196,7 +196,7 @@ function genererGrapheQuantitative(firstUDTime, dt, UDs, masses, currencyAcronym
 
             series: [{
                 type: 'area',
-                name: 'M (quantitative)',
+                name: 'M',
                 pointInterval: dt*1000,
                 pointStart: firstUDTime*1000,
                 data: masses
@@ -218,7 +218,7 @@ function genererGrapheRelative(firstUDTime, dt, UDs, masses, currencyAcronym) {
                 zoomType: 'x'
             },
             title: {
-                text: 'Monetary mass evolution from the beginning, in UD count'
+                text: 'Monetary mass (relative): M/UD'
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -266,13 +266,13 @@ function genererGrapheRelative(firstUDTime, dt, UDs, masses, currencyAcronym) {
 
             series: [{
                 type: 'area',
-                name: 'M (relative)',
+                name: 'M/UD',
                 pointInterval: dt*1000,
                 pointStart: firstUDTime*1000,
                 data: masses
             },{
                 type: 'line',
-                name: 'UD',
+                name: 'UD/UD',
                 pointInterval: dt*1000,
                 pointStart: firstUDTime*1000,
                 data: UDs
