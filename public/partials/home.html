@@ -31,9 +31,9 @@
   </tr>
   <tr>
     <td>Universal Dividend</td>
-    <td>{{ relative_acronym }}<sub>t+1</sub></td>
+    <td>{{ relative_acronym }}<sub>t</sub></td>
     <td>
-       <span class="label label-success"><strong>{{ UD }} {{ currency_acronym }}</strong></span>
+       <span class="label label-success"><strong>{{ UD.toFixed(2) }} {{ currency_acronym }}</strong></span>
     </td>
     <td>
        <span class="label label-primary"><strong>{{ UD/UD }} {{ relative_acronym }}</strong></span>
@@ -64,7 +64,7 @@
   </tr>
   <tr>
     <td>Universal Dividend (computed)</td>
-    <td>UD <sub>t+1</sub> = MAX ( <span class="label label-default">{{ UD }} {{ currency_acronym }}</span> ; <span class="label label-default">{{ UDPercent }}</span> * <span class="label label-success"><strong>{{ M }} {{ currency_acronym }}</strong></span> / N<sub>t+1</sub> )</td>
+    <td>UD <sub>t+1</sub> = MAX ( <span class="label label-default">{{ UD.toFixed(2) }} {{ currency_acronym }}</span> ; <span class="label label-default">{{ UDPercent }}</span> * <span class="label label-success"><strong>{{ M }} {{ currency_acronym }}</strong></span> / N<sub>t+1</sub> )</td>
     <td></td>
   </tr>
 </table>
