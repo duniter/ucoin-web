@@ -272,7 +272,12 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
 
       $timeout(function() {
         if (~['/blockchain/graphs'].indexOf($location.path())) {
-          timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements);
+          var minSpeeds = [], maxSpeeds = [];
+          data.speed.forEach(function () {
+            minSpeeds.push(data.parameters.avgGenTime*4);
+            maxSpeeds.push(data.parameters.avgGenTime/4);
+          });
+          timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements, data.speed, minSpeeds, maxSpeeds);
           issuersGraphs('#issuersGraph', data.nbDifferentIssuers, data.parameters);
           difficultyGraph('#difficultyGraph', data.difficulties);
         }

@@ -31,6 +31,7 @@ module.exports = function (node, auth) {
           "percentRot":       parseFloat(sp[13])
         };
         var accelerations = [];
+        var speed = [];
         var increments = [];
         var members = [];
         var certifications = [];
@@ -54,6 +55,12 @@ module.exports = function (node, auth) {
           accelerations.push(block.time - block.medianTime);
           difficulties.push(block.powMin);
           increments.push(block.medianTime - (index ? json[index-1].medianTime : block.medianTime));
+          // Accumulation of last medianTimeBlocks variation
+          var acc = 0;
+          for (var i = Math.max(0, index - parameters.dtDiffEval); i < index; i++) {
+            acc += increments[i];
+          }
+          speed.push(acc / 10);
           // Volume
           var outputVolume = 0;
           block.transactions.forEach(function (tx) {
@@ -84,6 +91,7 @@ module.exports = function (node, auth) {
         });
         next(null, {
           'parameters': parameters,
+          'speed': speed,
           'accelerations': accelerations,
           'medianTimeIncrements': increments,
           'certifications': certifications,

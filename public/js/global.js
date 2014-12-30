@@ -589,7 +589,7 @@ function wotGraph2 (id, wot, bidirectionnals) {
 
 /*********** GRAPHES BLOCKCHAIN **********/
 
-function timeGraphs (id, timeAccelerations, medianTimeIncrements) {
+function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpeeds, maxSpeeds) {
   $(id).highcharts({
       chart: {
           type: "area",
@@ -649,6 +649,18 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements) {
         },{
           name: "Median Time variation",
           data: medianTimeIncrements
+        },{
+          type: 'line',
+          name: "Too low speed",
+          data: minSpeeds
+        },{
+          type: 'line',
+          name: "Speed (1 block every X sec)",
+          data: speeds
+        },{
+          type: 'line',
+          name: "Too high speed",
+          data: maxSpeeds
         }
       ]
   });
