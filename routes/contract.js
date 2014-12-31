@@ -57,8 +57,8 @@ module.exports = function (node, auth) {
           increments.push(block.medianTime - (index ? json[index-1].medianTime : block.medianTime));
           // Accumulation of last medianTimeBlocks variation
           var acc = 0;
-          for (var i = Math.max(1, index - parameters.dtDiffEval); i <= index; i++) {
-            acc += increments[i];
+          for (var i = Math.max(0, index - parameters.dtDiffEval); i < index; i++) {
+            acc += increments[i+1];
           }
           speed.push(acc / 10);
           // Volume
