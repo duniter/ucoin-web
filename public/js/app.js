@@ -298,17 +298,19 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
           var last1Button = $("#buttonLast1");
           var last2Button = $("#buttonLast2");
           var allButton = $("#buttonAll");
-          var last1 = 100, last2 = 300;
-          last1Button.click(function () {
-            textField1.val(Math.max(0, data.speed.length - last1));
-            textField2.val(data.speed.length - 1);
-            textField2.trigger('change');
-          });
-          last2Button.click(function () {
-            textField1.val(Math.max(0, data.speed.length - last2));
-            textField2.val(data.speed.length - 1);
-            textField2.trigger('change');
-          });
+          var buttons = [300, 100, 50, 30, 10];
+          for (var i = 0; i < buttons.length; i++) {
+            (function() {
+              var btn = $("#buttonLast" + i);
+              var num = buttons[i];
+              btn.text(num + ' lasts');
+              btn.click(function () {
+                textField1.val(Math.max(0, data.speed.length - num));
+                textField2.val(data.speed.length - 1);
+                textField2.trigger('change');
+              });
+            })();
+          };
           allButton.click(function () {
             textField1.val(0);
             textField2.val(data.speed.length - 1);
@@ -316,7 +318,7 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
           });
           textField1.change(majGraphes);
           textField2.change(majGraphes);
-          last1Button.trigger('click');
+          $("#buttonLast2").trigger('click');
 
           function majGraphes () {
             $("#timeGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
