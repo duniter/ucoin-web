@@ -653,16 +653,87 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpe
           data: medianTimeIncrements
         },{
           type: 'line',
-          name: "Too low speed",
-          data: minSpeeds
+          name: "Too high duration",
+          data: maxSpeeds
         },{
           type: 'line',
-          name: "Speed (1 block every X sec)",
+          name: "Actual duration",
+          data: speeds
+        },{
+          name: "Too low duration",
+          data: minSpeeds
+        }
+      ]
+  });
+}
+
+function speedGraphs (id, speeds, minSpeeds, maxSpeeds) {
+  $(id).highcharts({
+      chart: {
+          type: "area",
+          zoomType: 'x'
+      },
+      title: {
+          text: 'Blocks writing speed'
+      },
+      subtitle: {
+          text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' :
+                  'Pinch the chart to zoom in'
+      },
+      xAxis: {
+          minRange: 10 // 10 blocks
+      },
+      yAxis: {
+          title: {
+              text: 'Blocks per hour'
+          },
+          ceiling: 100000,
+          floor: 0,
+          min: 0
+      },
+      colors: ['#ff0000', '#7cb5ec', '#000000'],
+      legend: {
+          enabled: true
+      },
+      tooltip: {
+          shared: true,
+          crosshairs: true
+      },
+      plotOptions: {
+          area: {
+              fillColor: {
+                  linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                  stops: [
+                      [0, Highcharts.getOptions().colors[0]],
+                      [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                  ]
+              },
+              marker: {
+                  radius: 2
+              },
+              lineWidth: 1,
+              states: {
+                  hover: {
+                      lineWidth: 1
+                  }
+              },
+              threshold: null
+          }
+      },
+
+      series: [{
+          type: 'line',
+          name: "Upper limit",
+          data: maxSpeeds
+        },{
+          type: 'area',
+          name: "Actual speed",
           data: speeds
         },{
           type: 'line',
-          name: "Too high speed",
-          data: maxSpeeds
+          name: "Lower limit",
+          data: minSpeeds
         }
       ]
   });

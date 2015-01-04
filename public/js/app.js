@@ -272,12 +272,23 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
 
       $timeout(function() {
         if (~['/blockchain/graphs'].indexOf($location.path())) {
-          var minSpeeds = [], maxSpeeds = [];
-          data.speed.forEach(function () {
-            minSpeeds.push(data.parameters.avgGenTime*4);
-            maxSpeeds.push(data.parameters.avgGenTime/4);
+          var minSpeeds = [], speeds = [], maxSpeeds = [], actualDurations = [], maxDurations = [], minDurations = [];
+          var BY_HOUR = 3600;
+          data.speed.forEach(function (actualDuration, index) {
+            var realDuration = !isNaN(actualDuration) && actualDuration != 0 ? actualDuration : data.parameters.avgGenTime;
+            speeds.push(parseFloat((BY_HOUR/realDuration).toFixed(2)));
+            minSpeeds.push(parseFloat((BY_HOUR/(data.parameters.avgGenTime*4)).toFixed(2)));
+            maxSpeeds.push(parseFloat((BY_HOUR/(data.parameters.avgGenTime/4)).toFixed(2)));
+            actualDurations.push(parseFloat((realDuration).toFixed(2)));
+            minDurations.push(parseFloat(((data.parameters.avgGenTime/4)).toFixed(2)));
+            maxDurations.push(parseFloat(((data.parameters.avgGenTime*4)).toFixed(2)));
           });
-          timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements, data.speed, minSpeeds, maxSpeeds);
+          var times = [];
+          data.medianTimes.forEach(function (mdT, index) {
+            times.push([index*1000, BY_HOUR*data.speed[index]]);
+          });
+          timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements, actualDurations, minDurations, maxDurations);
+          speedGraphs('#speedGraph', speeds, minSpeeds, maxSpeeds);
           issuersGraphs('#issuersGraph', data.nbDifferentIssuers, data.parameters);
           difficultyGraph('#difficultyGraph', data.difficulties);
 
@@ -309,6 +320,7 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
 
           function majGraphes () {
             $("#timeGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
+            $("#speedGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
             $("#issuersGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
             $("#difficultyGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));
           }

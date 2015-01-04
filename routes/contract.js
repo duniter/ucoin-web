@@ -30,6 +30,7 @@ module.exports = function (node, auth) {
           "blocksRot":        parseInt(sp[12]),
           "percentRot":       parseFloat(sp[13])
         };
+        var medianTimes = [];
         var accelerations = [];
         var speed = [];
         var increments = [];
@@ -52,6 +53,7 @@ module.exports = function (node, auth) {
           leavers.push(block.leavers.length);
           excluded.push(block.excluded.length);
           transactions.push(block.transactions.length);
+          medianTimes.push(block.medianTime);
           accelerations.push(block.time - block.medianTime);
           difficulties.push(block.powMin);
           increments.push(block.medianTime - (index ? json[index-1].medianTime : block.medianTime));
@@ -91,6 +93,7 @@ module.exports = function (node, auth) {
         });
         next(null, {
           'parameters': parameters,
+          'medianTimes': medianTimes,
           'speed': speed,
           'accelerations': accelerations,
           'medianTimeIncrements': increments,
