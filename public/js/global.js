@@ -592,9 +592,13 @@ function wotGraph2 (id, wot, bidirectionnals) {
 /*********** GRAPHES BLOCKCHAIN **********/
 
 function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpeeds, maxSpeeds) {
+  var timesInc = [];
+  medianTimeIncrements.forEach(function (inc) {
+    timesInc.push(inc == 0 ? 1 : inc);
+  });
   $(id).highcharts({
       chart: {
-          type: "area",
+          // type: "area",
           zoomType: 'x'
       },
       title: {
@@ -609,11 +613,11 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpe
           minRange: 10 // 10 blocks
       },
       yAxis: {
+          type: 'logarithmic',
+          minorTickInterval: 1,
           title: {
-              text: 'Number of seconds'
-          },
-          floor: 0,
-          min: 0
+              text: 'Number of seconds (logarithmic scale)'
+          }
       },
       legend: {
           enabled: true
@@ -650,7 +654,7 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpe
           data: timeAccelerations
         },{
           name: "Median Time variation",
-          data: medianTimeIncrements
+          data: timesInc
         },{
           type: 'line',
           name: "Too high duration",
@@ -685,12 +689,11 @@ function speedGraphs (id, speeds, minSpeeds, maxSpeeds) {
           minRange: 10 // 10 blocks
       },
       yAxis: {
+          type: 'logarithmic',
+          minorTickInterval: 1,
           title: {
-              text: 'Blocks per hour'
-          },
-          ceiling: 100000,
-          floor: 0,
-          min: 0
+              text: 'Blocks per hour (logarithmic scale)'
+          }
       },
       colors: ['#ff0000', '#7cb5ec', '#000000'],
       legend: {
