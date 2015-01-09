@@ -193,6 +193,19 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
       }
       else if ($location.path() == '/community/members') {
         $timeout(function () {
+          // 1. Remove imports to non-members
+          var sources = [];
+          data.wot.forEach(function (source) {
+            sources.push(source.name);
+          });
+          data.wot.forEach(function (source) {
+            var existing = [];
+            source.imports.forEach(function (imp) {
+              if (~sources.indexOf(imp))
+                existing.push(imp);
+            });
+            source.imports = existing;
+          });
           var bidirectionnals = {};
           data.wot.forEach(function (source) {
             data.wot.forEach(function (target) {
