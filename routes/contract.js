@@ -62,7 +62,7 @@ module.exports = function (node, auth) {
           for (var i = Math.max(0, index - parameters.dtDiffEval); i < index; i++) {
             acc += increments[i+1];
           }
-          speed.push(acc / 10);
+          speed.push(acc / parameters.dtDiffEval);
           // Volume
           var outputVolume = 0;
           block.transactions.forEach(function (tx) {
