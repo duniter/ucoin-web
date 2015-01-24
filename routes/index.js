@@ -67,7 +67,6 @@ module.exports = function (node, auth) {
         var current = res.current;
         var uds = res.uds;
         var parameters = res.parameters;
-        var root = res.root;
         var lastUDblock = uds.length > 0 ? uds[uds.length-1] : null;
         var prevUDblock = uds.length > 1 ? uds[uds.length-2] : null;
         data["currency_acronym"] = 'ZB';
@@ -80,12 +79,12 @@ module.exports = function (node, auth) {
         data["votersLeaving"] = 0; // TODO
         data["UD_1"] = prevUDblock ? prevUDblock.dividend : 0;
         data["N_1"] = prevUDblock ? prevUDblock.membersCount : 0;
-        data["M"] = lastUDblock ? (lastUDblock.monetaryMass-data.UD_1*data.N_1) : 0;
+        data["M_1"] = prevUDblock ? prevUDblock.monetaryMass : 0;
+        data["UD"] = lastUDblock ? lastUDblock.dividend : parameters.ud0;
         data["N"] = lastUDblock ? lastUDblock.membersCount : 0;
+        data["M"] = lastUDblock ? lastUDblock.monetaryMass : 0;
         data["MsurN"] = data.M / data.N;
-        var prevUD = lastUDblock ? lastUDblock.dividend : parameters.ud0;
-        var c = parameters.c;
-        data["UD"] = Math.max(prevUD, c*data.M/data.N);
+        data["M_1surN"] = data.M_1 / data.N;
         data["blocks"] = res.uds;
         data["parameters"] = res.parameters;
         // ....
@@ -110,16 +109,6 @@ module.exports = function (node, auth) {
   };
 
   return this;
-}
-
-function proxy(res, callback) {
-  return function (err, json) {
-    if(err){
-      res.send(500, err);
-      return;
-    }
-    else callback(json);
-  }
 }
 
 Date.prototype.toString = function () {

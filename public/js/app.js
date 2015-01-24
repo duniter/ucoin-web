@@ -24,7 +24,7 @@ var routes = {
       '/community/voters': 'community-members',
       '/community/pks/lookup': 'community-lookup',
       '/community/pks/add': 'community-members',
-      '/community/pks/udid2': 'community-udid2',
+      '/community/pks/udid2': 'community-udid2'
     }
   },
   'contractController': {
@@ -35,13 +35,13 @@ var routes = {
       '/blockchain/txgraphs': 'blockchain-txgraphs',
       '/contract/current': 'contract-current',
       '/contract/pending': 'contract-current',
-      '/contract/votes': 'contract-votes',
+      '/contract/votes': 'contract-votes'
     }
   },
   'transactionsController': {
     model: 'partials/container.html',
     bodies: {
-      '/transactions/lasts': 'transactions-lasts',
+      '/transactions/lasts': 'transactions-lasts'
     }
   },
   'peersController': {
@@ -50,9 +50,9 @@ var routes = {
       '/peering/peers': 'peering-peers',
       '/peering/wallets': 'peering-wallets',
       '/peering/upstream': 'peering-peers',
-      '/peering/downstream': 'peering-peers',
+      '/peering/downstream': 'peering-peers'
     }
-  },
+  }
 };
 
 ucoinApp.config(['$routeProvider',
@@ -87,7 +87,6 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
     if (~['/graphs', '/home'].indexOf($location.path())) {
 
       var dt = data.parameters.dt;
-      var ud0 = data.parameters.ud0;
       var masses = [];
       var members = [];
       var uds = [];
@@ -96,15 +95,16 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
       var mMassUDM = [];
       var cActuals = [];
       var firstTime = 0
-      data.blocks.forEach(function (b, index) {
+      data.blocks.forEach(function (b) {
         if (!firstTime) {
           firstTime = parseInt(b.medianTime);
         }
-        var i = masses.length;
+        var isFirst = b.medianTime == firstTime;
         var UD = b.dividend;
         var N = b.membersCount;
-        var M = b.monetaryMass-UD*N;
-        var c = b.medianTime == firstTime ? 10000 : UD*N/M;
+        var M_1 = b.monetaryMass-UD*N;
+        var M = b.monetaryMass;
+        var c = isFirst ? 10000 : UD*N/M_1;
         members.push(N);
         uds.push(UD);
         masses.push(M);
@@ -170,7 +170,7 @@ ucoinControllers.controller('communityController', function ($scope, $route, $lo
     '/community/voters':     { menuIndex: 0, subIndex: 1 },
     '/community/pks/lookup': { menuIndex: 1, subIndex: 0 },
     '/community/pks/add':    { menuIndex: 1, subIndex: 1 },
-    '/community/pks/udid2':  { menuIndex: 1, subIndex: 1 },
+    '/community/pks/udid2':  { menuIndex: 1, subIndex: 1 }
   }
   $scope.selectedParentIndex = forMenus[$location.path()].menuIndex;
   $scope.selectedIndex = forMenus[$location.path()].subIndex;
