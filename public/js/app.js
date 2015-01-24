@@ -104,7 +104,7 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
         var N = b.membersCount;
         var M_1 = b.monetaryMass-UD*N;
         var M = b.monetaryMass;
-        var c = isFirst ? 10000 : UD*N/M_1;
+        var c = isFirst ? 10000 : UD*N/M_1
         members.push(N);
         uds.push(UD);
         masses.push(M);
@@ -282,6 +282,8 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
       $.each(data, function (key, value) {
         $scope[key] = value;
       });
+
+      $scope.blockchainTime = moment($scope.blockchainTime*1000).format('LLL');
 
       $timeout(function() {
         if (~['/blockchain/graphs'].indexOf($location.path())) {

@@ -45,6 +45,7 @@ module.exports = function (node, auth) {
         var transactions = [];
         var nbDifferentIssuers = [];
         var difficulties = [];
+        var blockchainTime = 0;
         json.forEach(function (block, index) {
           members.push(block.membersCount);
           certifications.push(block.certifications.length);
@@ -90,9 +91,11 @@ module.exports = function (node, auth) {
             issuers.push(json[i].issuer);
           }
           nbDifferentIssuers.push(_(issuers).uniq().length);
+          blockchainTime = block.medianTime;
         });
         next(null, {
           'parameters': parameters,
+          'blockchainTime': blockchainTime,
           'medianTimes': medianTimes,
           'speed': speed,
           'accelerations': accelerations,
