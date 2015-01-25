@@ -17,7 +17,21 @@
   <tr>
     <td>Peers</td>
     <td>
-      <a href="#/peering/peers" class="btn btn-default btn-xs">{{ peers ? peers.length : '0' }} connected</a>
+      <!--<a href="#/peering/peers" class="btn btn-default btn-xs">{{ peers ? peers.length : '0' }} connected</a>-->
+      <span class="label label-default label-xs">{{ peers ? peers.length : '0' }} connected</span>
     </td>
   </tr>
+</table>
+<h1>Peers</h1>
+<table class="table table-condensed table-striped">
+    <tr>
+        <th style="width: 20%;">Public key</th>
+        <th style="width: 80%;">Endpoints</th>
+    </tr>
+    <tr ng-repeat="peer in peers">
+        <td style="font-family: fixed,courier">{{peer.pubkey}}</td>
+        <td class="endpoint" style="font-family: fixed,courier">
+            <span ng-repeat="ep in peer.endpoints">{{ep}}</span>
+        </td>
+    </tr>
 </table>

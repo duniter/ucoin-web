@@ -5,8 +5,8 @@ var _     = require('underscore');
 var hdc   = require('hdc');
 
 module.exports = function (node, auth) {
-  
-  this.knownPeers = function(req, res){
+
+  this.knownPeers = function(done){
     async.waterfall([
       function (next){
         node.network.peering.peers.get({ leaves: true }, next);
@@ -28,19 +28,7 @@ module.exports = function (node, auth) {
           next(null, peers);
         });
       }
-    ], function (err, peers) {
-      if(err){
-        res.send(500, err);
-        return;
-      }
-
-      res.setHeader('Content-type', 'application/json');
-      res.send(200, {
-        subtitle: 'Known peers',
-        peers: peers || [],
-        auth: auth
-      });
-    });
+    ], done);
   };
   
   this.managedKeys = function(req, res){

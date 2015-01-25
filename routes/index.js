@@ -13,6 +13,7 @@ module.exports = function (node, auth) {
       transactionsCount: 0,
       auth: auth
     };
+    var that = this;
     async.waterfall([
       function (next){
         node.network.peering.get(next);
@@ -20,11 +21,11 @@ module.exports = function (node, auth) {
       function (json, next){
         data["currency"] = json.currency;
         data["endpoints"] = json.endpoints;
-        data["peers"] = [];//json.peers;
         data["fingerprint"] = json.pubkey;
-        next();
+        that.knownPeers(next);
       },
-      function (next){
+      function (peers, next){
+        data["peers"] = peers || [];
         async.parallel({
           current: function (next) {
             node.blockchain.current(next);
