@@ -9,7 +9,7 @@
   </tr>
   <tr>
     <td>Monetary Mass</td>
-    <td>M<sub>t</sub></td>
+    <td>M<sub>t-1</sub></td>
     <td><span class="label label-success"><strong>{{ M }} {{ currency_acronym }}</strong></span></td>
     <td><span class="label label-primary"><strong>~{{ (M/UD).toFixed(2) }} {{ relative_acronym }}</strong></span></td>
   </tr>
@@ -21,7 +21,7 @@
   </tr>
   <tr>
     <td>Monetary Mass per member</td>
-    <td>M<sub>t</sub>/N<sub>t</sub></td>
+    <td>M<sub>t-1</sub>/N<sub>t</sub></td>
     <td>
        <span class="label label-success"><strong>~{{ (MsurN).toFixed(0) }} {{ currency_acronym }}</strong></span>
     </td>
@@ -59,7 +59,7 @@
   </tr>
   <tr>
     <td>Universal Dividend (formula)</td>
-    <td>UD <sub>t+1</sub> = MAX ( UD <sub>t</sub> ; c * M<sub>t+1</sub> / N<sub>t+1</sub> )</td>
+    <td>UD <sub>t+1</sub> = MAX ( UD <sub>t</sub> ; c * M<sub>t</sub> / N<sub>t+1</sub> )</td>
     <td></td>
   </tr>
   <tr>
