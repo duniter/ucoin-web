@@ -442,7 +442,7 @@ function wotGraph2 (id, wot, bidirectionnals) {
 
   var line = d3.svg.line.radial()
       .interpolate("bundle")
-      .tension(.85)
+      .tension(d3.select("input[type=range]")[0][0].value/100)
       .radius(function(d) { return d.y; })
       .angle(function(d) { return d.x / 180 * Math.PI; });
 
