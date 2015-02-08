@@ -14,12 +14,6 @@
     <td><span class="label label-primary"><strong>~{{ (M/UD).toFixed(2) }} {{ relative_acronym }}</strong></span></td>
   </tr>
   <tr>
-    <td>Monetary Mass</td>
-    <td>M<sub>t-1</sub></td>
-    <td><span class="label label-success"><strong>{{ M_1 }} {{ currency_acronym }}</strong></span></td>
-    <td><span class="label label-primary"><strong>~{{ (M_1/UD).toFixed(2) }} {{ relative_acronym }}</strong></span></td>
-  </tr>
-  <tr>
     <td>Members</td>
     <td>N<sub>t</sub></td>
     <td><span class="label label-info">{{ N }} members</span></td>
@@ -49,10 +43,10 @@
     <td>Actual %Growth (UD<sub>t</sub> / (M<sub>t-1</sub>/N<sub>t</sub>))</td>
     <td>c<sub>actual</sub></td>
     <td>
-      <span class="label label-default"><strong>{{ ((UD/M_1surN)*100).toFixed(2) }}%</strong></span>
+      <span class="label label-default"><strong>{{ ((UD/MsurN)*100).toFixed(2) }}%</strong></span>
     </td>
     <td>
-       <span class="label label-default"><strong>{{ ((UD/UD)/(M_1surN/UD)*100).toFixed(2) }}%</strong></span>
+       <span class="label label-default"><strong>{{ ((UD/UD)/(MsurN/UD)*100).toFixed(2) }}%</strong></span>
     </td>
   </tr>
 </table>
@@ -65,12 +59,12 @@
   </tr>
   <tr>
     <td>Universal Dividend (formula)</td>
-    <td>UD <sub>t+1</sub> = MAX ( UD <sub>t</sub> ; c * M<sub>t</sub> / N<sub>t+1</sub> )</td>
+    <td>UD <sub>t+1</sub> = MAX ( UD <sub>t</sub> ; c * M<sub>t+1</sub> / N<sub>t+1</sub> )</td>
     <td></td>
   </tr>
   <tr>
     <td>Universal Dividend (computed)</td>
-    <td>UD <sub>t+1</sub> = MAX ( <span class="label label-default">{{ UD.toFixed(2) }} {{ currency_acronym }}</span> ; <span class="label label-default">{{ UDPercent }}</span> * <span class="label label-success"><strong>{{ M }} {{ currency_acronym }}</strong></span> / N<sub>t+1</sub> )</td>
+    <td><span class="label label-default">{{ UDplus1.toFixed(2) }} {{ currency_acronym }}</span> = MAX ( <span class="label label-default">{{ UD.toFixed(2) }} {{ currency_acronym }}</span> ; <span class="label label-default">{{ UDPercent }}</span> * <span class="label label-success"><strong>{{ Mplus1 }} {{ currency_acronym }}</strong></span> / <span class="label label-info">{{ N }} members?</span> )</td>
     <td></td>
   </tr>
 </table>

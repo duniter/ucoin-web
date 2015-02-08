@@ -94,7 +94,7 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
       var nbUDsOnUD = [];
       var mMassUDM = [];
       var cActuals = [];
-      var firstTime = 0
+      var firstTime = 0;
       data.blocks.forEach(function (b) {
         if (!firstTime) {
           firstTime = parseInt(b.medianTime);
@@ -102,9 +102,8 @@ ucoinControllers.controller('homeController', function ($scope, $route, $locatio
         var isFirst = b.medianTime == firstTime;
         var UD = b.dividend;
         var N = b.membersCount;
-        var M_1 = b.monetaryMass-UD*N;
-        var M = b.monetaryMass;
-        var c = isFirst ? 10000 : UD*N/M_1
+        var M = b.monetaryMass-UD*N;
+        var c = isFirst ? 10000 : UD*N/M;
         members.push(N);
         uds.push(UD);
         masses.push(M);
