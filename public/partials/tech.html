@@ -31,7 +31,7 @@
     <tr ng-repeat="peer in peers">
         <td style="font-family: fixed,courier">{{peer.pubkey}}</td>
         <td class="endpoint" style="font-family: fixed,courier">
-            <span ng-repeat="ep in peer.endpoints"><a ng-href="http://{{ep.split(' ')[0]}}:ep.split(' ')[1]/blockchain/current">{{ep}}</a></span>
+            <span ng-repeat="ep in peer.endpoints"><a ng-href="http://{{ep.split(' ')[1]}}:{{ep.split(' ')[2]}}/blockchain/current">{{ep}}</a></span>
         </td>
     </tr>
 </table>
