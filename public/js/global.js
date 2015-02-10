@@ -763,7 +763,8 @@ function issuersGraphs (id, ndDifferentIssuers, parameters) {
           title: {
               text: 'Number of issuers'
           },
-          floor: 0
+          floor: 0,
+          min: 0
       },
       legend: {
           enabled: true
