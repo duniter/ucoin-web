@@ -1,9 +1,13 @@
 var async = require('async');
 var _     = require('underscore');
 var hdc   = require('hdc');
-var contract = require('../tools/contract')
+var contract = require('../tools/contract');
+var co = require('co');
+var Q = require('q');
 
 module.exports = function (node, auth) {
+
+  var cachedBlocks = {};
   
   this.home = function(req, res){
     var data = {
@@ -36,28 +40,19 @@ module.exports = function (node, auth) {
             });
           },
           uds: function (next) {
-            async.waterfall([
-              function (next) {
-                node.blockchain.with.ud(next);
-              },
-              function (json, next) {
-                var blockNumbers = json.result.blocks;
-                var blocks = [];
-                async.forEachSeries(blockNumbers, function (blockNumber, callback) {
-                  async.waterfall([
-                    function (next) {
-                      node.blockchain.block(blockNumber, next);
-                    },
-                    function (block, next) {
-                      blocks.push(block);
-                      next();
-                    }
-                  ], callback);
-                }, function (err) {
-                  next(err, blocks);
-                });
+            return co(function *() {
+              var json = yield Q.nfcall(node.blockchain.with.ud);
+              var blockNumbers = json.result.blocks;
+              var blocks = [];
+              for (var i = 0, len = blockNumbers.length; i < len; i++) {
+                var blockNumber = blockNumbers[i];
+                var block = cachedBlocks[blockNumber] || (yield Q.nfcall(node.blockchain.block, blockNumber));
+                cachedBlocks[block.number] = block;
+                blocks.push(block);
               }
-            ], next);
+              return blocks;
+            })
+              .then((res) => next(null, res)).catch(next);
           },
           root: function (next) {
             node.blockchain.block(0, next);
@@ -104,6 +99,7 @@ module.exports = function (node, auth) {
       },
     ], function (err, data) {
       if(err){
+        err && console.error(err.stack || err);
         res.send(500, err);
         return;
       }
