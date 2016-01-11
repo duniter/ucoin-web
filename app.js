@@ -43,10 +43,12 @@ vucoin(host, port, function (err, node) {
     app.use(express.errorHandler());
   }
 
+  var nodeURI = "http://" + host + ':' + port;
+
   var routes       = require('./routes/index')(node, auth);
   var members      = require('./routes/members')(node, auth);
   var pks          = require('./routes/pks')(node, auth);
-  var contract     = require('./routes/contract')(node, auth);
+  var contract     = require('./routes/contract')(node, auth, nodeURI);
   var transactions = require('./routes/transactions')(node, auth);
   var peers        = require('./routes/peers')(node, auth);
   var blockchain   = require('./routes/blockchain')(node, auth);

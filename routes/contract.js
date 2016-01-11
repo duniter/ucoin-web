@@ -6,7 +6,7 @@ var _        = require('underscore');
 var Q = require('q');
 var contract = require('../tools/contract');
 
-module.exports = function (node, auth) {
+module.exports = function (node, auth, nodeURI) {
   
   this.graphs = function(req, res){
 
@@ -31,7 +31,8 @@ module.exports = function (node, auth) {
         "avgGenTime":       parseInt(sp[10]),
         "dtDiffEval":       parseInt(sp[11]),
         "blocksRot":        parseInt(sp[12]),
-        "percentRot":       parseFloat(sp[13])
+        "percentRot":       parseFloat(sp[13]),
+        "nodeURI":          nodeURI
       };
       var medianTimes = [];
       var accelerations = [];

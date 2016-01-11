@@ -821,7 +821,7 @@ function issuersGraphs (id, offset, ndDifferentIssuers, parameters) {
               point: {
                   events: {
                       click: function (e) {
-                        popIssuer(e, this);
+                        popIssuer(e, this, offset, parameters.nodeURI);
                       }
                   }
               },
@@ -1191,15 +1191,15 @@ function popBlock (e, obj) {
   });
 }
 
-function popIssuer (e, obj) {
-  $.getJSON('/blockchain/block/' + obj.x, function (block) {
-    var msg = 'Issuer of block#' + block.number + ' was ' + block.issuer.substring(0,20);
+function popIssuer (e, obj, offset, nodeURI) {
+  $.getJSON('/blockchain/block/' + (obj.x + offset), function (block) {
+    var msg = 'Issuer of block#' + block.number + ' was <a target="_blank" href="' + nodeURI + '/wot/lookup/' + block.issuer + '">' + block.issuer.substring(0,20);
     hs.htmlExpand(null, {
         pageOrigin: {
             x: e.pageX || e.clientX,
             y: e.pageY || e.clientY
         },
-        headingText: 'Block\' issuer detail',
+        headingText: 'Block\'s issuer detail',
         maincontentText: msg,
         width: 400
     });
