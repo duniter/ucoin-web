@@ -15,7 +15,7 @@ module.exports = function (node, auth, nodeURI) {
     return co(function *() {
       var root = yield Q.nfcall(node.blockchain.block, 0);
       var current = yield Q.nfcall(node.blockchain.current);
-      var json = yield Q.nfcall(node.blockchain.blocks, NB_BLOCKS, current.number - NB_BLOCKS);
+      var json = yield Q.nfcall(node.blockchain.blocks, NB_BLOCKS, current.number - NB_BLOCKS + 1);
       var sp = root.parameters.split(':');
       var parameters = {
         "c":                parseFloat(sp[0]),

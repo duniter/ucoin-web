@@ -301,10 +301,10 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
           data.medianTimes.forEach(function (mdT, index) {
             times.push([index*1000, BY_HOUR*data.speed[index]]);
           });
-          timeGraphs('#timeGraph', data.startBlock, data.accelerations, data.medianTimeIncrements, actualDurations, minDurations, maxDurations);
-          speedGraphs('#speedGraph', data.startBlock, speeds, minSpeeds, maxSpeeds);
-          issuersGraphs('#issuersGraph', data.startBlock, data.nbDifferentIssuers, data.parameters);
-          difficultyGraph('#difficultyGraph', data.startBlock, data.difficulties);
+          timeGraphs('#timeGraph', data.startBlock + 1, data.accelerations, data.medianTimeIncrements, actualDurations, minDurations, maxDurations);
+          speedGraphs('#speedGraph', data.startBlock + 1, speeds, minSpeeds, maxSpeeds);
+          issuersGraphs('#issuersGraph', data.startBlock + 1, data.nbDifferentIssuers, data.parameters);
+          difficultyGraph('#difficultyGraph', data.startBlock + 1, data.difficulties);
 
           // Comboboxes
           var textField1 = $("#textFieldBlock1");
