@@ -591,7 +591,7 @@ function wotGraph2 (id, wot, bidirectionnals) {
 
 /*********** GRAPHES BLOCKCHAIN **********/
 
-function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpeeds, maxSpeeds) {
+function timeGraphs (id, offset, timeAccelerations, medianTimeIncrements, speeds, minSpeeds, maxSpeeds) {
   var timesInc = [];
   medianTimeIncrements.forEach(function (inc) {
     timesInc.push(inc == 0 ? 1 : inc);
@@ -610,7 +610,12 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpe
                   'Pinch the chart to zoom in'
       },
       xAxis: {
-          minRange: 10 // 10 blocks
+          minRange: 10, // 10 blocks,
+          labels: {
+              formatter: function() {
+                  return this.value + offset;
+              }
+          }
       },
       yAxis: {
           type: 'logarithmic',
@@ -624,7 +629,8 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpe
       },
       tooltip: {
           shared: true,
-          crosshairs: true
+          crosshairs: true,
+          formatter: blockFormatter(offset)
       },
       plotOptions: {
           area: {
@@ -671,7 +677,11 @@ function timeGraphs (id, timeAccelerations, medianTimeIncrements, speeds, minSpe
   });
 }
 
-function speedGraphs (id, speeds, minSpeeds, maxSpeeds) {
+function speedGraphs (id, offset, speeds, minSpeeds, maxSpeeds) {
+  var xValuex = [];
+  for (var i = 0, len = speeds.length; i < len; i++) {
+    xValuex.push(i + offset);
+  }
   $(id).highcharts({
       chart: {
           type: "area",
@@ -686,7 +696,13 @@ function speedGraphs (id, speeds, minSpeeds, maxSpeeds) {
                   'Pinch the chart to zoom in'
       },
       xAxis: {
-          minRange: 10 // 10 blocks
+          //categories: xValuex,
+          minRange: 10, // 10 blocks,
+          labels: {
+            formatter: function() {
+              return this.value + offset;
+            }
+          }
       },
       yAxis: {
           type: 'logarithmic',
@@ -701,7 +717,8 @@ function speedGraphs (id, speeds, minSpeeds, maxSpeeds) {
       },
       tooltip: {
           shared: true,
-          crosshairs: true
+          crosshairs: true,
+          formatter: blockFormatter(offset)
       },
       plotOptions: {
           area: {
@@ -742,7 +759,7 @@ function speedGraphs (id, speeds, minSpeeds, maxSpeeds) {
   });
 }
 
-function issuersGraphs (id, ndDifferentIssuers, parameters) {
+function issuersGraphs (id, offset, ndDifferentIssuers, parameters) {
   $(id).highcharts({
       chart: {
           type: "area",
@@ -757,7 +774,12 @@ function issuersGraphs (id, ndDifferentIssuers, parameters) {
                   'Pinch the chart to zoom in'
       },
       xAxis: {
-          minRange: 10 // 10 blocks
+          minRange: 10, // 10 blocks,
+          labels: {
+              formatter: function() {
+                  return this.value + offset;
+              }
+          }
       },
       yAxis: {
           title: {
@@ -771,7 +793,8 @@ function issuersGraphs (id, ndDifferentIssuers, parameters) {
       },
       tooltip: {
           shared: true,
-          crosshairs: true
+          crosshairs: true,
+          formatter: blockFormatter(offset)
       },
       plotOptions: {
           area: {
@@ -817,7 +840,7 @@ function issuersGraphs (id, ndDifferentIssuers, parameters) {
   });
 }
 
-function difficultyGraph (id, difficulties) {
+function difficultyGraph (id, offset, difficulties) {
   hcDifficulty = $(id).highcharts({
       chart: {
           type: "area",
@@ -832,7 +855,12 @@ function difficultyGraph (id, difficulties) {
                   'Pinch the chart to zoom in'
       },
       xAxis: {
-          minRange: 10 // 10 blocks
+          minRange: 10, // 10 blocks,
+          labels: {
+              formatter: function() {
+                  return this.value + offset;
+              }
+          }
       },
       yAxis: {
           title: {
@@ -846,7 +874,8 @@ function difficultyGraph (id, difficulties) {
       },
       tooltip: {
           shared: true,
-          crosshairs: true
+          crosshairs: true,
+          formatter: blockFormatter(offset)
       },
       plotOptions: {
           area: {
@@ -1306,4 +1335,16 @@ function certsGraph (id, certifications) {
         }
       ]
   });
+}
+
+function blockFormatter(offset) {
+    return function() {
+        var html = '<span style="font-size: 10px">' + (this.x + offset) + '</span><br/>';
+        for (var i = 0, len = this.points.length; i < len; i++) {
+            var point = this.points[i];
+            var series = point.series;
+            html += '<span style="color:' + series.color + '">\u25CF</span>' + series.name + ': <b>' + point.y + '</b><br/>';
+        }
+        return html;
+    }
 }

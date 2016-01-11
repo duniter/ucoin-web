@@ -301,18 +301,18 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
           data.medianTimes.forEach(function (mdT, index) {
             times.push([index*1000, BY_HOUR*data.speed[index]]);
           });
-          timeGraphs('#timeGraph', data.accelerations, data.medianTimeIncrements, actualDurations, minDurations, maxDurations);
-          speedGraphs('#speedGraph', speeds, minSpeeds, maxSpeeds);
-          issuersGraphs('#issuersGraph', data.nbDifferentIssuers, data.parameters);
-          difficultyGraph('#difficultyGraph', data.difficulties);
+          timeGraphs('#timeGraph', data.startBlock, data.accelerations, data.medianTimeIncrements, actualDurations, minDurations, maxDurations);
+          speedGraphs('#speedGraph', data.startBlock, speeds, minSpeeds, maxSpeeds);
+          issuersGraphs('#issuersGraph', data.startBlock, data.nbDifferentIssuers, data.parameters);
+          difficultyGraph('#difficultyGraph', data.startBlock, data.difficulties);
 
           // Comboboxes
           var textField1 = $("#textFieldBlock1");
           var textField2 = $("#textFieldBlock2");
           var last1Button = $("#buttonLast1");
           var last2Button = $("#buttonLast2");
-          var allButton = $("#buttonAll");
-          var buttons = [300, 100, 50, 30, 10];
+          //var allButton = $("#buttonAll");
+          var buttons = [2000, 1000, 500, 300, 100, 50, 30];
           for (var i = 0; i < buttons.length; i++) {
             (function() {
               var btn = $("#buttonLast" + i);
@@ -324,15 +324,15 @@ ucoinControllers.controller('contractController', function ($scope, $route, $loc
                 textField2.trigger('change');
               });
             })();
-          };
-          allButton.click(function () {
-            textField1.val(0);
-            textField2.val(data.speed.length - 1);
-            textField2.trigger('change');
-          });
+          }
+          //allButton.click(function () {
+          //  textField1.val(0);
+          //  textField2.val(data.speed.length - 1);
+          //  textField2.trigger('change');
+          //});
           textField1.change(majGraphes);
           textField2.change(majGraphes);
-          $("#buttonLast2").trigger('click');
+          $("#buttonLast5").trigger('click');
 
           function majGraphes () {
             $("#timeGraph").highcharts().xAxis[0].setExtremes(parseFloat(textField1.val()), parseFloat(textField2.val()));

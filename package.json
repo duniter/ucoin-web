@@ -25,13 +25,15 @@
     "url": "https://github.com/c-geek/ucoin-web/issues"
   },
   "dependencies": {
+    "async": "*",
+    "co": "4.6.0",
+    "commander": "*",
     "express": "3.2.4",
     "hdc": "~0.7.0",
-    "vucoin": "~0.23.1",
+    "q": "1.4.1",
+    "sha1": "*",
     "underscore": "*",
-    "async": "*",
-    "commander": "*",
-    "sha1": "*"
+    "vucoin": "0.26.0"
   },
   "devDependencies": {
     "mocha": "",
